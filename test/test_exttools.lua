@@ -475,6 +475,13 @@ local tests = {
         assert.equal(empty_err, "No Parallel Search results found.")
         assert.isFalse(malformed_ok)
         assert.equal(malformed_err, "No Parallel Search results found.")
+        for i, payload in ipairs({ json.null, true, 42, "invalid" }) do
+            local scalar_ok, scalar_err = withFetchJSON({ parsed = payload }, function()
+                return extools.parallelapi:SearchKeywords("public transport funding", nil, { api_key = "key" })
+            end)
+            assert.isFalse(scalar_ok)
+            assert.equal(scalar_err, "No Parallel Search results found.")
+        end
     end),
 
     test("Parallel Search preserves network and cancellation errors", function()

@@ -409,7 +409,7 @@ function parallel:SearchKeywords(keywords, trap_widget, config, objective)
     local parsed, err = NetUtils.fetchJSON(base_url .. "/v1/search",
         { ["x-api-key"] = config.api_key }, trap_widget, 45, 120, request_body)
     if not parsed then return false, err end
-    if type(parsed.results) ~= "table" or #parsed.results == 0 then
+    if type(parsed) ~= "table" or type(parsed.results) ~= "table" or #parsed.results == 0 then
         return false, "No Parallel Search results found."
     end
 

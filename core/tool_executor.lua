@@ -100,7 +100,8 @@ function ToolExecutor.getSearchConfig(assistant)
     for api in pairs(ExtTools) do
         local c = assistant.config:getProvider(api)
         if SearchTools.isConfigured(c, api) then
-            local base_url = type(c.base_url) == "string" and c.base_url:gsub("/+$", "") or nil
+            local base_url = type(c.base_url) == "string" and c.base_url:find("%S")
+                and c.base_url:gsub("/+$", "") or nil
             snapshot[api] = {
                 api_key = c.api_key,
                 base_url = base_url,
@@ -636,7 +637,7 @@ Return exactly one concise search query string.]]
             type = "string",
             description = "Self-contained research goal, including relevant context or freshness requirements",
         }
-        table.insert(param_schema.required, "objective")
+
         description = "Search the web for titles, URLs and relevant excerpts. Provide a concise keyword query and a self-contained research objective."
     end
 

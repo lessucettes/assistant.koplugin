@@ -141,6 +141,13 @@ local tests = {
         assert.equal(snapshot.parallelapi.mode, "basic")
         assert.equal(snapshot.searxngapi.base_url, "https://search.example")
 
+        for i, base_url in ipairs({ "", " \t " }) do
+            local blank = ToolExecutor.getSearchConfig(mockAssistant({
+                parallelapi = { api_key = "parallel-test", base_url = base_url },
+            }))
+            assert.equal(blank.parallelapi.base_url, nil)
+        end
+
         local invalid = ToolExecutor.getSearchConfig(mockAssistant({
             parallelapi = { api_key = "", base_url = "https://proxy.example" },
         }))
@@ -199,7 +206,7 @@ local tests = {
             assert.equal(parameters.properties.keywords.type, "string", case.format)
             assert.equal(parameters.properties.objective.type, "string", case.format)
             assert.equal(parameters.required[1], "keywords", case.format)
-            assert.equal(parameters.required[2], "objective", case.format)
+            assert.equal(#parameters.required, 1, case.format)
         end
 
         local generic = captureHandlerBody(OpenAIHandler, {
