@@ -6,7 +6,7 @@
 -- CONFIGURATION.provider_settings table.
 --
 -- Each UI search tool record uses a fixed tool key (serpapi, tavilyapi, exaapi,
--- searxngapi) and fields: api_key or base_url (display_name is NOT stored).
+-- searxngapi, parallelapi) and fields: api_key or base_url (display_name is NOT stored).
 --
 -- File search tools are imported as-is with source="file", immutable=true
 -- injected. UI search tools override file config with the same tool key.
@@ -32,10 +32,22 @@ SearchRegistry.SEARCH_TOOLS = {
     tavilyapi  = { needs = "api_key",  display_name = "Tavily" },
     exaapi     = { needs = "api_key",  display_name = "Exa.ai" },
     searxngapi = { needs = "base_url", display_name = "SearXNG" },
+    parallelapi = { needs = "api_key", display_name = "Parallel Search" },
 }
 
 -- All fixed tool keys as an ordered list
-SearchRegistry.TOOL_KEYS = { "serpapi", "tavilyapi", "exaapi", "searxngapi" }
+SearchRegistry.TOOL_KEYS = { "serpapi", "tavilyapi", "exaapi", "searxngapi", "parallelapi" }
+
+--- Check whether a search provider has its required credential configured.
+---@param record table|nil Provider settings record
+---@param tool_key string Fixed search tool key
+---@return boolean
+function SearchRegistry.is_configured(record, tool_key)
+    local def = SearchRegistry.SEARCH_TOOLS[tool_key]
+    if not def or type(record) ~= "table" then return false end
+    local value = record[def.needs]
+    return type(value) == "string" and value:find("%S") ~= nil
+end
 
 ----------------------------------------------------------------------
 -- Load / Save
@@ -97,7 +109,7 @@ end
 
 --- Validate a search tool record before saving.
 ---@param record table The search tool fields to validate
----@param tool_key string The tool key (serpapi, tavilyapi, exaapi, searxngapi)
+---@param tool_key string The tool key (serpapi, tavilyapi, exaapi, searxngapi, parallelapi)
 ---@return boolean ok
 ---@return string|nil err
 function SearchRegistry.validate(record, tool_key)
@@ -232,7 +244,7 @@ end
 ----------------------------------------------------------------------
 
 --- Install or update a UI search tool: validate, save, merge into memory,
---- and call ToolExecutor.SetSearchAPIConfig.
+--- and expose it to the next request-level search snapshot.
 ---@param assistant table The Assistant instance
 ---@param tool_key string The fixed tool key
 ---@param api_key string|nil
@@ -290,7 +302,7 @@ end
 ----------------------------------------------------------------------
 
 --- Build the "WebSearch API" menu item for the Settings submenu.
---- Returns a TouchMenu item with a sub-menu listing the four search tools.
+--- Returns a TouchMenu item with a sub-menu listing the fixed search tools.
 ---@param assistant table The Assistant instance
 ---@return table menu item spec
 function SearchRegistry.getAddWebSearchMenuItem(assistant)
@@ -304,10 +316,7 @@ function SearchRegistry.getAddWebSearchMenuItem(assistant)
                 table.insert(items, {
                     text_func = function()
                         local merged = assistant.config:getProvider(tool_key)
-                        local configured = merged and (
-                            (type(merged.api_key) == "string" and #merged.api_key > 0) or
-                            (type(merged.base_url) == "string" and #merged.base_url > 0)
-                        )
+                        local configured = SearchRegistry.is_configured(merged, tool_key)
                         return (configured and "☑ " or "☐ ") .. def.display_name
                     end,
                     keep_menu_open = true,

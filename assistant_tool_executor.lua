@@ -13,6 +13,7 @@ local T = require("ffi/util").template
 local strbuf = require("string.buffer")
 local json = require("rapidjson")
 local ExtTools = require("assistant_exttools")
+local SearchRegistry = require("assistant_search_registry")
 local ASUtils = require("assistant_utils")
 local TextUtils = require("assistant_text_utils")
 local json_default = ASUtils.json_default
@@ -26,6 +27,7 @@ local SEARCH_API_NAMES = {
     "tavilyapi",
     "exaapi",
     "searxngapi",
+    "parallelapi",
  }
 
 ---- Build the messages_to_append list once a search result is available.
@@ -99,20 +101,24 @@ end
 local ToolExecutor = {}
 ToolExecutor.SEARCH_API_NAMES = SEARCH_API_NAMES
 
---- Exposed func to set module variable via Assistant instance
---- @param assistant table Assistant instance
-function ToolExecutor.SetSearchAPIConfig(assistant)
-    if not assistant then return end
-    for api, tool in pairs(ExtTools) do
+--- Build a request-level snapshot of configured search credentials and options.
+--- @param assistant table|nil Assistant instance
+--- @return table snapshot keyed by fixed search tool key
+function ToolExecutor.getSearchConfig(assistant)
+    local snapshot = {}
+    if not assistant then return snapshot end
+    for api in pairs(ExtTools) do
         local c = assistant.config:getProvider(api)
-        if c then
-            if c.api_key then tool.api_key = c.api_key end
-            if c.base_url then tool.base_url = c.base_url:gsub("/+$", "") end -- trim the ending `/`
-        else
-            tool.api_key = nil
-            tool.base_url = nil -- clear stale if provider deleted
+        if SearchRegistry.is_configured(c, api) then
+            local base_url = type(c.base_url) == "string" and c.base_url:gsub("/+$", "") or nil
+            snapshot[api] = {
+                api_key = c.api_key,
+                base_url = base_url,
+                mode = c.mode,
+            }
         end
     end
+    return snapshot
 end
 
 function ToolExecutor.IsExtSearch(key)
@@ -131,13 +137,21 @@ end
 --- Handles UI feedback (keyword search indicator) internally.
 ---
 --- @param keywords           string  search query keywords
---- @param ws_mode            string  "serpapi" | "tavilyapi"
+--- @param ws_mode            string  Selected search tool key
 --- @param handler            table   BaseHandler instance with search methods
 --- @param tool_round         integer  Notice for the number of rounds the tool called
+--- @param config             table|nil Request-level snapshot from getSearchConfig
+--- @param objective          string|nil Parallel Search research objective
 --- @return boolean success, string|nil result
-function ToolExecutor.executeWebSearch(keywords, ws_mode, handler, tool_round)
-    if not keywords or #keywords == 0 then
+function ToolExecutor.executeWebSearch(keywords, ws_mode, handler, tool_round, config, objective)
+    if type(keywords) ~= "string" or keywords == "" then
         return false, _("Search keywords are empty.")
+    end
+
+    local selected = ExtTools[ws_mode]
+    if selected and selected.is_external and
+            not SearchRegistry.is_configured(config and config[ws_mode], ws_mode) then
+        return false, _("Web search provider is not configured.")
     end
 
     -- Show search indicator
@@ -158,10 +172,13 @@ function ToolExecutor.executeWebSearch(keywords, ws_mode, handler, tool_round)
         UIManager:close(keywordmsg)
         return false, "Unknown web-search mode: " .. tostring(ws_mode)
     end
-    search_ok, search_result = API:SearchKeywords(keywords, keywordmsg)
+    search_ok, search_result = API:SearchKeywords(keywords, keywordmsg,
+        config and config[ws_mode], objective)
     if search_ok and type(search_result) == "string" then
-        -- remove URLs saving context length
-        search_result = search_result:gsub("https?://[%w%-%.%?%&%=%/%~_#:;+,@!$%'()*]+", "")
+        if ws_mode ~= "parallelapi" then
+            -- remove URLs saving context length
+            search_result = search_result:gsub("https?://[%w%-%.%?%&%=%/%~_#:;+,@!$%'()*]+", "")
+        end
     end
 
     UIManager:close(keywordmsg)
@@ -193,7 +210,7 @@ function ToolExecutor.buildRawAssistantForToolCall(tool_calls, format, contents)
             table.insert(ret, tc)
         end
         for _, tc in ipairs(tool_calls) do
-            local id, kw, err = ToolExecutor.extractKeywords(tc)
+            local id, kw, err, objective = ToolExecutor.extractKeywords(tc)
             if err then
                 return false, err
             end
@@ -201,7 +218,7 @@ function ToolExecutor.buildRawAssistantForToolCall(tool_calls, format, contents)
                     type  = "tool_use",
                     id    = id,
                     name  = "assistant_web_search",
-                    input = { keywords = kw },
+                    input = objective and { keywords = kw, objective = objective } or { keywords = kw },
             })
         end
         return true, ret
@@ -213,7 +230,7 @@ function ToolExecutor.buildRawAssistantForToolCall(tool_calls, format, contents)
                     functionCall = {
                         name = "assistant_web_search",
                         id   = tc.tool_call_id,
-                        args = { keywords = tc.keywords },
+                        args = tc.args or { keywords = tc.keywords },
                     },
                 })
             if contents and contents.signature then
@@ -276,39 +293,50 @@ end
 --- - OpenAI/Anthropic: arguments is a JSON string
 ---
 --- @param tool_call       table   single tool call object
---- @return string|nil id, string|nil keywords, string|nil error
+--- @return string|nil id, string|nil keywords, string|nil error, string|nil objective
 function ToolExecutor.extractKeywords(tool_call)
     local keywords = nil
     local id = nil
+    local objective = nil
 
-    if tool_call.args then
+    if tool_call.args ~= nil then
         -- Gemini: args is already a table
         id = tool_call.tool_call_id or tool_call.id
-        keywords = tool_call.args.keywords
+        if type(tool_call.args) == "table" then
+            keywords = tool_call.args.keywords
+            objective = tool_call.args.objective
+        end
         if type(keywords) == "table" and #keywords > 0 then
             keywords = keywords[1] -- needs to be a string
         end
-    elseif tool_call.arguments then
+    elseif tool_call.arguments ~= nil then
         -- OpenAI: arguments is a JSON string
         local ok_j, args = pcall(json.decode, tool_call.arguments)
         if ok_j and type(args) == "table" then
             keywords = json_default(args.keywords) or json_default(args.query)
+            objective = json_default(args.objective)
         end
         id = tool_call.tool_call_id or tool_call.id
-    elseif tool_call.input then
+    elseif tool_call.input ~= nil then
         -- Anthropic
         id = tool_call.id
-        keywords = tool_call.input.keywords
+        if type(tool_call.input) == "table" then
+            keywords = tool_call.input.keywords
+            objective = tool_call.input.objective
+        end
     end
 
     if not id then
         return nil, nil, _("Tool call did not include id.")
     end
-    if not keywords or #keywords == 0 then
+    if type(keywords) ~= "string" or keywords == "" then
         return nil, nil, _("Tool call did not include search keywords.")
     end
 
-    return id, keywords, nil
+    if type(objective) ~= "string" or objective:find("%S") == nil then
+        objective = nil
+    end
+    return id, keywords, nil, objective
 end
 
 --- Get the handler format based on handler name.
@@ -545,9 +573,10 @@ end
 --- format = "anthropic"  → Anthropic tool shape
 --- format = "gemini"     → Gemini function_declarations shape
 ---
---- @param format string  "openai" | "anthropic" | "gemini"
+--- @param format string  "openai" | "anthropic" | "gemini" | "responses"
+--- @param ws_mode string|nil Selected search tool key
 --- @return table tool definition
-function ToolExecutor.buildExternalSearchToolDef(format)
+function ToolExecutor.buildExternalSearchToolDef(format, ws_mode)
     local param_schema = {
         type = "object",
         properties = {
@@ -561,6 +590,15 @@ function ToolExecutor.buildExternalSearchToolDef(format)
     local description = [[Search the web for up-to-date information. 
 Use this when the user's question requires current or recent information. 
 Return exactly one concise search query string.]]
+
+    if ws_mode == "parallelapi" then
+        param_schema.properties.objective = {
+            type = "string",
+            description = "Self-contained research goal, including relevant context or freshness requirements",
+        }
+        table.insert(param_schema.required, "objective")
+        description = "Search the web for titles, URLs and relevant excerpts. Provide a concise keyword query and a self-contained research objective."
+    end
 
     if format == "anthropic" then
         return {

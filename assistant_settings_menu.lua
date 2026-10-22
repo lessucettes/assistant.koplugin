@@ -196,9 +196,7 @@ local function genWebSearchSubMenuItem(assistant, key)
             elseif key == "builtin" then
                 return koutil.tableGetValue(assistant, "querier", "handler", "has_builtin_websearch")
             elseif ToolExecutor.IsExtSearch(key) then
-                local ps = assistant.config:getProvider(key)
-                return (koutil.tableGetValue(ps, "api_key") ~= nil) or
-                       (koutil.tableGetValue(ps, "base_url") ~= nil)
+                return SearchRegistry.is_configured(assistant.config:getProvider(key), key)
             end
             return false --
         end,
@@ -212,7 +210,7 @@ local function genWebSearchSubMenuItem(assistant, key)
             if ToolExecutor.IsExtSearch(key) then
                 Trapper:wrap(function()
                     local API = ExtTools[key]
-                    local ok, info = API:AccoutInfo()
+                    local ok, info = API:AccoutInfo(assistant.config:getProvider(key))
                     UIManager:show(InfoMessage:new{ face = Font:getFace("smallinfofont"),
                         text = info
                     })

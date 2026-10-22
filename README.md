@@ -12,7 +12,7 @@ Interact with AI language models while reading. Ask questions, get translations,
 
 - **Multiple AI Providers**: Natively speaks the four mainstream protocols — OpenAI Chat Completions, OpenAI Responses, Anthropic Messages, and Google Gemini — so popular platforms such as DeepSeek, OpenRouter, Ollama, Groq, and Mistral work out of the box.
 - **Stream Mode**: Real-time responses from the API. Get the full LLM experience on e-ink devices.
-- **Web Search**: Let LLMs search the web for real and up-to-date information. Supports SerpAPI, Tavily, Exa, and SearXNG, with a per-question toggle.
+- **Web Search**: Let LLMs search the web for real and up-to-date information. Supports SerpAPI, Tavily, Exa, SearXNG, and Parallel Search, with a per-question toggle.
 - **UI-Based Setup**: Add providers and models entirely from the UI, with built-in model browsing and connection testing.
 - **Built-in Prompts** (from the highlight menu):
   - **Translation**: Instantly translate highlighted text to any language.
@@ -35,7 +35,7 @@ Interact with AI language models while reading. Ask questions, get translations,
 
 - **[Required]** [KOReader](https://github.com/koreader/koreader) installed on your device
 - **[Required]** API key from at least one LLM provider
-- **[Recommended]** API key from a search provider (Tavily, SerpAPI, Exa, SearXNG, ...)
+- **[Recommended]** API key from a search provider (Tavily, SerpAPI, Exa, Parallel Search, ...); SearXNG uses a base URL.
 
 ## Getting Started 
 
@@ -74,7 +74,9 @@ Typing a long API key on an e-ink keyboard is painful. The easy path:
 3. Tap **Test** to check the connection, then **OK** to save. The new provider becomes active right away.
 4. To add another provider, go to `⚙ → AI Assistant → Settings → Provider API`. To switch providers or models, tap the provider entry (`Provider ▸ ...`) in `⚙ → AI Assistant` to open the **Providers and Models** dialog and select one. Only providers added from the UI can be edited or deleted.
 
-**Web search keys (SerpAPI / Tavily / Exa / SearXNG):** available both via UI configuration (`Settings → WebSearch API`) and via the configuration file. In the Ask dialog, use the `🌐 Web Search` checkbox to enable it per question.
+**OpenCode:** Choose **OpenCode Zen** (`https://opencode.ai/zen/v1`) for pay-as-you-go Zen models or **OpenCode Go** (`https://opencode.ai/zen/go/v1`) if you have a Go subscription and API key. Free Zen models are served only to the official OpenCode client, so this plugin does not offer them. The presets prefill a model; model IDs here are plain IDs (for example, `glm-5.3-flash`), not OpenCode CLI `opencode-go/...` names. This integration uses only Chat Completions. **Browse Models** suggests paid Zen Chat models or Go Chat-model families from `/models`, which does not report protocol or pricing; it may omit newly supported models. You can enter an ID manually, but check its endpoint and current price in the [Zen](https://opencode.ai/docs/zen/) or [Go](https://opencode.ai/docs/go/) documentation first. Pricing, free-model availability, and data-retention policies can change. Go expects coding-agent-like traffic and may restrict other uses; this reader plugin identifies itself honestly with its own User-Agent and a per-conversation session header, but is not an OpenCode-validated coding agent.
+
+**Web search keys (SerpAPI / Tavily / Exa / SearXNG / Parallel Search):** available both via UI configuration (`Settings → WebSearch API`) and via the configuration file. In the Ask dialog, use the `🌐 Web Search` checkbox to enable it per question.
 
 #### Option B (Advanced): Use `configuration.lua`
 

@@ -47,6 +47,7 @@ local SCHEMA_VERSION = 1
 -- Supported API handler names (must match api_handlers/ .lua files)
 Registry.HANDLERS = {
     openai    = true,
+    opencode  = true,
     anthropic = true,
     gemini    = true,
     responses = true,
@@ -58,6 +59,7 @@ Registry.HANDLERS = {
 -- segment (see configuration.sample.lua and api_handlers/gemini.lua).
 Registry.DEFAULT_BASE_URLS = {
     openai    = "https://api.openai.com/v1",
+    opencode  = "https://opencode.ai/zen/v1",
     responses = "https://api.openai.com/v1",
     anthropic = "https://api.anthropic.com/v1",
     gemini    = "https://generativelanguage.googleapis.com/v1beta/models",
@@ -67,6 +69,7 @@ Registry.DEFAULT_BASE_URLS = {
 -- add/edit provider dialog (falls back to a generic hint for other handlers).
 local BASE_URL_DESCRIPTIONS = {
     openai    = _("OpenAI-compatible Chat Completions API"),
+    opencode  = _("OpenCode Chat Completions API"),
     responses = _("OpenAI Responses API"),
     gemini    = _("Gemini API"),
     anthropic = _("Anthropic Messages API"),
@@ -177,6 +180,10 @@ end
 -- reducing/disabling the reasoning/thinking chain (see configuration.sample.lua).
 local PRESET_PROVIDERS = {
     { name = "OpenAI", handler = "openai", base_url = "https://api.openai.com/v1" },
+    { name = "OpenCode Zen", handler = "opencode", base_url = "https://opencode.ai/zen/v1",
+      model = "glm-5.3-flash" },
+    { name = "OpenCode Go", handler = "opencode", base_url = "https://opencode.ai/zen/go/v1",
+      model = "glm-5.3-flash" },
     { name = "OpenAI - Responses", handler = "responses", base_url = "https://api.openai.com/v1" },
     { name = "Gemini",     handler = "gemini",   base_url = "https://generativelanguage.googleapis.com/v1beta/models",
       additional_parameters = {
@@ -952,6 +959,12 @@ function Registry.showProviderDialog(assistant, preset_name, handler, base_url, 
     else
         dialog_title = preset_name and T(_("Add %1"), preset_name) or T(_("Add %1 Provider"), handler)
         default_name = preset_name or ""
+        for _, preset in ipairs(PRESET_PROVIDERS) do
+            if preset.name == preset_name and preset.handler == handler and preset.base_url == base_url then
+                default_model = preset.model or ""
+                break
+            end
+        end
     end
 
     -- Handler-aware guidance for the Base URL field (handler is resolved from

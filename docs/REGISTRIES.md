@@ -21,10 +21,12 @@ Two registries own everything configured from the UI. Both store JSON in `LuaSet
 
 ## Search Registry (`assistant_search_registry.lua`, `SearchRegistry`)
 
-- Storage: `ui_search_tools` JSON. Uses **fixed tool keys** (`serpapi`, `tavilyapi`, `exaapi`, `searxngapi`) rather than `custom:N`; `SEARCH_TOOLS` defines the keys and their schema. Engines: SerpAPI, Tavily, SearXNG, Exa. UI tools are added via Settings → Search Tools.
+- Storage: `ui_search_tools` JSON. Uses **fixed tool keys** (`serpapi`, `tavilyapi`, `exaapi`, `searxngapi`, `parallelapi`) rather than `custom:N`; `SEARCH_TOOLS` defines each key and its required credential. Engines: SerpAPI, Tavily, SearXNG, Exa, Parallel Search. UI tools are added via Settings → WebSearch API.
 - `load`/`save`/`merge`/`validate`/`upsert`/`installSearchTool`/`delete`/`is_deletable` mirror the provider registry's `source`/`immutable` pattern (file tools `source="file"`, immutable; only UI tools are deletable). `merge` keys by tool key.
 - `upsert` validates and then stores from the normalized record; `installSearchTool` reuses that record.
-- `ToolExecutor` loads enabled (non-empty `api_key`) tools at query time and passes them into the handler's tool definitions.
+- `SearchRegistry.is_configured(record, key)` is the shared availability predicate for menu checkboxes, Web Search selection, and request snapshots. It checks the required field from `SEARCH_TOOLS`: API-key backends need a nonblank key, while SearXNG needs a nonblank base URL.
+- `ToolExecutor.getSearchConfig` copies configured credentials, an optional trimmed base URL, and an optional mode once per query. Every tool round uses the same snapshot; external execution rejects a missing or invalid snapshot without re-reading mutable assistant config.
+- Parallel Search uses `/v1/search`, sends `objective` separately from its keyword query, defaults to `fast`, and preserves ranked URLs and excerpts. A file-config `mode` and optional `base_url` are copied into the snapshot; a UI record replaces the whole file record and inherits neither field because the current dialog edits only the API key.
 
 ## Credential input
 

@@ -217,7 +217,7 @@ function Config:getActiveProviderId()
 end
 
 --- Write a provider record into the effective CONFIGURATION.provider_settings,
---- then hot-reload the querier and ToolExecutor.
+--- then refresh the querier. Search credentials are read once per request.
 --- Mutates only the in-memory CONFIGURATION and marks assistant.updated;
 --- configuration.lua is never written.
 function Config:setProvider(id, record)
@@ -231,20 +231,18 @@ function Config:setProvider(id, record)
             pcall(function() assistant.querier:load_model(id) end)
         end
     end
-    require("assistant_tool_executor").SetSearchAPIConfig(assistant)
     assistant.updated = true
     return true
 end
 
 --- Remove a provider from the effective CONFIGURATION.provider_settings and
---- refresh ToolExecutor config.
+--- mark the assistant for refresh.
 --- Mutates only the in-memory CONFIGURATION; configuration.lua is never written.
 function Config:deleteProvider(id)
     if not id or id == "" then return nil, "invalid id" end
     local ps = koutil.tableGetValue(self._data, "provider_settings")
     if ps then
         ps[id] = nil
-        require("assistant_tool_executor").SetSearchAPIConfig(self._assistant)
         self._assistant.updated = true
     end
     return true

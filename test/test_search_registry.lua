@@ -51,10 +51,7 @@ local function mockAssistant(search_data)
         if record ~= nil and assistant.querier and assistant.querier.load_model then
             pcall(function() assistant.querier:load_model(id) end)
         end
-        local ok, ToolExecutor = pcall(require, "assistant_tool_executor")
-        if ok and ToolExecutor.SetSearchAPIConfig then
-            ToolExecutor.SetSearchAPIConfig(assistant)
-        end
+        -- Search credentials are captured once per request.
         assistant.updated = true
         return true
     end
@@ -62,10 +59,7 @@ local function mockAssistant(search_data)
         if not id or id == "" then return nil, "invalid id" end
         if config_data and config_data.provider_settings then
             config_data.provider_settings[id] = nil
-            local ok, ToolExecutor = pcall(require, "assistant_tool_executor")
-            if ok and ToolExecutor.SetSearchAPIConfig then
-                ToolExecutor.SetSearchAPIConfig(assistant)
-            end
+            -- Search credentials are captured once per request.
             assistant.updated = true
         end
         return true
@@ -90,25 +84,28 @@ local tests = {
     -- SEARCH_TOOLS / TOOL_KEYS exported
     -- =========================================================================
 
-    test("SEARCH_TOOLS defines all four tools", function()
+    test("SEARCH_TOOLS defines all five tools", function()
         assert.notNil(SearchRegistry.SEARCH_TOOLS.serpapi)
         assert.notNil(SearchRegistry.SEARCH_TOOLS.tavilyapi)
         assert.notNil(SearchRegistry.SEARCH_TOOLS.exaapi)
         assert.notNil(SearchRegistry.SEARCH_TOOLS.searxngapi)
+        assert.notNil(SearchRegistry.SEARCH_TOOLS.parallelapi)
     end),
 
-    test("TOOL_KEYS lists all four keys in order", function()
-        assert.equal(#SearchRegistry.TOOL_KEYS, 4)
+    test("TOOL_KEYS lists all five keys in order", function()
+        assert.equal(#SearchRegistry.TOOL_KEYS, 5)
         assert.equal(SearchRegistry.TOOL_KEYS[1], "serpapi")
         assert.equal(SearchRegistry.TOOL_KEYS[2], "tavilyapi")
         assert.equal(SearchRegistry.TOOL_KEYS[3], "exaapi")
         assert.equal(SearchRegistry.TOOL_KEYS[4], "searxngapi")
+        assert.equal(SearchRegistry.TOOL_KEYS[5], "parallelapi")
     end),
 
     test("API key tools have needs=api_key", function()
         assert.equal(SearchRegistry.SEARCH_TOOLS.serpapi.needs, "api_key")
         assert.equal(SearchRegistry.SEARCH_TOOLS.tavilyapi.needs, "api_key")
         assert.equal(SearchRegistry.SEARCH_TOOLS.exaapi.needs, "api_key")
+        assert.equal(SearchRegistry.SEARCH_TOOLS.parallelapi.needs, "api_key")
     end),
 
     test("SearXNG has needs=base_url", function()
@@ -120,6 +117,25 @@ local tests = {
         assert.equal(SearchRegistry.SEARCH_TOOLS.tavilyapi.display_name, "Tavily")
         assert.equal(SearchRegistry.SEARCH_TOOLS.exaapi.display_name, "Exa.ai")
         assert.equal(SearchRegistry.SEARCH_TOOLS.searxngapi.display_name, "SearXNG")
+        assert.equal(SearchRegistry.SEARCH_TOOLS.parallelapi.display_name, "Parallel Search")
+    end),
+
+    test("Parallel Search is configured only by a nonblank API key", function()
+        assert.isFalse(SearchRegistry.is_configured(nil, "parallelapi"))
+        assert.isFalse(SearchRegistry.is_configured({ api_key = "" }, "parallelapi"))
+        assert.isFalse(SearchRegistry.is_configured({ api_key = "  \t" }, "parallelapi"))
+        assert.isFalse(SearchRegistry.is_configured({ base_url = "https://proxy.example" }, "parallelapi"))
+        assert.isTrue(SearchRegistry.is_configured({ api_key = "parallel-test" }, "parallelapi"))
+        assert.isTrue(SearchRegistry.is_configured({ base_url = "https://search.example" }, "searxngapi"))
+        assert.isFalse(SearchRegistry.is_configured({}, "unknown"))
+    end),
+
+    test("Parallel Search validates and normalizes API keys", function()
+        assert.isFalse(SearchRegistry.validate({}, "parallelapi"))
+        assert.isFalse(SearchRegistry.validate({ api_key = " \t " }, "parallelapi"))
+        local record = { api_key = "  parallel-test  " }
+        assert.isTrue(SearchRegistry.validate(record, "parallelapi"))
+        assert.equal(record.api_key, "parallel-test")
     end),
 
     -- =========================================================================
@@ -346,6 +362,22 @@ local tests = {
         assert.equal(merged.bogus, nil)
     end),
 
+    test("Parallel file mode is copied and a UI record replaces the file record", function()
+        local file_config = { provider_settings = {
+            parallelapi = { api_key = "file-key", mode = "fast" },
+        } }
+        local file_only = SearchRegistry.merge(file_config, { tools = {} })
+        assert.equal(file_only.parallelapi.mode, "fast")
+        assert.equal(file_only.parallelapi.api_key, "file-key")
+
+        local merged = SearchRegistry.merge(file_config, { tools = {
+            parallelapi = { api_key = "ui-key" },
+        } })
+        assert.equal(merged.parallelapi.api_key, "ui-key")
+        assert.equal(merged.parallelapi.mode, nil)
+        assert.equal(merged.parallelapi.source, "ui")
+    end),
+
     -- =========================================================================
     -- Upsert
     -- =========================================================================
@@ -527,6 +559,19 @@ local tests = {
         assert.equal(stored.display_name, nil)
     end),
 
+    test("install and delete manage the Parallel Search UI record", function()
+        local assistant = mockAssistant()
+        local installed, install_err = SearchRegistry.installSearchTool(
+            assistant, "parallelapi", "  parallel-test  ", nil)
+        assert.isTrue(installed, install_err)
+        assert.equal(assistant.config:getProvider("parallelapi").api_key, "parallel-test")
+        assert.equal(assistant._ui_search_data.tools.parallelapi.api_key, "parallel-test")
+
+        local deleted, delete_err = SearchRegistry.deleteSearchTool(assistant, "parallelapi")
+        assert.isTrue(deleted, delete_err)
+        assert.equal(assistant.config:getProvider("parallelapi"), nil)
+    end),
+
     -- =========================================================================
     -- getAddWebSearchMenuItem
     -- =========================================================================
@@ -539,11 +584,11 @@ local tests = {
         assert.notNil(item.sub_item_table_func)
     end),
 
-    test("sub-menu lists all four search tools", function()
+    test("sub-menu lists all five search tools", function()
         local assistant = mockAssistant()
         local item = SearchRegistry.getAddWebSearchMenuItem(assistant)
         local sub_items = item.sub_item_table_func()
-        assert.equal(#sub_items, 4)
+        assert.equal(#sub_items, 5)
     end),
 
     test("sub-menu items have text_func returning correct display names", function()
@@ -554,6 +599,7 @@ local tests = {
         assert.equal(sub_items[2].text_func(), "☐ Tavily")
         assert.equal(sub_items[3].text_func(), "☐ Exa.ai")
         assert.equal(sub_items[4].text_func(), "☐ SearXNG")
+        assert.equal(sub_items[5].text_func(), "☐ Parallel Search")
     end),
 
     test("sub-menu items show checkmark when configured via API key", function()
@@ -572,6 +618,19 @@ local tests = {
         local item = SearchRegistry.getAddWebSearchMenuItem(assistant)
         local sub_items = item.sub_item_table_func()
         assert.equal(sub_items[4].text_func(), "☑ SearXNG")
+    end),
+
+    test("Parallel checkbox needs a nonblank key even with a base URL", function()
+        local assistant = mockAssistant()
+        assistant.config._data.provider_settings.parallelapi = {
+            api_key = "",
+            base_url = "https://proxy.example",
+        }
+        local item = SearchRegistry.getAddWebSearchMenuItem(assistant)
+        local parallel_item = item.sub_item_table_func()[5]
+        assert.equal(parallel_item.text_func(), "☐ Parallel Search")
+        assistant.config._data.provider_settings.parallelapi.api_key = "parallel-test"
+        assert.equal(parallel_item.text_func(), "☑ Parallel Search")
     end),
 
     test("sub-menu items have callbacks", function()

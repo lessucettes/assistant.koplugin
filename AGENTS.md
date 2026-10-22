@@ -12,24 +12,25 @@ Guidance for AI agents working in `assistant.koplugin` (KOReader AI assistant pl
 ## Environment
 
 - Debian/Ubuntu. Install KOReader from the official `.deb`; the runtime lands at `/usr/lib/koreader/`.
+- There is no project package manifest or dependency-install step; the runtime and Lua libraries come from KOReader.
 - The plugin targets the latest KOReader stable only, currently `2026.07.1`. If the local install differs, fix the environment first — never adapt code to old or hypothetical upstream behavior.
 - Read `/usr/lib/koreader/` (`frontend/`, `plugins/`, the bundled `luajit`) for upstream APIs and reference implementations — **never modify anything there**.
 - `configuration.lua` is gitignored and holds real secrets: **never read or modify it**. Update `configuration.sample.lua` instead.
 
 ## Build / Test / Lint
 
-- No build step; Lua files run directly.
-- Syntax: `/usr/lib/koreader/luajit -e "assert(loadfile('main.lua'))"`. **Never** `luajit -bl` (stripped build lacks `jit.*`).
-- Tests: `./test/run.sh` (all) or `./test/run.sh <module>`. UI: `./test/runui.sh <name>`. Translation: `cd l10n && make check` (only when explicitly requested). Full detail: `docs/TESTING.md`.
+- No build or configured lint step; Lua files run directly.
+- Syntax: `/usr/lib/koreader/luajit -e "assert(loadfile('main.lua'))"`; `luac -p file.lua` checks standard Lua syntax only. **Never** `luajit -bl` (stripped build lacks `jit.*`).
+- Tests: `./test/run.sh` (all) or `./test/run.sh exttools` (module-name substring filter). UI: `./test/runui.sh model_picker` (options: `-w=1072 -h=1448 -d=300` or `-s=kobo-clara`). Translation: `cd l10n && make check` (only when explicitly requested). Full detail: `docs/TESTING.md`.
 - Run `./test/run.sh` before committing — CI ships without running tests.
 
 ## Architecture (map)
 
-- `main.lua` — plugin entry, dispatcher actions/gestures, menu + popup hooks.
+- `main.lua` — plugin init, dispatcher actions/gestures, menu registration; `assistant_hooks.lua` owns KOReader monkey patches.
 - `assistant_querier.lua` — query engine: handler loading, stream/SSE, web-search tool loop (max 3 rounds).
-- `api_handlers/` — one file per wire format; `base.lua` = `BaseHandler`; `openai`/`anthropic`/`gemini`/`responses` are UI-selectable, deltas/wrappers are not.
-- `assistant_tool_executor.lua` — normalizes tool calls across the three wire formats; `assistant_exttools.lua` — search API clients.
-- `Registry` / `SearchRegistry` — UI provider/search CRUD + JSON settings.
+- `api_handlers/` — wire-format handlers and provider aliases; `base.lua` = `BaseHandler`; `openai`/`opencode`/`anthropic`/`gemini`/`responses` are UI-selectable, alias wrappers and deltas are not.
+- `assistant_tool_executor.lua` — normalizes tool calls across OpenAI-compatible, Anthropic, Gemini, and Responses formats; `assistant_exttools.lua` — search API clients.
+- `assistant_provider_registry.lua` (`Registry`) / `assistant_search_registry.lua` (`SearchRegistry`) — UI provider/search CRUD + JSON settings.
 - `assistant_config.lua` — owns the effective `CONFIGURATION`.
 - Shared utils: `assistant_text_utils.lua` (text/render), `assistant_net_utils.lua` (HTTP/fetch), `assistant_doc_utils.lua` (book/page extraction, online guard, field trim); `assistant_utils.lua` is the slim core (`PLUGIN_DIR`, attrs, JSON default).
 - UI: `assistant_dialog.lua`, `assistant_viewer.lua`, `assistant_featuredialog.lua`, `assistant_dictdialog.lua`, `assistant_provider_dialog.lua`, `assistant_settings_menu.lua`, `assistant_model_picker.lua`, `assistant_quicknote.lua`, `assistant_mdparser.lua`.
@@ -39,7 +40,6 @@ Full flow, handlers, config, key files: `docs/ARCHITECTURE.md`.
 ## Core Principles
 
 - **Dependencies first**: lean on what is already in the project or upstream before writing your own implementation or adding packages. Check docs and type definitions first; do not assume a library lacks a capability.
-- **Long-term decisions**: make architectural decisions for the long term. No stopgaps that only work for now and are meant to be replaced later.
 - **Mature patterns first**: before designing a solution, study how mature products solve the same problem - especially KOReader's existing plugins and widgets - and adopt their proven patterns instead of inventing from scratch.
 
 ## Refactoring and Compatibility
@@ -60,7 +60,7 @@ Full flow, handlers, config, key files: `docs/ARCHITECTURE.md`.
 7. **Notifications**: `Notification:notify(msg, Notification.SOURCE_ALWAYS_SHOW)` only for transient success; errors/failures/ack → `UIManager:show(InfoMessage:new{...})`.
 8. **Credentials**: UI-entered `api_key`/`base_url` are trimmed and internal whitespace rejected in `Registry.validate`/`SearchRegistry.validate`. Normalize there — not per handler, not at header build.
 9. **Module structure**: `require` the owning module directly (one hop); split by domain and keep module responsibilities explicit.
-10. **Style**: Lua 5.1 / LuaJIT 2.1; use `string.buffer` for hot loops. 4 spaces, never tabs (vendored `lib/` keeps upstream formatting); `snake_case` modules, `PascalCase` classes, `camelCase` methods, `UPPER_CASE` consts. Errors return `nil, err`.
+10. **Style**: Lua 5.1 / LuaJIT 2.1; use `string.buffer` for hot loops. 4 spaces, never tabs (vendored `lib/` keeps upstream formatting); `snake_case` modules, `PascalCase` classes, `camelCase` methods, `UPPER_CASE` consts. Errors usually return `nil, err`; HTTP helpers use their documented status/code tuples.
 11. **Directions/formatting**: `T = require("ffi/util").template`; bold via `assistant_text_utils.bold_format(T(_("<b>Header:</b> %1"), val))`; message metadata via `assistant_utils.set_attr`/`get_attr`.
 12. **Scope**: exclude `l10n/` from code searches/reads (40+ languages, no code insight). Polish non-native English wording into idiomatic English without changing intent.
 13. **Widgets**: reuse existing scaffolding (`ChatGPTViewer`, `assistant_dialog.lua`); read `docs/UI_DIALOGS.md` before hand-building dialogs. KOReader widget internals only as a last resort.
@@ -71,7 +71,7 @@ Full flow, handlers, config, key files: `docs/ARCHITECTURE.md`.
 
 - `main`; Conventional Commits (`fix:`, `refactor:`, `add:`, `feat:`). Commit directly when asked, with a concise message.
 - `_meta.lua` holds `X.Y-dev`. Release: tag `vX.Y` on the matching commit; CI rewrites the packaged `_meta.lua` from the tag (repo stays `X.Y-dev`), then bump the repo to `X.(Y+1)-dev` and commit.
-- CI (`.github/workflows/release.yml`) builds the zip using `.releaseignore`, creates a GitHub pre-release, and runs **no tests**. `.releaseignore` already excludes `*.md`, `test/`, `docs/`, `.github/`, `l10n` sources (the OTA updater reads the same file).
+- CI (`.github/workflows/release.yml`) builds the zip using `.releaseignore`, creates a normal GitHub release (`prerelease: false`), and runs **no tests**. `.releaseignore` already excludes `*.md`, `test/`, `docs/`, `.github/`, `l10n` sources (the OTA updater reads the same file).
 
 ## Translation
 

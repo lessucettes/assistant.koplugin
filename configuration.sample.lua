@@ -9,8 +9,8 @@ local CONFIGURATION = {
     -- - The part BEFORE the first underscore determines which API handler is used
     -- - The part AFTER the underscore is just a descriptive name (can be anything)
     --
-    -- Only 4 handlers are supported for new configurations:
-    --   openai, anthropic, gemini, responses
+    -- Handlers supported for new configurations:
+    --   openai, opencode, anthropic, gemini, responses
     -- Any OpenAI-compatible endpoint (DeepSeek, OpenRouter, Grok, Perplexity,
     -- Ollama, Mistral, ...) uses the `openai` handler with its own base_url,
     -- e.g. `openai_deepseek`, `openai_openrouter`.
@@ -27,7 +27,7 @@ local CONFIGURATION = {
     -- Settings UI (Tools -> AI Assistant -> Settings -> Provider Settings -> Provider API).
     -- UI-added providers are saved to the plugin's settings file (not here) and
     -- merged with this configuration at startup. They support the same protocols:
-    -- openai, anthropic, gemini, responses.
+    -- openai, opencode, anthropic, gemini, responses.
     --
     -- NOTE: no `additional_parameters` needed for basic usage. The handlers use
     -- sensible defaults; only add that field if you need to pass extra API
@@ -97,6 +97,24 @@ local CONFIGURATION = {
             base_url = "your-ollama-api-endpoint",  -- ex: "http://localhost:11434/v1"
             api_key = "ollama",
         },
+        -- OpenCode uses Chat Completions only. Use plain API model IDs without
+        -- the opencode/ or opencode-go/ prefixes used in OpenCode's own config.
+        -- Zen free models are served only to the official OpenCode client, so
+        -- they cannot be used here; pick paid Zen models or use OpenCode Go.
+        opencode_zen = {
+            display_name = "OpenCode Zen",
+            visible = false,
+            model = "glm-5.3-flash",
+            base_url = "https://opencode.ai/zen/v1",
+            api_key = "your-opencode-zen-api-key",
+        },
+        opencode_go = {
+            display_name = "OpenCode Go",
+            visible = false,
+            model = "glm-5.3-flash",
+            base_url = "https://opencode.ai/zen/go/v1",
+            api_key = "your-opencode-go-api-key",
+        },
         anthropic = {
             visible = true,                    -- optional, if set to false, will not shown in the provider switch
             model = "claude-3-5-haiku-latest", -- model list: https://docs.anthropic.com/en/docs/about-claude/models
@@ -134,15 +152,21 @@ local CONFIGURATION = {
         searxngapi = {
             -- External Search Tool API: SearXNG, opensource and free, hosted on you own server.
             -- https://github.com/searxng/searxng
-            base_url = "https://you-searxng-address"
+            base_url = "https://you-searxng-address",
             -- keys not needed
         },
         exaapi = {
             -- External Search Tool API: Exa.ai, semantic search for AI agents.
             -- Free tier: 100 searches/month. Get key at https://dashboard.exa.ai/api-keys
             -- Docs: https://exa.ai/docs/reference/search-api-guide-for-coding-agents
-            api_key = "your-exa-api-key"
-        }
+            api_key = "your-exa-api-key",
+        },
+        parallelapi = {
+            -- Parallel Search API: https://docs.parallel.ai/api-reference/search/search
+            -- Fast is the interactive default; mode can be overridden here.
+            api_key = "your-parallel-api-key",
+            mode = "fast",
+        },
     },
 
     -- Optional features

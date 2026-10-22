@@ -65,16 +65,20 @@ function OpenAIHandler:getModelsUrl()
     return self.models_url or (self.base_url .. "/models")
 end
 
+function OpenAIHandler:requestHeaders(message_history)
+    return {
+        ["Content-Type"]  = "application/json",
+        ["Authorization"] = "Bearer " .. self.api_key,
+    }
+end
+
 function OpenAIHandler:FetchModels()
     local model_url = self:getModelsUrl()
     local infomsg = InfoMessage:new{
         text = TextUtils.bold_format(_("<b>Fetching models...</b>")),
     }
     UIManager:show(infomsg)
-    local models, err = NetUtils.fetchJSON(model_url, {
-        ["Content-Type"]  = "application/json",
-        ["Authorization"] = "Bearer " .. self.api_key,
-    }, infomsg)
+    local models, err = NetUtils.fetchJSON(model_url, self:requestHeaders(), infomsg)
 
     if err then return nil, err end
     if models and models.data then
@@ -121,10 +125,7 @@ function OpenAIHandler:Test()
         model    = self.model,
         messages = { { role = "user", content = self.TEST_PROMPT } },
     }
-    local headers = {
-        ["Content-Type"]  = "application/json",
-        ["Authorization"] = "Bearer " .. self.api_key,
-    }
+    local headers = self:requestHeaders()
     return self:testRequest(self:getApiUrl(), headers, body, function(data)
         return koutil.tableGetValue(data, "choices", 1, "message", "content")
     end)
@@ -156,15 +157,12 @@ end
 
 function OpenAIHandler:query(message_history, query_option)
 
-    local headers = {
-        ["Content-Type"]  = "application/json",
-        ["Authorization"] = "Bearer " .. self.api_key,
-    }
+    local headers = self:requestHeaders(message_history)
 
     local ws_mode = query_option.use_websearch or "none"
     local tools
     if ToolExecutor.IsExtSearch(ws_mode) then
-        tools = { self:buildExternalSearchToolDef("openai") }
+        tools = { self:buildExternalSearchToolDef("openai", ws_mode) }
     end
     local body = self:buildRequestBody(message_history, query_option, tools)
 

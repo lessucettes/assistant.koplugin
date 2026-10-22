@@ -187,7 +187,7 @@ function AnthropicHandler:query(message_history, query_option)
     if ws_mode == "builtin" then
         tools = { { type = "web_search_20250305", name = "web_search", max_uses = 5 } }
     elseif ToolExecutor.IsExtSearch(ws_mode) then
-        tools = { self:buildExternalSearchToolDef("anthropic") }
+        tools = { self:buildExternalSearchToolDef("anthropic", ws_mode) }
     end
 
     -- -----------------------------------------------------------------------

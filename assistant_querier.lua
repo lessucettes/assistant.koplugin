@@ -177,8 +177,7 @@ function Querier:load_model(provider_name, force)
     -- register hook to the handler module
     self.handler:SyncOptions(self)
 
-    -- register to the ToolExecutor module
-    ToolExecutor.SetSearchAPIConfig(self.assistant)
+    -- Search credentials are captured once per query, not stored on providers.
     return true
 end
 
@@ -333,6 +332,8 @@ function Querier:query(message_history, title)
                           and user_setting_ws or "none",
     }
 
+    local search_config = ToolExecutor.getSearchConfig(self.assistant)
+
     -- Freeze the display pair once: every toast, dialog and error box of
     -- this query names it, so a mid-flight provider/model switch cannot
     -- desync what the user sees from what the frozen request carries.
@@ -348,7 +349,7 @@ function Querier:query(message_history, title)
         for i, tool_call in ipairs(tool_calls_array) do
 
             -- Decode keywords from tool call arguments
-            local tool_call_id, keywords, extract_err = ToolExecutor.extractKeywords(tool_call)
+            local tool_call_id, keywords, extract_err, objective = ToolExecutor.extractKeywords(tool_call)
             if extract_err or not tool_call_id or not keywords then
                 err = extract_err
                 logger.warn("executeSearch", err, "tool_call", select(2, pcall(rapidjson.encode, tool_call)):sub(1, 200))
@@ -360,7 +361,7 @@ function Querier:query(message_history, title)
             if tool_rounds+i <= MAX_TOOL_ROUNDS then
                 search_ok, search_result = ToolExecutor.executeWebSearch(keywords,
                             query_option.use_websearch,
-                            self.handler, tool_rounds+i)
+                            self.handler, tool_rounds+i, search_config, objective)
             else
                 is_added_maximum_prompt = true
                 search_ok = true

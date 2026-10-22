@@ -11,14 +11,17 @@ KOReader plugin adding AI assistant features: 10+ providers, OpenAI Responses AP
 - `main.lua` — plugin init, TouchMenu registration, dispatcher actions/gestures, and dictionary-popup button. `assistant_hooks.lua` owns all KOReader monkey patches (Book Description translation button, built-in translation override, auto-recap, and ScrollHtmlWidget pagination). `Assistant:_showAddProviderDialog` / `_showAddWebSearchDialog` delegate to the registries.
 - `_meta.lua` — version (`X.Y-dev`), manually bumped on `main` after a release tag; CI rewrites it from the tag during packaging.
 - `assistant_querier.lua` (`Querier`) — loads handlers, drives stream/non-stream paths, runs the web-search tool loop (max 3 rounds feeding results back), and parses SSE into one unified format.
-- `assistant_tool_executor.lua` (`ToolExecutor`) — normalizes tool-calling across the `openai`/`anthropic`/`gemini` wire formats; loads enabled search tools from `SearchRegistry` at query time.
-- `assistant_exttools.lua` — search API clients (SerpAPI, Tavily, SearXNG, Exa).
+- `assistant_tool_executor.lua` (`ToolExecutor`) — normalizes tool-calling across the OpenAI-compatible, Anthropic, Gemini, and Responses wire formats; snapshots configured search settings once per query.
+- `assistant_exttools.lua` — search API clients (SerpAPI, Tavily, SearXNG, Exa, Parallel Search).
+
+`ToolExecutor.getSearchConfig` copies each configured provider's credentials, optional base URL, and optional mode into a request-scoped snapshot. Every search round uses that snapshot; provider singletons never hold credentials. Parallel Search defaults to `fast` mode and receives a separate research objective, while other backends keep the keywords-only schema.
 
 ## API handlers (`api_handlers/`)
 
 `base.lua` (`BaseHandler`) provides `SyncOptions`, `makeRequest`/`backgroundRequest`, `normalizeBaseUrl`, and `parseToolCalls`; every handler implements `query`. Handlers use metatable inheritance: `BaseHandler:new{...}` with `self.__index = self` (e.g. `local H = BaseHandler:new{ name = "x" }`).
 
-- `openai.lua` (+ `deepseek`/`ollama`/`openrouter`/`mistral` aliases) — `Authorization: Bearer`, `/chat/completions`; set `base_url` for any OpenAI-compatible endpoint.
+- `openai.lua` (+ `deepseek`/`ollama`/`openrouter`/`mistral` aliases) — sends OpenAI-compatible Chat Completions requests to `/chat/completions`; set `base_url` for any OpenAI-compatible endpoint.
+- `opencode.lua` — OpenCode Zen/Go on Chat Completions; Go adds its own User-Agent and a stable per-conversation `x-opencode-session` header.
 - `anthropic.lua` — `x-api-key` + `anthropic-version` headers, `/v1/messages`.
 - `gemini.lua` — API key as query param, `{base_url}/{model}:generateContent`.
 - `responses.lua` — OpenAI `/v1/responses` with built-in `web_search`/`file_search`/function tools.
@@ -26,7 +29,7 @@ KOReader plugin adding AI assistant features: 10+ providers, OpenAI Responses AP
 
 ### Handler discovery
 
-`Querier` scans `api_handlers/` at runtime. File providers use config keys `{handler}_{description}` (the prefix before the first underscore selects the handler, e.g. `openai_perplexity` → `openai`). UI providers use stable IDs `custom:N` plus a `provider.handler` field naming the handler. `Registry.HANDLERS` allows only `openai`/`anthropic`/`gemini`/`responses` — thin wrappers and deltas are **not** UI-selectable.
+`Querier` scans `api_handlers/` at runtime. File providers use config keys `{handler}_{description}` (the prefix before the first underscore selects the handler, e.g. `openai_perplexity` → `openai`). UI providers use stable IDs `custom:N` plus a `provider.handler` field naming the handler. `Registry.HANDLERS` allows `openai`/`opencode`/`anthropic`/`gemini`/`responses` — alias wrappers and deltas are **not** UI-selectable.
 
 ### New providers & tool calling
 

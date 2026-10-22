@@ -531,7 +531,7 @@ function ResponsesHandler:query(message_history, query_option)
         tools = { { type = "web_search" } }
     elseif ToolExecutor.IsExtSearch(ws_mode) then
         -- External search via function calling — Responses API flattened format
-        tools = { self:buildExternalSearchToolDef("responses") }
+        tools = { self:buildExternalSearchToolDef("responses", ws_mode) }
     end
 
     local body = self:buildRequestBody(message_history, query_option, tools)

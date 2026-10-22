@@ -7,6 +7,7 @@ local helper = require("test.helper")
 local assert = helper.assert
 local Registry = require("assistant_provider_registry")
 local BaseHandler = require("api_handlers.base")
+local UIManager = require("ui/uimanager")
 
 local function test(name, fn)
     return { name = name, fn = fn }
@@ -74,10 +75,7 @@ local function mockAssistantForInstall()
         if record ~= nil and assistant.querier and assistant.querier.load_model then
             pcall(function() assistant.querier:load_model(id) end)
         end
-        local ok, ToolExecutor = pcall(require, "assistant_tool_executor")
-        if ok and ToolExecutor.SetSearchAPIConfig then
-            ToolExecutor.SetSearchAPIConfig(assistant)
-        end
+        -- Search credentials are captured once per request.
         assistant.updated = true
         return true
     end
@@ -85,10 +83,7 @@ local function mockAssistantForInstall()
         if not id or id == "" then return nil, "invalid id" end
         if config_data and config_data.provider_settings then
             config_data.provider_settings[id] = nil
-            local ok, ToolExecutor = pcall(require, "assistant_tool_executor")
-            if ok and ToolExecutor.SetSearchAPIConfig then
-                ToolExecutor.SetSearchAPIConfig(assistant)
-            end
+            -- Search credentials are captured once per request.
             assistant.updated = true
         end
         return true
@@ -118,6 +113,14 @@ local function captureDialog(fn)
     MID.new = orig_new
     if not ok then error(err) end
     return captured
+end
+
+local function withNoScheduledDialog(fn)
+    local original = UIManager.scheduleIn
+    UIManager.scheduleIn = function() end
+    local ok, err = pcall(fn)
+    UIManager.scheduleIn = original
+    if not ok then error(err) end
 end
 
 -- Expected default additional_parameters per preset name.
@@ -151,7 +154,7 @@ local tests = {
     test("PRESET_PROVIDERS exported with name/handler/base_url", function()
         local presets = Registry.PRESET_PROVIDERS
         assert.notNil(presets)
-        assert.equal(#presets, 6)
+        assert.equal(#presets, 8)
         for i, preset in ipairs(presets) do
             assert.notNil(preset.name)
             assert.notNil(preset.handler)
@@ -168,7 +171,7 @@ local tests = {
 
     test("presets carry provider-specific additional_parameters defaults", function()
         local presets = Registry.PRESET_PROVIDERS
-        assert.equal(#presets, 6)
+        assert.equal(#presets, 8)
         for i, preset in ipairs(presets) do
             local want = EXPECTED_PRESET_PARAMS[preset.name]
             if want == nil then
@@ -226,6 +229,51 @@ local tests = {
             assert.equal(call.additional_parameters, preset.additional_parameters,
                 "preset additional_parameters should be forwarded to the dialog")
         end
+    end),
+
+    test("OpenCode presets prefill usable models without changing dialog arguments", function()
+        local expected = {
+            ["OpenCode Zen"] = { "https://opencode.ai/zen/v1", "glm-5.3-flash" },
+            ["OpenCode Go"] = { "https://opencode.ai/zen/go/v1", "glm-5.3-flash" },
+        }
+        local assistant_for_menu = mockAssistant()
+        local items = subItems(Registry.getAddProviderMenuItem(assistant_for_menu))
+        local found = 0
+        for _, item in ipairs(items) do
+            local want = expected[item.text]
+            if want then
+                found = found + 1
+                item.callback()
+                local call = assistant_for_menu.calls[#assistant_for_menu.calls]
+                assert.equal(call.handler, "opencode")
+                assert.equal(call.base_url, want[1])
+
+                local assistant = mockAssistantForInstall()
+                local dialog = captureDialog(function()
+                    Registry.showProviderDialog(assistant, call.preset_name, call.handler, call.base_url)
+                end)
+                assert.equal(dialog.fields[4].text, want[2])
+
+                dialog.getFields = function()
+                    return { dialog.fields[1].text, dialog.fields[2].text, "test-api-key", dialog.fields[4].text }
+                end
+                local save_button
+                for _, row in ipairs(dialog.buttons) do
+                    for _, button in ipairs(row) do
+                        if button.text == "OK" then save_button = button end
+                    end
+                end
+                assert.notNil(save_button, "add dialog should expose an OK action")
+                withNoScheduledDialog(function() save_button.callback() end)
+
+                local saved = assistant._ui_provider_data.providers["custom:1"]
+                assert.notNil(saved, "preset should install a provider")
+                assert.equal(saved.handler, "opencode")
+                assert.equal(saved.base_url, want[1])
+                assert.equal(saved.model, want[2], "saving should preserve the preset model")
+            end
+        end
+        assert.equal(found, 2)
     end),
 
     test("Responses preset keeps the responses handler reachable", function()

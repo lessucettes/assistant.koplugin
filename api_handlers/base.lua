@@ -648,8 +648,8 @@ function BaseHandler:parseToolCalls(responseData, format)
     return nil, "parseToolCalls: unexpected response (no content, no tool call)"
 end
 
-function BaseHandler:buildExternalSearchToolDef(format)
-    return ToolExecutor.buildExternalSearchToolDef(format)
+function BaseHandler:buildExternalSearchToolDef(format, ws_mode)
+    return ToolExecutor.buildExternalSearchToolDef(format, ws_mode)
 end
 
 return BaseHandler

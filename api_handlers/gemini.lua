@@ -212,7 +212,7 @@ function GeminiHandler:query(message_history, query_option)
     if ws_mode == "builtin" then
         tools = { google_search = {} }
     elseif ToolExecutor.IsExtSearch(ws_mode) then
-        tools = self:buildExternalSearchToolDef("gemini")
+        tools = self:buildExternalSearchToolDef("gemini", ws_mode)
     end
     local requestBody = self:buildRequestBody(message_history, tools)
 
