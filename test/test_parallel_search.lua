@@ -95,7 +95,7 @@ local tests = {
             local querier = setmetatable({
                 handler = handler, handler_name = "opencode", provider_name = "opencode_go",
                 provider_setting = { api_key = "model-key", model = "glm-5.3-flash",
-                    base_url = "https://opencode.ai/zen/go/v1" },
+                    base_url = "https://opencode.ai/inference/go/openai/v1" },
                 settings = settings,
                 assistant = { config = { getProvider = function(self, key)
                     if key == "parallelapi" then reads = reads + 1; return provider end

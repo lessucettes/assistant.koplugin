@@ -24,6 +24,38 @@ local function modelIds(models)
 end
 
 return helper.runTests("opencode", {
+    test("Current Go endpoint keeps session headers and uses the shared model catalog", function()
+        local base = "https://opencode.ai/inference/go/openai/v1"
+        local h = handler(base .. "/")
+        local history = {}
+        local headers = h:requestHeaders(history)
+        assert.equal(headers["User-Agent"], "assistant.koplugin/1.0")
+        assert.notNil(headers["x-opencode-session"])
+        assert.equal(headers["x-opencode-session"], h:requestHeaders(history)["x-opencode-session"])
+        assert.equal(h:getModelsUrl(), "https://opencode.ai/inference/go/v1/models")
+        h.models_url = "https://proxy.example/catalog"
+        assert.equal(h:getModelsUrl(), h.models_url)
+        withFetchJSON(function()
+            h.models_url = nil
+            NetUtils.fetchJSON = function(url, request_headers)
+                assert.equal(url, "https://opencode.ai/inference/go/v1/models")
+                assert.notNil(request_headers["x-opencode-session"])
+                return { data = {
+                    { id = "mimo-v2.6-pro" }, { id = "minimax-m3" },
+                    { id = "minimax-m3.1-flash" }, { id = "step-5-preview" },
+                    { id = "claude-haiku-5-5" }, { id = "gpt-6-luna" },
+                } }
+            end
+            assert.equal(modelIds(h:FetchModels()), "mimo-v2.6-pro,minimax-m3.1-flash,step-5-preview")
+        end)
+    end),
+    test("Current Zen endpoint browses the shared catalog without Go headers", function()
+        local h = handler("https://opencode.ai/inference/openai/v1")
+        assert.equal(h:getModelsUrl(), "https://opencode.ai/inference/v1/models")
+        assert.equal(h:requestHeaders({})["x-opencode-session"], nil)
+        assert.equal(handler("https://proxy.example/v1"):getModelsUrl(), "https://proxy.example/v1/models")
+        assert.equal(handler(GO .. ".example"):requestHeaders({})["x-opencode-session"], nil)
+    end),
     test("Go keeps one session across transactional history views", function()
         local h = handler(GO)
         local canonical = { { role = "user", content = "current policy" } }
@@ -178,7 +210,7 @@ return helper.runTests("opencode", {
                     return { data = {
                         { id = "glm-5.3-flash" }, { id = "glm-5.3" },
                         { id = "kimi-k3" }, { id = "minimax-m3" },
-                        { id = "deepseek-v4.1-flash" }, { id = "qwen3.8-max" },
+                        { id = "deepseek-v4.1-flash" }, { id = "qwen3.8-max" }, { id = "mistral-large-4" },
                         { id = "gpt-6-luna" }, { id = "claude-opus-5" },
                         { id = "qwen3.8-flash" }, { id = "muse-spark-1.3" },
                         { id = "big-pickle" }, { id = "space-bunny-free" },
@@ -199,7 +231,7 @@ return helper.runTests("opencode", {
                 } }
             end
             local zen = handler(ZEN):FetchModels()
-            assert.equal(modelIds(zen), "deepseek-v4.1-flash,glm-5.3,glm-5.3-flash,kimi-k3,minimax-m3,qwen3.8-max")
+            assert.equal(modelIds(zen), "deepseek-v4.1-flash,glm-5.3,glm-5.3-flash,kimi-k3,minimax-m3,mistral-large-4,qwen3.8-max")
             local go = handler(GO):FetchModels()
             assert.equal(modelIds(go), "deepseek-v4-pro,glm-5.3-flash,hy3,hy4-preview,kimi-k3,longcat-2.0,mimo-v2.6-pro")
         end)

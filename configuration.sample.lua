@@ -99,20 +99,20 @@ local CONFIGURATION = {
         },
         -- OpenCode uses Chat Completions only. Use plain API model IDs without
         -- the opencode/ or opencode-go/ prefixes used in OpenCode's own config.
-        -- Zen free models are served only to the official OpenCode client, so
-        -- they cannot be used here; pick paid Zen models or use OpenCode Go.
+        -- Browse Models omits free models; consult the provider's current
+        -- availability, pricing, and data-retention policies before choosing.
         opencode_zen = {
             display_name = "OpenCode Zen",
             visible = false,
             model = "glm-5.3-flash",
-            base_url = "https://opencode.ai/zen/v1",
+            base_url = "https://opencode.ai/inference/openai/v1",
             api_key = "your-opencode-zen-api-key",
         },
         opencode_go = {
             display_name = "OpenCode Go",
             visible = false,
             model = "glm-5.3-flash",
-            base_url = "https://opencode.ai/zen/go/v1",
+            base_url = "https://opencode.ai/inference/go/openai/v1",
             api_key = "your-opencode-go-api-key",
         },
         anthropic = {

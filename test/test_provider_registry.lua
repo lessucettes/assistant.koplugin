@@ -103,6 +103,10 @@ local tests = {
         for i, preset in ipairs(Registry.PRESET_PROVIDERS) do
             if preset.handler == "opencode" then
                 found = found + 1
+                local expected = preset.name == "OpenCode Go"
+                    and "https://opencode.ai/inference/go/openai/v1"
+                    or "https://opencode.ai/inference/openai/v1"
+                assert.equal(preset.base_url, expected)
                 local assistant = mockAssistantForInstall()
                 local dialog = captureDialog(function()
                     Registry.showProviderDialog(assistant, preset.name, preset.handler, preset.base_url)

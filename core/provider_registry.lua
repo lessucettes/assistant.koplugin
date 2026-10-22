@@ -59,7 +59,7 @@ Registry.HANDLERS = {
 -- segment (see configuration.sample.lua and api_handlers/gemini.lua).
 Registry.DEFAULT_BASE_URLS = {
     openai    = "https://api.openai.com/v1",
-    opencode  = "https://opencode.ai/zen/v1",
+    opencode  = "https://opencode.ai/inference/openai/v1",
     responses = "https://api.openai.com/v1",
     anthropic = "https://api.anthropic.com/v1",
     gemini    = "https://generativelanguage.googleapis.com/v1beta/models",
@@ -295,9 +295,9 @@ end
 -- reducing/disabling the reasoning/thinking chain (see configuration.sample.lua).
 local PRESET_PROVIDERS = {
     { name = "OpenAI", handler = "openai", base_url = "https://api.openai.com/v1" },
-    { name = "OpenCode Zen", handler = "opencode", base_url = "https://opencode.ai/zen/v1",
+    { name = "OpenCode Zen", handler = "opencode", base_url = "https://opencode.ai/inference/openai/v1",
       model = "glm-5.3-flash" },
-    { name = "OpenCode Go", handler = "opencode", base_url = "https://opencode.ai/zen/go/v1",
+    { name = "OpenCode Go", handler = "opencode", base_url = "https://opencode.ai/inference/go/openai/v1",
       model = "glm-5.3-flash" },
     { name = "OpenAI - Responses", handler = "responses", base_url = "https://api.openai.com/v1" },
     { name = "Gemini",     handler = "gemini",   base_url = "https://generativelanguage.googleapis.com/v1beta/models",
