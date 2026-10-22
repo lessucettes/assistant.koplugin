@@ -14,6 +14,18 @@ The suite runs inside KOReader's LuaJIT runtime via `setupkoenv` with UI modules
 - Static diagnostics: `./test/run_diagnose.sh [level]` — run after the unit suite (see [Static diagnostics](#static-diagnostics-lua-language-server))
 - Before committing: `./test/run.sh`, then `./test/run_diagnose.sh` — CI ships without running tests.
 
+## Using an unpacked KOReader runtime
+
+If KOReader is not installed system-wide, extract the official `.deb` matching the supported stable version into a disposable directory and verify its checksum. The bundled LuaJIT and libraries can run the same test entry point without installing packages or changing `/usr/lib`:
+
+```sh
+PROJECT_ROOT="$(pwd)"  # Run from the plugin checkout.
+KOREADER_RUNTIME="/absolute/path/to/unpacked/usr/lib/koreader"
+(cd "$KOREADER_RUNTIME" && ./luajit "$PROJECT_ROOT/test/run_tests.lua" "$PROJECT_ROOT")
+```
+
+Append a module-name substring after the project-root argument for a focused run. Keep the runtime's directory as the working directory so `setupkoenv` resolves its libraries. This runs the native suite, not a stubbed alternative-runtime harness; the `./test/run.sh` wrapper still expects `/usr/lib/koreader`.
+
 ## How it works
 
 - `test/run.sh` `cd`s to `/usr/lib/koreader`, then runs `test/run_tests.lua`, which requires `setupkoenv`, adds the project root to `package.path`, discovers `test/test_*.lua` **alphabetically**, and exits non-zero on failure.

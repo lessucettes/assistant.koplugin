@@ -209,7 +209,8 @@ function Querier:load_model(provider_name, force)
     -- register hook to the handler module
     self.handler:SyncOptions(self)
 
-    -- Search credentials are captured once per query, not stored on providers.
+    -- Search credentials are read per-request via ToolExecutor.getSearchConfig
+    -- inside Querier:query; no module-level mutable state to refresh here.
     return true
 end
 

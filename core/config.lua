@@ -234,6 +234,7 @@ function Config:setProvider(id, record)
             pcall(function() assistant.querier:load_model(id, true) end)
         end
     end
+    -- Search credentials are read per-request; no module-level refresh needed.
     assistant.updated = true
     return true
 end
@@ -246,6 +247,7 @@ function Config:deleteProvider(id)
     local ps = koutil.tableGetValue(self._data, "provider_settings")
     if ps then
         ps[id] = nil
+        -- Search credentials are read per-request; no module-level refresh needed.
         self._assistant.updated = true
     end
     return true
