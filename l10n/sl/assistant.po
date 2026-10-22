@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 10:35+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n%100==1 ? 0 : n%100==2 ? 1 : n%100==3 || n%100==4 ? 2 : 3);\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Naslov: %1\n"
-" - Avtor: %2\n"
-" - Napredek branja: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - str. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Ni odgovora)"
 
 msgid "(empty response body)"
 msgstr "(prazno telo odgovora)"
+
+msgid "(none)"
+msgstr "(brez)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API je vrnil napako</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Dodano</b> [%1 (AI)] v meni označb."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API ni vrnil uporabnega odgovora</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Analiziranje konteksta knjige za Term X-Ray...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>Zastavi vprašanje o tej knjigi:</b>\n"
-"%1 od %2"
+"<b>Postavite vprašanje o tej knjigi:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>Nameščanje %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Odgovor modela:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Parametri</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Odstranjeno</b> [%1 (AI)] iz menija označb."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Sklepanje (brez končnega odgovora)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Sklepanje:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>Zahteva</b> - POST %1"
@@ -189,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>Odgovor</b> - HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "Preizkušam povezavo ..."
+msgstr "<b>Preizkušanje povezave ...</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>Neznana vrsta funkcije:</b> %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "AI povzetek bo omogočen ob naslednjem odprtju dolgo neprebrane knjige."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AI povzetki"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Dodajte ponudnike iz glavnega menija:\n"
 "%1 -> Pomočnik AI -> Nastavitve -> API ponudnika"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Dodano <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Dodano v graditelj besedišča"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Vsako besedo, ki jo poiščete v slovarju, doda v Graditelj besedišča takoj, ko se prikaže rezultat."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Analiza vaših označb, zapiskov in vsebine AI beležk iz knjige."
@@ -369,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Ali ste prepričani, da želite počistiti nastavitve vtičnika asistenta? \n"
-"To ponastavi vtičnik asistenta na stanje ob prvi namestitvi.\n"
+"Ali ste prepričani, da želite počistiti nastavitve vtičnika pomočnika?\n"
+"To ponastavi vtičnik pomočnika v stanje ob prvi namestitvi.\n"
 "\n"
-"configuration.lua je varen, počistijo se samo nastavitve."
+"configuration.lua je varen, počistijo se le nastavitve."
 
 msgid "Ask"
 msgstr "Vprašaj"
@@ -404,6 +403,9 @@ msgstr "Vprašaj karkoli..."
 msgid "Ask the AI a question"
 msgstr "Zastavite vprašanje umetni inteligenci."
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "Prosi AI, naj iz uvodnega besedila prepozna naslov in avtorja odprte knjige."
+
 msgid "Assistant settings are not available."
 msgstr "Nastavitve asistenta niso na voljo."
 
@@ -412,6 +414,16 @@ msgstr "Priloži predhodno besedilo"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Odgovor priloži kot opombo v knjigi k trenutni oznaki"
+
+msgid "Author"
+msgstr "Avtor"
+
+msgid "Auto"
+msgstr "Samodejno"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Samodejno dodaj besedo v Graditelj besedišča"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "Vpogledi v knjigo"
 
 msgid "Book Summary & Recs"
 msgstr "Povzetek knjige in priporočila"
+
+msgid "Book metadata updated."
+msgstr "Metapodatki knjige posodobljeni."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "Veja/oznaka \"%1\" ni bila najdena."
@@ -530,11 +545,17 @@ msgstr "Kontekstualne opombe"
 msgid "Contextual Notes / Reflections"
 msgstr "Kontekstualne opombe / Razmišljanja"
 
+msgid "Continue"
+msgstr "Nadaljuj"
+
 msgid "Contradictions / Open Questions"
 msgstr "Protislovja / Odprta vprašanja"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "Pogovor je shranjen v AI beležke"
+
+msgid "Copied to clipboard."
+msgstr "Kopirano v odložišče."
 
 msgid "Copy"
 msgstr "Kopiraj"
@@ -562,11 +583,17 @@ msgstr "AI beležke ni bilo mogoče ustvariti."
 msgid "Could not create AI note: %1"
 msgstr "AI beležke ni bilo mogoče ustvariti: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Iz te knjige ni bilo mogoče izluščiti besedila."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "Mape AI beležk ni bilo mogoče izpisati: %1"
 
 msgid "Could not open AI note file."
 msgstr "Datoteke AI beležke ni bilo mogoče odpreti."
+
+msgid "Could not parse the identification result."
+msgstr "Rezultata prepoznave ni bilo mogoče razčleniti."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Prilagojeni poziv"
 msgid "Custom Prompts"
 msgstr "Pozivi po meri"
 
-msgid "Deeply Thought"
-msgstr "Poglobljeno razmišljanje"
+msgid "Default"
+msgstr "Privzeto"
 
 msgid "Delete"
 msgstr "Izbriši"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "Izbrišem ponudnika %1?"
 
+msgid "Description: %1"
+msgstr "Opis: %1"
+
 msgid "Device"
 msgstr "Naprava"
 
@@ -630,8 +660,8 @@ msgstr "Slovar"
 msgid "Dictionary Language"
 msgstr "Jezik slovarja"
 
-msgid "Dictionary Popup"
-msgstr "Pojavno okno slovarja"
+msgid "Dictionary Popup Buttons"
+msgstr "Gumbi pojavnega okna slovarja"
 
 msgid "Dictionary Settings"
 msgstr "Nastavitve slovarja"
@@ -770,11 +800,11 @@ msgstr "Splošni pogovor"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Na splošno <b>NE</b> izberite več kot enega - izberite parameter, ki ustreza vašemu modelu in platformi. Napačen parameter lahko povzroči API napake. \n"
+"Na splošno <b>NE</b> izberite več kot enega – izberite parameter, ki ustreza vašemu modelu in platformi. Napačen parameter lahko povzroči napake API. \n"
 "\n"
-"Izbrana vrednost preglasi additional_parameters konfiguracije."
+"Izbrana vrednost preglasi additional_parameters v konfiguraciji. Če imajo izbrane možnosti isti ključ, se uporabi le zadnja na seznamu."
 
 msgid "Genre"
 msgstr "Žanr"
@@ -803,12 +833,22 @@ msgstr "Zgodovinski kontekst"
 msgid "Historical and Cultural Context"
 msgstr "Zgodovinski in kulturni kontekst"
 
+msgid "Identify (AI)"
+msgstr "Prepoznaj (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Prepoznaj to knjigo"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Izboljša natančnost odgovorov z rezultati spleta v realnem času. \n"
 "Opomba: Velja večja poraba tokenov in dodatni stroški API."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Iz uvodnega besedila odprte knjige ugotovi naslov in avtorja ter ju shrani kot metapodatke po meri."
 
 msgid "Integrated Summary"
 msgstr "Celostni povzetek"
@@ -851,6 +891,9 @@ msgstr "Pustite prazno za uporabo: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Pustite ta polja prazna za uporabo jezika vmesnika: %1"
 
+msgid "Left to Right"
+msgstr "Od leve proti desni"
+
 msgid "Locations"
 msgstr "Kraji"
 
@@ -865,6 +908,12 @@ msgstr "Pogon Markdown"
 
 msgid "Meaning & Usage"
 msgstr "Pomen in raba"
+
+msgid "Metadata could not be saved."
+msgstr "Metapodatkov ni bilo mogoče shraniti."
+
+msgid "Minimalist Mode"
+msgstr "Minimalistični način"
 
 msgid "Model"
 msgstr "Model"
@@ -914,11 +963,17 @@ msgstr "Ni nastavljenega aktivnega ponudnika. Prosimo, dodajte ga v Nastavitvah.
 msgid "No base folder is available for AI Notes."
 msgstr "Za AI zapiske ni na voljo osnovne mape."
 
+msgid "No book is open."
+msgstr "Nobena knjiga ni odprta."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Nobena knjiga ni odprta. Dolgo pritisnite knjigo v upravitelju datotek in izberite Informacije o knjigi (AI)."
 
 msgid "No common parameters are available for handler %1."
 msgstr "Model"
+
+msgid "No highlight to annotate"
+msgstr "Ni označbe za opombo"
 
 msgid "No models available."
 msgstr "Ni na voljo modelov."
@@ -934,6 +989,9 @@ msgstr "Ni bilo prejetega odgovora."
 
 msgid "No text left to annotate"
 msgstr "Ni več besedila za dodajanje opombe"
+
+msgid "No text selected"
+msgstr "Ni izbranega besedila"
 
 msgid "No text to annotate"
 msgstr "Ni besedila za dodajanje opombe"
@@ -1073,26 +1131,20 @@ msgstr "Počisti"
 msgid "Purge Settings"
 msgstr "Počisti nastavitve"
 
-msgid "Question"
-msgstr "Vprašanje"
-
 msgid "Quick Note"
 msgstr "Hitra opomba"
 
 msgid "Quick note saved successfully"
 msgstr "Hitra opomba je bila uspešno shranjena."
 
-msgid "RTL Layout"
-msgstr "Postavitev RTL"
-
-msgid "RTL written Language"
-msgstr "Jezik, zapisan od desne proti levi (RTL)"
-
 msgid "Re-immersion"
 msgstr "Ponovna potopitev"
 
 msgid "Reader settings are not available."
 msgstr "Nastavitve bralnika niso na voljo."
+
+msgid "Reading progress"
+msgstr "Napredek branja"
 
 msgid "Reasoning Option"
 msgstr "Možnost sklepanja"
@@ -1113,6 +1165,9 @@ msgstr "Odstrani"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "Odstranim [%s] iz menija označb?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Odstranjeno <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "Zahteva preklicana s strani uporabnika."
@@ -1142,14 +1197,17 @@ msgstr ""
 "poverilnice orodij za iskanje, dodane prek nastavitvenega vmesnika, bodo odstranjene.\n"
 "Datoteka configuration.lua bo ohranjena."
 
-msgid "Response"
-msgstr "Odgovor"
+msgid "Response Font: %1"
+msgstr "Pisava odgovora: %1"
 
 msgid "Response Settings"
 msgstr "Nastavitve odziva"
 
 msgid "Response Text Font Size"
 msgstr "Velikost pisave odgovora"
+
+msgid "Right to Left"
+msgstr "Od desne proti levi"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1218,14 +1276,26 @@ msgstr "Izberi AI zapisek"
 msgid "Select a model:"
 msgstr "Izberi model:"
 
-msgid "Selection copied to clipboard."
-msgstr "Izbor je kopiran v odložišče."
+msgid "Set"
+msgstr "Nastavi"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Nastavim metapodatke knjige?\n"
+"Naslov: %1\n"
+"Avtor: %2"
 
 msgid "Settings"
 msgstr "Nastavitve"
 
 msgid "Show Follow-up Questions"
 msgstr "Prikaži nadaljnja vprašanja"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Prikaži označeno besedilo na vrhu"
 
 msgid "Show Reasoning"
 msgstr "Pokaži sklepanje"
@@ -1238,6 +1308,12 @@ msgstr "Prikaži poglobljeni miselni proces (razmišljanje) iz odziva AI, če ob
 
 msgid "Show follow up questions related to the response content."
 msgstr "Prikaži nadaljnja vprašanja, povezana z vsebino odziva."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Prikaže samo odgovor: brez naslovov Uporabnik/Pomočnik, brez prve vrstice gumbov, brez sklepanja in brez nadaljnjih vprašanj. Obdrži le dejanja na samem odgovoru (Dodaj opombo, Graditelj besedišča) poleg Zapri. Med delovanjem izklopi besedilo sklepanja in nadaljnja vprašanja."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Prikaže besedilo, na katero je bil usmerjen prompt, kot samostojen blok na vrhu izmenjave, nad vprašanjem, tako da je mogoče izvirnik primerjati z odgovorom. Oblaček z vprašanjem ga nato preneha ponavljati."
 
 msgid "Similar Books Recommendations"
 msgstr "Priporočila podobnih knjig"
@@ -1299,7 +1375,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Zapisujte si hitre zapiske, ki bodo shranjeni v vaše AI zapiske."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "X-Ray pojma"
 
@@ -1309,6 +1384,12 @@ msgstr "Izrazi in pojmi"
 msgid "Test"
 msgstr "Preizkus"
 
+msgid "Text Appearance"
+msgstr "Videz besedila"
+
+msgid "Text Direction: %1"
+msgstr "Smer besedila: %1"
+
 msgid "Text Size: %1"
 msgstr "Velikost pisave: %1"
 
@@ -1317,6 +1398,12 @@ msgstr "Besedilo je kopirano v odložišče."
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "Upravljalnik za %1 ni bil najden. Prepričajte se, da upravljalnik obstaja v imeniku api_handlers."
+
+msgid "The model could not identify this book."
+msgstr "Model te knjige ni mogel prepoznati."
+
+msgid "Thinking ..."
+msgstr "Razmišljanje ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Ta gumb ustvari hitro opombo z označenim besedilom."
@@ -1380,6 +1467,12 @@ msgstr "Ta poziv prevede označeno besedilo v drug jezik."
 msgid "Timeline"
 msgstr "Časovnica"
 
+msgid "Title"
+msgstr "Naslov"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Metapodatki o naslovu ali avtorju manjkajo ali so nepopolni, zato je rezultat AI lahko nezanesljiv. Najprej jih nastavite s Prepoznaj (AI)."
+
 msgid "To-Do / Action Items"
 msgstr "Opravki / Akcijske točke"
 
@@ -1395,6 +1488,13 @@ msgstr "Klic orodja ni vseboval iskalnih ključnih besed."
 msgid "Translate"
 msgstr "Prevedi"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Prevajdi (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "Prevede opis knjige z AI."
+
 msgid "Translation"
 msgstr "Prevod"
 
@@ -1406,6 +1506,12 @@ msgstr "Vnesi svoje vprašanje tukaj..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Neznan avtor"
+
+msgid "Unknown Title"
+msgstr "Neznan naslov"
 
 msgid "Unknown error"
 msgstr "Neznana napaka"
@@ -1475,6 +1581,13 @@ msgstr "Ogled"
 msgid "Vocabulary"
 msgstr "Besedišče"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Graditelj besedišča"
+
+msgid "Waiting for the model ..."
+msgstr "Čakanje na model ..."
+
 msgid "Web Search"
 msgstr "Spletno iskanje"
 
@@ -1506,9 +1619,6 @@ msgstr "Oblika besede in lema"
 msgid "Word Origin"
 msgstr "Izvor besede"
 
-msgid "Word copied to clipboard."
-msgstr "Beseda je kopirana v odložišče."
-
 msgid "Write quick notes here"
 msgstr "Tukaj zapišite hitre opombe"
 
@@ -1535,6 +1645,3 @@ msgstr "npr. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: razčlenjevanje vrnjenih podatkov ni uspelo"
-
-msgid "https://..."
-msgstr "https://..."

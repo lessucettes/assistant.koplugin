@@ -1,0 +1,242 @@
+-- dialogs/css.lua
+--
+-- Shared CSS for the plugin's HTML viewers. Single source of truth for the
+-- viewer base style (black-and-white table rules included) plus the justify
+-- fragment and the Response Font registration. Both ResultViewer and
+-- NotebookViewer build from this same BASE via build().
+--
+-- Pure functions only: no settings are read here, callers pass
+-- opts = { justified = bool, font = table|nil } explicitly so the outputs stay
+-- unit-testable. The base carries the same rule set as the historical
+-- viewer CSS, grouped by category for readability.
+--
+-- Undo default margins and padding in ScrollHtmlWidget, based on
+-- ui/widget/dictquicklookup.
+-- font-family order: https://github.com/koreader/koreader/blob/19f3278d6b2c4677ced5358b83dc9157a8210d33/frontend/document/credocument.lua#L59
+local M = {}
+
+-- Undo default margins and padding in ScrollHtmlWidget, based on
+-- ui/widget/dictquicklookup.
+-- font-family order: https://github.com/koreader/koreader/blob/19f3278d6b2c4677ced5358b83dc9157a8210d33/frontend/document/credocument.lua#L59
+-- Rules below are grouped by category: page & document, text blocks,
+-- headings, lists, plugin components, tables.
+local BASE_CSS = [[
+/* Page & document */
+@page {
+    margin: 0;
+    font-family: 'Noto Sans CJK TC', 'Noto Sans Arabic', 'Noto Sans Devanagari UI', 'Noto Sans Bengali UI', 'FreeSans', 'Noto Sans', sans-serif;
+}
+
+body {
+    margin: 0;
+    line-height: 1.25;
+    padding: 0;
+}
+
+/* Text blocks */
+p {
+    padding-left: 1em;
+}
+
+blockquote, dd {
+    margin: 0 1em;
+    font-size: 0.8em;
+}
+
+pre {
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+}
+
+hr {
+    border-color: #BBB;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+    padding-left: 0;
+}
+
+h1 {
+    font-size: 1.3em;
+}
+
+h2 {
+    font-size: 1.2em;
+}
+
+/* Lists */
+ol, ul, menu {
+    margin: 0;
+    padding-left: 2em;
+}
+
+ul li {
+    list-style-type: disc !important;
+}
+
+/* Plugin components */
+
+/* User message bubble: gray bg, left border accent, right-aligned via
+   margin-left. MuPDF fills whatever the margin leaves, so margin-left is the
+   width and the alignment in one: 38% gives the bubble 62% of the page. Which
+   cap a turn gets is the formatter's length test (BUBBLE_SHORT_MAX in
+   utils/text); a long turn drops the margin (long-text). */
+.user-bubble {
+    margin-left: 38%;
+    margin-top: 0.8em;
+    margin-bottom: 2em;
+    padding: 0.5em 0.8em;
+    background-color: #f4f4f4;
+    border-left: 3px solid #999;
+}
+
+/* An action label alone (a prompt name, with the selection living in its own
+   band): hug the right edge, the way a short chat message does. */
+.tiny-text {
+    margin-left: 70%;
+}
+
+/* The length marker the formatter writes for a one-line turn. The default
+   rule above carries the same margin, so a bubble that arrives without a
+   length class still reads as chat. */
+.short-text {
+    margin-left: 38%;
+}
+
+/* A longer turn gets nearly the whole page, since the narrow cap would wrap
+   it into a column. */
+.long-text {
+    margin-left: 6%;
+}
+
+/* The selection a prompt was pointed at, when the Response Settings switch
+   asks for it: its own muted band above the question, quieter than the
+   answer (the window is still about the reply). */
+.source-text {
+    margin: 0.6em 0 0.2em;
+    padding: 0.3em 0.6em;
+    font-size: 0.8em;
+    color: #666;
+    background-color: #F7F7F7;
+    border-left: 3px solid #DDD;
+}
+
+.source-text p {
+    margin: 0;
+    padding-left: 0;
+}
+
+/* The word in its surrounding sentence, shown once above the definition. */
+.dict-excerpt {
+    margin: 0 0 0.8em;
+    padding: 0.5em 0.8em;
+    font-size: 0.9em;
+    color: #555;
+    background-color: #F0F0F0;
+    border-left: 3px solid #C8C8C8;
+}
+
+/* Which preset prompt produced the turn, and what it was pointed at. The
+   formatter supplies the angle quotes (U+2039/U+203A) and the selection that
+   follows them; this is the whole caption. */
+.user-bubble-title {
+    font-size: 0.8em;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 0.3em;
+}
+
+/* p resets: the base paragraph margin and indent would space these like body text */
+.user-bubble-meta {
+    font-size: 0.75em;
+    color: #666;
+    margin-bottom: 0.2em;
+}
+
+.user-bubble-meta p {
+    margin: 0;
+    padding-left: 0;
+}
+
+/* Thought block: left-aligned band capped at the widest the user bubble
+   ever gets (a long turn's 94%: margin-right mirrors .long-text's 6%),
+   smaller font, gray bg, right border accent -- opposite side from the
+   user bubble's left accent, so the two are told apart at a glance. */
+.thought-block {
+    margin: 0.5em 6% 0.5em 0;
+    padding: 0.5em 0.8em;
+    font-size: 0.85em;
+    color: #555;
+    background-color: #F0F0F0;
+    border-right: 3px solid #C8C8C8;
+}
+
+.suggestion-link {
+    margin: 0.6em 0;
+    display: inline-block;
+}
+
+/* Tables */
+table {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    font-size: 0.85em;
+}
+
+table td, table th {
+    border: 1px solid black;
+    padding: 0;
+    overflow-wrap: break-word;
+}
+
+table th {
+    white-space: nowrap;
+    background-color: #bbb;
+}
+]]
+
+-- The RTL pipeline carries its direction, line-height and mirrored insets
+-- per block (dir= and inline styles, see utils/text), so this
+-- stylesheet holds no `direction` property: it would inherit and suppress
+-- the dir attributes, and MuPDF swaps text-align left/right logically under
+-- RTL markup anyway (the default already right-aligns an RTL block).
+
+local JUSTIFY_CSS = "\nbody {\n    text-align: justify;\n}\n"
+
+-- Response Font: MuPDF registers font files, not family names, so the caller
+-- resolves the installed faces and build() emits the @font-face rules.
+-- Both @page and body carry the family (as upstream footnotewidget does).
+local function font_css(font)
+    local parts = {}
+    for i = 1, #font.faces do
+        local face = font.faces[i]
+        parts[#parts + 1] = string.format(
+            "\n@font-face {\n    font-family: '%s';\n    src: url('%s');\n    font-weight: %s;\n    font-style: %s;\n}",
+            font.family, face.path, face.weight, face.style)
+    end
+    parts[#parts + 1] = string.format(
+        "\n@page { font-family: '%s'; }\nbody { font-family: '%s'; }\n",
+        font.family, font.family)
+    return table.concat(parts)
+end
+
+-- Full viewer CSS, shared by ResultViewer and NotebookViewer.
+-- build() with no opts returns just the grouped base below.
+-- opts = { justified = bool, font = { family, faces }|nil }
+function M.build(opts)
+    opts = opts or {}
+    local css = BASE_CSS
+    if opts.justified then
+        css = css .. JUSTIFY_CSS
+    end
+    if opts.font and opts.font.family and opts.font.faces then
+        css = css .. font_css(opts.font)
+    end
+    return css
+end
+
+return M

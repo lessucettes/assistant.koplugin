@@ -1,9 +1,12 @@
 -- test_suggestions.lua
--- Tests for TextUtils.process_suggestions with the ```reasoning fence:
---   * suggestions after a closed fence are converted to #q: links
+-- Tests for the reasoning fence handling in TextUtils (utils/text):
+--   * strip_think_tags turns <think> blocks into a ```reasoning fence with
+--     Reasoning Text on, and drops them with it off
 --   * a <suggestions> literal inside the fence is ignored
 --   * an unclosed fence means truncated reasoning: content untouched
 --   * fenceless content keeps the plain behavior
+--   * splitReasoning peels a stored fence off an answer, and
+--     formatSingleMessage follows the Reasoning Text switch for it
 local helper = require("test.helper")
 local assert = helper.assert
 local TextUtils = helper.TextUtils
@@ -13,26 +16,14 @@ local function test(name, fn)
 end
 
 -- Think-tag handling lives in TextUtils.strip_think_tags
--- (assistant_text_utils.lua, single source of truth); exercise it directly.
+-- (utils/text.lua, single source of truth); exercise it directly.
 local function split_think(ret, show_reasoning, structured)
     return TextUtils.strip_think_tags(ret, structured, show_reasoning)
 end
 
--- Inline mirror of the reasoning split in AssistantDialog:formatSingleMessage
--- (assistant_dialog.lua): the single bare-fence shape the querier emits.
--- Returns reasoning, body; nil when absent.
-local function split_reasoning_block(content)
-    local reasoning, body = content:match(
-        "^```reasoning%s*([%s%S]-)%s*```%s*([%s%S]*)$")
-    if reasoning and reasoning:find("%S") then
-        return reasoning, body
-    end
-    return nil, content
-end
-
 local tests = {
     test("fence: trailing suggestions converted, fence kept", function()
-        local input = "#### ❖ Deeply Thought\n\n```reasoning\nthinking here\n```\n\n---\n\nMain answer.\n<suggestions>\n- First question?\n- Second question?\n</suggestions>\n"
+        local input = "```reasoning\nthinking here\n```\n\nMain answer.\n<suggestions>\n- First question?\n- Second question?\n</suggestions>\n"
         local out = TextUtils.process_suggestions(input)
         assert.matches(out, "```reasoning\nthinking here\n```")
         assert.matches(out, "%[First question%?%]%(#q:")
@@ -66,8 +57,12 @@ local tests = {
 
     test("think: prefixed pair wraps with show on, strips with show off", function()
         local input = "<think>Let me think.</think>\n\nThe answer."
-        assert.equal(split_think(input, true),
-            "```reasoning\nLet me think.\n```\n\nThe answer.")
+        -- The fence delimiters are contractual (splitReasoning peels them);
+        -- the spacing inside is not.
+        local on = split_think(input, true)
+        assert.matches(on, "^```reasoning\nLet me think%.\n```",
+            "the thought must be wrapped in a reasoning fence")
+        assert.matches(on, "The answer%.$", "the answer must follow the fence")
         assert.equal(split_think(input, false), "The answer.")
     end),
 
@@ -79,8 +74,10 @@ local tests = {
 
     test("think: mid-text splits at first close", function()
         local input = "Talk about <think>tags</think> here."
-        assert.equal(split_think(input, true),
-            "```reasoning\nTalk about <think>tags\n```\n\nhere.")
+        local on = split_think(input, true)
+        assert.matches(on, "^```reasoning\nTalk about <think>tags\n```",
+            "everything before the first close becomes the thought")
+        assert.matches(on, "here%.$", "everything after it becomes the answer")
         assert.equal(split_think(input, false), "here.")
     end),
 
@@ -92,8 +89,10 @@ local tests = {
     test("think: single split only, later blocks left in place", function()
         local input = "<think>first</think> mid <think>second</think> answer"
         assert.equal(split_think(input, false), "mid <think>second</think> answer")
-        assert.equal(split_think(input, true),
-            "```reasoning\nfirst\n```\n\nmid <think>second</think> answer")
+        local on = split_think(input, true)
+        assert.matches(on, "^```reasoning\nfirst\n```", "only the first block is a thought")
+        assert.matches(on, "mid <think>second</think> answer",
+            "later blocks must be left in the answer")
     end),
 
     test("think: uppercase tags pass through untouched", function()
@@ -105,8 +104,9 @@ local tests = {
     test("think: stray close splits at first close", function()
         local input = "Real answer prefix </think> <think>thinking</think> rest"
         assert.equal(split_think(input, false), "<think>thinking</think> rest")
-        assert.equal(split_think(input, true),
-            "```reasoning\nReal answer prefix \n```\n\n<think>thinking</think> rest")
+        local on = split_think(input, true)
+        assert.matches(on, "^```reasoning\nReal answer prefix", "the prefix becomes the thought")
+        assert.matches(on, "<think>thinking</think> rest$", "the rest is the answer")
     end),
 
     test("think: structured plus inline both stripped from answer", function()
@@ -121,22 +121,67 @@ local tests = {
     end),
 
     test("split: bare fence splits", function()
-        local reasoning, body = split_reasoning_block(
+        local reasoning, body = TextUtils.splitReasoning(
             "```reasoning\nthinking here\n```\n\nMain answer.")
         assert.equal(reasoning, "thinking here")
         assert.equal(body, "Main answer.")
     end),
 
     test("split: blank reasoning left alone", function()
-        local reasoning, body = split_reasoning_block(
+        local reasoning, body = TextUtils.splitReasoning(
             "```reasoning\n   \n```\n\nMain answer.")
-        assert.equal(reasoning, nil)
+        assert.equal(reasoning, nil, "a whitespace-only fence carries no reasoning")
+        assert.equal(body, "```reasoning\n   \n```\n\nMain answer.", "the content must pass through whole")
+    end),
+
+    test("strip: a leftover block is dropped, fence quoting is kept", function()
+        assert.equal(TextUtils.stripSuggestions("Answer.\n<suggestions>\n- Next?\n</suggestions>\n"),
+            "Answer.", "the block and everything after it must go")
+        assert.equal(TextUtils.stripSuggestions("Just an answer."), "Just an answer.",
+            "content without a block is untouched")
+        -- A tag quoted inside the reasoning fence is not a real block.
+        local quoted = "```reasoning\nnote about <suggestions> format\n```\n\nBody."
+        assert.equal(TextUtils.stripSuggestions(quoted), quoted, "fence quoting must survive")
+        assert.equal(TextUtils.stripSuggestions("```reasoning\ntruncated <suggestions>\n"),
+            "```reasoning\ntruncated <suggestions>\n", "truncated reasoning is left alone")
     end),
 
     test("split: no fence left alone", function()
-        local reasoning, body = split_reasoning_block("Just an answer.")
+        local reasoning, body = TextUtils.splitReasoning("Just an answer.")
         assert.equal(reasoning, nil)
         assert.equal(body, "Just an answer.")
+    end),
+
+    test("split: the display switch decides Thought div vs answer only", function()
+        local history = {
+            { role = "system", content = "system prompt" },
+            { role = "user", content = "Why?" },
+            { role = "assistant",
+                content = "```reasoning\nthinking here\n```\n\nThe answer." },
+        }
+        local function fmt(show_reasoning)
+            return TextUtils.formatSingleMessage(history, history[3], {
+                msg_idx = 3,
+                settings = {
+                    readSetting = function(dummy, key, def)
+                        if key == "show_reasoning" then return show_reasoning end
+                        return def
+                    end,
+                },
+                default_config = { show_suggestions = false },
+            })
+        end
+        -- On: the stored fence becomes a Thought block above the Response.
+        local on = fmt(true)
+        assert.matches(on, '<div class="thought%-block">',
+            "Thought block required while Reasoning Text is on")
+        assert.matches(on, 'thinking here', "reasoning body must be kept")
+        -- Off: a turn answered while it was on must not resurrect the thinking.
+        local off = fmt(false)
+        assert.notMatches(off, 'thought%-block',
+            "no Thought block while Reasoning Text is off")
+        assert.notMatches(off, '```reasoning', "no fence while Reasoning Text is off")
+        assert.matches(off, 'The answer%.', "answer body must survive")
     end),
 }
 

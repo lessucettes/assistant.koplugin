@@ -1,0 +1,1347 @@
+-- Provider Registry for UI-added providers stored in settings as JSON.
+--
+-- The registry stores UI-added providers in settings under the "ui_providers" key
+-- as a JSON string. On startup, these are merged with file-based providers from
+-- configuration.lua into a unified CONFIGURATION.provider_settings table.
+--
+-- Each UI provider record has a stable internal ID ("custom:<n>") and fields:
+--   display_name, handler, model, base_url, api_key, additional_parameters
+--
+-- File providers are imported as-is with source="file", immutable=true injected.
+
+local json = require("rapidjson")
+local NetUtils = require("utils/net")
+local DocUtils = require("utils/doc")
+local NetUtils = require("utils/net")
+local TextUtils = require("utils/text")
+local logger = require("logger")
+local koutil = require("util")
+local _ = require("core/gettext")
+local UIManager = require("ui/uimanager")
+local InfoMessage = require("ui/widget/infomessage")
+local ConfirmBox = require("ui/widget/confirmbox")
+local Blitbuffer = require("ffi/blitbuffer")
+local ButtonTable = require("ui/widget/buttontable")
+local CheckButton = require("ui/widget/checkbutton")
+local CenterContainer = require("ui/widget/container/centercontainer")
+local Font = require("ui/font")
+local Geom = require("ui/geometry")
+local MovableContainer = require("ui/widget/container/movablecontainer")
+local InputContainer = require("ui/widget/container/inputcontainer")
+local Size = require("ui/size")
+local TextBoxWidget = require("ui/widget/textboxwidget")
+local TitleBar = require("ui/widget/titlebar")
+local FrameContainer = require("ui/widget/container/framecontainer")
+local VerticalGroup = require("ui/widget/verticalgroup")
+local Device = require("device")
+local Screen = Device.screen
+local MultiInputDialog = require("ui/widget/multiinputdialog")
+local Trapper = require("ui/trapper")
+local T = require("ffi/util").template
+
+local Registry = {}
+
+-- Current schema version for forward compatibility
+local SCHEMA_VERSION = 1
+
+-- Supported API handler names (must match api_handlers/ .lua files)
+Registry.HANDLERS = {
+    openai    = true,
+    opencode  = true,
+    anthropic = true,
+    gemini    = true,
+    responses = true,
+}
+
+-- Default base URLs for each handler (used as pre-fill hint in UI).
+-- Gemini: the native API path format is /v1beta/models/{model}:generateContent
+-- and models.list is /v1beta/models, so base_url must include the /models
+-- segment (see configuration.sample.lua and api_handlers/gemini.lua).
+Registry.DEFAULT_BASE_URLS = {
+    openai    = "https://api.openai.com/v1",
+    opencode  = "https://opencode.ai/zen/v1",
+    responses = "https://api.openai.com/v1",
+    anthropic = "https://api.anthropic.com/v1",
+    gemini    = "https://generativelanguage.googleapis.com/v1beta/models",
+}
+
+-- Per-handler guidance shown as the Base URL field description in the
+-- add/edit provider dialog (falls back to a generic hint for other handlers).
+local BASE_URL_DESCRIPTIONS = {
+    openai    = _("OpenAI-compatible Chat Completions API"),
+    opencode  = _("OpenCode Chat Completions API"),
+    responses = _("OpenAI Responses API"),
+    gemini    = _("Gemini API"),
+    anthropic = _("Anthropic Messages API"),
+}
+
+--- Connection-test failure report for the provider dialog: bold verdict, then
+--- parameters, the exact request sent, and the response body. A body that
+--- carries an API error (any status) shows the extracted message; a 2xx body
+--- with no usable answer is reported as such, surfacing its reasoning when the
+--- response has one. Never shows the API key.
+local function formatTestReport(handler_name, base_url, model, report)
+    -- Each handler owns its wire format; resolve it by name, no shared fallback.
+    local api_error
+    if type(handler_name) == "string" and handler_name ~= "" then
+        local ok_mod, mod = pcall(require, "api_handlers." .. handler_name)
+        if ok_mod and type(mod) == "table" and mod.extractErrorMessage then
+            local ok_ex, msg = pcall(function() return mod:extractErrorMessage(report.raw) end)
+            if ok_ex then api_error = msg end
+        end
+    end
+
+    local status = report.status
+    local is_2xx = type(status) == "number" and status >= 200 and status < 300
+    local header, response_text
+    if api_error then
+        header = TextUtils.bold_format(_("<b>API returned an error</b>"))
+        response_text = T(_("API error: %1"), api_error)
+    elseif is_2xx then
+        header = TextUtils.bold_format(_("<b>API returned no usable answer</b>"))
+        local raw_fallback = report.raw ~= "" and report.raw or _("(empty response body)")
+        local reasoning = report.reasoning
+        if type(reasoning) == "string" and reasoning ~= "" then
+            response_text = TextUtils.bold_format(T(_("<b>Reasoning (no final answer)</b> - %1"), reasoning))
+                .. "\n\n" .. raw_fallback
+        else
+            response_text = raw_fallback
+        end
+    else
+        header = TextUtils.bold_format(_("<b>API returned an error</b>"))
+        response_text = report.raw ~= "" and report.raw or _("(empty response body)")
+    end
+
+    return table.concat({
+            header,
+            "",
+            TextUtils.bold_format(_("<b>Parameters</b>")),
+            T(_("Protocol: %1"), handler_name),
+            T(_("URL: %1"), base_url),
+            T(_("Model: %1"), model),
+            "",
+            TextUtils.bold_format(T(_("<b>Request</b> - POST %1"), report.url)),
+            "",
+            TextUtils.bold_format(T(_("<b>Response</b> - HTTP %1"), report.status)),
+            response_text,
+        }, "\n")
+end
+-- Exposed for unit tests (pure formatting, no UI state).
+Registry.formatTestReport = formatTestReport
+
+--- Connection-test success text: a plain confirmation, extended with the model
+--- reply when it did not echo OK. Pure (no UI) so tests can pin it.
+--- @param content string|nil extracted assistant text (non-empty on success)
+--- @return string
+local function formatTestSuccess(content)
+    if require("api_handlers.base").isEchoOk(content) then
+        return _("Connection test successful.")
+    end
+    return _("Connection test successful.") .. "\n\n"
+        .. TextUtils.bold_format(T(_("<b>Model reply:</b> %1"), content))
+end
+-- Exposed for unit tests (pure formatting, no UI state).
+Registry.formatTestSuccess = formatTestSuccess
+
+--- Reasoning-options test result text: verdict plus the evidence needed to
+--- judge the tested options - the reasoning text and the full model reply,
+--- always both, so a reasoning option stays judgeable even with the reasoning
+--- display switch off. Missing halves are marked, never dropped. Pure (no UI)
+--- so tests can pin it.
+--- @param content string|nil extracted assistant text
+--- @param reasoning string|nil extracted reasoning text
+--- @return string
+local function formatReasoningTestSuccess(content, reasoning)
+    local function evidence(value)
+        if type(value) ~= "string" or value:find("%S") == nil then
+            return _("(none)")
+        end
+        return value
+    end
+    return table.concat({
+        _("Connection test successful."),
+        "",
+        TextUtils.bold_format(T(_("<b>Reasoning:</b> %1"), evidence(reasoning))),
+        "",
+        TextUtils.bold_format(T(_("<b>Model reply:</b> %1"), evidence(content))),
+    }, "\n")
+end
+-- Exposed for unit tests (pure formatting, no UI state).
+Registry.formatReasoningTestSuccess = formatReasoningTestSuccess
+
+--- Connection-test verdict: HTTP 2xx plus a non-empty extracted answer.
+--- Echoing OK is not required - any non-whitespace content proves the
+--- connection. Pure (no UI) so tests can pin the pass condition; extraction
+--- stays in BaseHandler:testRequest, display stays in formatTestReport.
+local function isConnectionTestOk(report)
+    if type(report) ~= "table" then return false end
+    local status = report.status
+    if type(status) ~= "number" or status < 200 or status >= 300 then return false end
+    local content = report.content
+    return type(content) == "string" and content:find("%S") ~= nil
+end
+-- Exposed for unit tests (pure verdict, no UI state).
+Registry.isConnectionTestOk = isConnectionTestOk
+
+--- Run tester:Test() and show the outcome: a dismissable success InfoMessage,
+--- or the full failure dump for anything else. Owns the online check and the
+--- Trapper wrap so callers stay one-liners. The API key is never displayed.
+--- @param handler_name string API handler name, for the failure report
+--- @param base_url string provider base URL, for the failure report
+--- @param model string model id, for the failure report
+--- @param tester table throwaway handler instance, ready to run Test()
+--- @param format_success function|nil report -> success text; defaults to
+---        the terse formatTestSuccess(report.content)
+--- @return nil
+local function runConnectionTest(handler_name, base_url, model, tester, format_success)
+    NetUtils.runWhenOnlineFast(function()
+        Trapper:wrap(function()
+            -- testRequest() owns the dismissable "Testing connection..."
+            -- InfoMessage (shows the exact POST endpoint, tap to cancel).
+            local report, err = tester:Test()
+            if err == NetUtils.HANDLERCODE.CODE_CANCELLED then
+                return  -- user dismissed the InfoMessage
+            end
+            if not report then
+                UIManager:show(InfoMessage:new{
+                    icon = "notice-warning",
+                    face = Font:getFace("xx_smallinfofont"),
+                    text = T(_("Request failed: %1"), tostring(err)),
+                })
+                return
+            end
+            if isConnectionTestOk(report) then
+                -- Success stays on screen until acknowledged (the user ran a
+                -- test and is waiting on its result).
+                local text = format_success and format_success(report)
+                    or formatTestSuccess(report.content)
+                UIManager:show(InfoMessage:new{
+                    face = Font:getFace("xx_smallinfofont"),
+                    text = text,
+                })
+            else
+                -- Failure: full dump (parameters, request, raw API error body)
+                -- in a dismissable InfoMessage.
+                UIManager:show(InfoMessage:new{
+                    icon = "notice-warning",
+                    face = Font:getFace("xx_smallinfofont"),
+                    text = formatTestReport(handler_name, base_url, model, report),
+                })
+            end
+        end)
+    end)
+end
+
+--- Run a connection test against a provider configuration and report the
+--- result. Uses a throwaway handler instance (same pattern as
+--- model_picker.fetchModels) so the live provider singleton is never mutated;
+--- the request runs in a dismissable subprocess behind an InfoMessage.
+--- @param handler_name string API handler name (e.g. "openai", "gemini")
+--- @param base_url string   provider base URL as entered by the user
+--- @param api_key string    provider API key
+--- @param model string      model id to test against
+function Registry.testConnection(handler_name, base_url, api_key, model)
+    local handler_module = require("api_handlers." .. handler_name)
+    local tester = handler_module:new{
+        base_url = base_url,
+        api_key  = api_key,
+        model    = model,
+    }
+    tester:normalizeBaseUrl()
+    runConnectionTest(handler_name, base_url, model, tester, nil)
+end
+
+--- Run a connection test with a not-yet-saved reasoning overlay applied, so
+--- the options checked in the Reasoning Options dialog can be probed against
+--- the model before anything is persisted; the stored overlay is never
+--- touched. The throwaway handler is synced exactly like the live one (model
+--- preset, shared parameters, then the overlay under test), and the success
+--- report keeps the reasoning text and the full model reply visible.
+--- @param assistant table the Assistant instance
+--- @param provider_id string provider key (file key or UI "custom:N")
+--- @param overlay table reasoning overlay built from the dialog checkboxes
+function Registry.testReasoningOptions(assistant, provider_id, overlay)
+    local ps = assistant.config:getProvider(provider_id)
+    if not ps then return end
+    -- Same handler resolution as Querier:load_model: explicit field first,
+    -- provider-key prefix as the fallback for file providers.
+    local handler_name = koutil.tableGetValue(ps, "handler")
+        or tostring(provider_id):match("^([^_]+)")
+        or "openai"
+    local ok_mod, handler_module = pcall(require, "api_handlers." .. handler_name)
+    if not ok_mod then
+        UIManager:show(InfoMessage:new{
+            icon = "notice-warning",
+            face = Font:getFace("xx_smallinfofont"),
+            text = T(_("Handler %1 not available for provider: %2"), handler_name, provider_id),
+        })
+        return
+    end
+    local tester = handler_module:new{}
+    tester:SyncOptions({
+        provider_name = provider_id,
+        handler_name = handler_name,
+        provider_setting = koutil.tableDeepCopy(ps),
+        settings = assistant.settings,
+    }, overlay)
+    runConnectionTest(handler_name, tester.base_url, tester.model, tester, function(report)
+        return formatReasoningTestSuccess(report.content, report.reasoning)
+    end)
+end
+
+-- Preset platforms offered in the "Provider API" sub-menu.
+-- Selecting one only asks for the API key (name/base_url come from here).
+-- Each preset carries provider-specific additional_parameters that default to
+-- reducing/disabling the reasoning/thinking chain (see configuration.sample.lua).
+local PRESET_PROVIDERS = {
+    { name = "OpenAI", handler = "openai", base_url = "https://api.openai.com/v1" },
+    { name = "OpenCode Zen", handler = "opencode", base_url = "https://opencode.ai/zen/v1",
+      model = "glm-5.3-flash" },
+    { name = "OpenCode Go", handler = "opencode", base_url = "https://opencode.ai/zen/go/v1",
+      model = "glm-5.3-flash" },
+    { name = "OpenAI - Responses", handler = "responses", base_url = "https://api.openai.com/v1" },
+    { name = "Gemini",     handler = "gemini",   base_url = "https://generativelanguage.googleapis.com/v1beta/models",
+      additional_parameters = {
+          temperature = 0.7,
+          thinking_budget = 0,
+      } },
+    { name = "Anthropic",  handler = "anthropic", base_url = "https://api.anthropic.com/v1",
+      additional_parameters = {
+          anthropic_version = "2023-06-01",
+          max_tokens = 4096,
+      } },
+    { name = "DeepSeek",   handler = "openai",   base_url = "https://api.deepseek.com/v1",
+      additional_parameters = {
+          temperature = 0.7,
+          max_tokens = 4096,
+          thinking = { type = "disabled" },
+      } },
+    { name = "OpenRouter", handler = "openai",   base_url = "https://openrouter.ai/api/v1",
+      additional_parameters = {
+          temperature = 0.7,
+          max_tokens = 4096,
+          reasoning = { effort = "none" },
+      } },
+}
+Registry.PRESET_PROVIDERS = PRESET_PROVIDERS
+
+----------------------------------------------------------------------
+-- Load / Save
+----------------------------------------------------------------------
+
+--- Load UI providers from settings.
+--- Returns a table: { providers = { [id] = record, ... }, _next_id = n }
+--- If no UI providers exist or JSON is corrupt, returns a fresh empty structure.
+---@param settings table LuaSettings instance
+---@return table
+function Registry.load(settings)
+    local raw = settings:readSetting("ui_providers")
+    if not raw then
+        return { providers = {}, _next_id = 1 }
+    end
+
+    local ok, decoded = pcall(json.decode, raw)
+    if not ok or type(decoded) ~= "table" then
+        logger.warn("Registry: ui_providers JSON corrupt, starting fresh")
+        return { providers = {}, _next_id = 1 }
+    end
+
+    if decoded.schema_version ~= SCHEMA_VERSION then
+        logger.warn("Registry: schema version mismatch (got ",
+            tostring(decoded.schema_version), ", expected ", SCHEMA_VERSION, "), starting fresh")
+        return { providers = {}, _next_id = 1 }
+    end
+
+    if type(decoded.providers) ~= "table" then
+        decoded.providers = {}
+    end
+    if type(decoded._next_id) ~= "number" then
+        decoded._next_id = 1
+    end
+
+    return decoded
+end
+
+--- Save UI providers to settings as a JSON string.
+---@param settings table LuaSettings instance
+---@param data table The UI provider data structure (from load())
+---@return boolean ok
+function Registry.save(settings, data)
+    local to_save = {
+        schema_version = SCHEMA_VERSION,
+        providers = data.providers or {},
+        _next_id = data._next_id or 1,
+    }
+
+    local ok, encoded = pcall(json.encode, to_save)
+    if not ok then
+        logger.warn("Registry: failed to encode ui_providers JSON")
+        return false
+    end
+
+    settings:saveSetting("ui_providers", encoded)
+    return true
+end
+
+----------------------------------------------------------------------
+-- Merge
+----------------------------------------------------------------------
+
+--- Merge file-based providers and UI providers into a single provider_settings table.
+--- File providers keep their original key; UI providers use their stable ID as key.
+--- Injects source="file"/immutable=true on file records, source="ui" on UI records.
+---@param file_config table|nil The CONFIGURATION table from configuration.lua (nil if load failed)
+---@param ui_data table The decoded UI providers table from Registry.load()
+---@return table|nil provider_settings Merged table, or nil if both sources are empty
+function Registry.merge(file_config, ui_data)
+    local merged = {}
+    local has_any = false
+
+    -- 1. Import file providers (shallow copy, inject metadata)
+    if file_config and file_config.provider_settings then
+        for key, record in pairs(file_config.provider_settings) do
+            if type(record) == "table" then
+                local copy = {}
+                koutil.tableMerge(copy, record)
+                copy.source = "file"
+                copy.immutable = true
+                merged[key] = copy
+                has_any = true
+            end
+        end
+    end
+
+    -- 2. Import UI providers (shallow copy with collision check)
+    if ui_data and ui_data.providers then
+        for id, record in pairs(ui_data.providers) do
+            if type(record) == "table" then
+                if merged[id] then
+                    logger.warn("Registry: UI provider id collision, skipping: ", id)
+                else
+                    local copy = {}
+                    koutil.tableMerge(copy, record)
+                    copy.source = "ui"
+                    merged[id] = copy
+                    has_any = true
+                end
+            end
+        end
+    end
+
+    if not has_any then
+        return nil
+    end
+
+    return merged
+end
+
+----------------------------------------------------------------------
+-- Validate
+----------------------------------------------------------------------
+
+--- Validate a provider record before saving.
+--- Auto-fills model to "auto" if empty.
+---@param record table The provider fields to validate
+---@return boolean ok
+---@return string|nil err
+function Registry.validate(record)
+    if type(record) ~= "table" then
+        return false, _("Provider record must be a table.")
+    end
+
+    -- display_name
+    if type(record.display_name) == "string" then
+        record.display_name = koutil.trim(record.display_name)
+    end
+    if not record.display_name or type(record.display_name) ~= "string"
+        or record.display_name:match("^%s*$") then
+        return false, _("Provider name is required.")
+    end
+
+    -- handler
+    if not record.handler or not Registry.HANDLERS[record.handler] then
+        return false, _("Unsupported API protocol.")
+    end
+
+    -- model: default to "auto" if empty
+    if type(record.model) == "string" then
+        record.model = koutil.trim(record.model)
+    end
+    if not record.model or type(record.model) ~= "string"
+        or record.model:match("^%s*$") then
+        record.model = "auto"
+    end
+
+    -- base_url
+    local ok, err = DocUtils.validate_credential_field(record, "base_url", {
+        required = _("Base URL is required."),
+        scheme = _("Base URL must start with http:// or https://"),
+        whitespace = _("Base URL must not contain spaces."),
+    })
+    if not ok then
+        return false, err
+    end
+
+    -- api_key
+    ok, err = DocUtils.validate_credential_field(record, "api_key", {
+        required = _("API key is required."),
+        whitespace = _("API key must not contain spaces or line breaks."),
+    })
+    if not ok then
+        return false, err
+    end
+
+    -- additional_parameters (default empty)
+    if not record.additional_parameters or type(record.additional_parameters) ~= "table" then
+        record.additional_parameters = {}
+    end
+
+    return true
+end
+
+----------------------------------------------------------------------
+-- Mutations
+----------------------------------------------------------------------
+
+--- Add a new UI provider. Generates a stable ID, validates fields, inserts into data.
+---@param data table The full UI data structure (from load())
+---@param fields table { display_name, handler, base_url, api_key, model, additional_parameters? }
+---@return string|nil id The new provider ID
+---@return string|nil err
+function Registry.add(data, fields)
+    local ok, err = Registry.validate(fields)
+    if not ok then
+        return nil, err
+    end
+
+    local id = "custom:" .. tostring(data._next_id)
+    data._next_id = data._next_id + 1
+
+    local record = {
+        display_name = fields.display_name,
+        handler = fields.handler,
+        model = fields.model,
+        base_url = fields.base_url,
+        api_key = fields.api_key,
+        -- Deep copy so the stored record never shares nested tables with the
+        -- caller's table (e.g. a shared preset definition).
+        additional_parameters = koutil.tableDeepCopy(fields.additional_parameters) or {},
+    }
+    data.providers[id] = record
+
+    return id
+end
+
+--- Delete a UI provider by its stable ID.
+---@param data table The full UI data structure (from load())
+---@param id string The provider's stable ID
+---@return boolean ok
+---@return string|nil err
+function Registry.delete(data, id)
+    if not data.providers[id] then
+        return false, _("Provider not found.")
+    end
+    data.providers[id] = nil
+    return true
+end
+
+--- Convenience: check whether a merged provider record is editable (or deletable).
+--- Same condition: source="ui" and not immutable.
+---@param provider table A merged provider_settings entry
+---@return boolean
+function Registry.is_editable(provider)
+    return Registry.is_deletable(provider)
+end
+
+--- Convenience: check whether a merged provider record is deletable.
+---@param provider table A merged provider_settings entry
+---@return boolean
+function Registry.is_deletable(provider)
+    return provider
+        and provider.source == "ui"
+        and not provider.immutable
+end
+
+--- Update an existing UI provider: update record, save, refresh merged config.
+--- The provider ID and handler are preserved. When additional_parameters is
+--- non-nil it replaces the stored table (deep copy); otherwise the existing
+--- record's parameters are kept.
+---@param assistant table The Assistant instance
+---@param id string The provider's stable ID (e.g. "custom:1")
+---@param display_name string
+---@param base_url string
+---@param api_key string
+---@param model string
+---@param additional_parameters table|nil Replacement parameters (nil keeps existing)
+---@return string|nil id
+---@return string|nil err
+function Registry.updateProvider(assistant, id, display_name, base_url, api_key, model, additional_parameters)
+    if not assistant._ui_provider_data then
+        return nil, _("Provider data not initialized.")
+    end
+
+    local existing = assistant._ui_provider_data.providers[id]
+    if not existing then
+        return nil, _("Provider not found.")
+    end
+
+    -- Compose a candidate and validate before mutating the stored record, so a
+    -- rejected update leaves the existing provider untouched.
+    local candidate = {
+        display_name = display_name,
+        handler = existing.handler,
+        base_url = base_url,
+        api_key = api_key,
+        model = model,
+        additional_parameters = additional_parameters ~= nil and additional_parameters or existing.additional_parameters,
+    }
+    local ok, err = Registry.validate(candidate)
+    if not ok then
+        return nil, err
+    end
+
+    -- Update mutable fields in place; handler is kept.
+    existing.display_name = candidate.display_name
+    existing.base_url = candidate.base_url
+    existing.api_key = candidate.api_key
+    existing.model = candidate.model
+    if additional_parameters ~= nil then
+        existing.additional_parameters = koutil.tableDeepCopy(additional_parameters)
+    end
+
+    Registry.save(assistant.settings, assistant._ui_provider_data)
+
+    -- The freshly edited model is now the source of truth: drop any runtime
+    -- picker override, which would otherwise keep winning in SyncOptions.
+    assistant.settings:delSetting("selected_model_" .. id)
+
+    -- Refresh merged config.
+    local newRecord = {
+        display_name = existing.display_name,
+        handler = existing.handler,
+        model = existing.model,
+        base_url = existing.base_url,
+        api_key = existing.api_key,
+        additional_parameters = existing.additional_parameters or {},
+        source = "ui",
+    }
+    -- setProvider force-reloads the querier when `id` is the active provider.
+    assistant.config:setProvider(id, newRecord)
+
+    return id
+end
+
+--- Install a newly added UI provider: save, update in-memory config, load into querier.
+---@param assistant table The Assistant instance
+---@param handler string
+---@param base_url string
+---@param display_name string
+---@param api_key string
+---@param model string
+---@param additional_parameters table|nil Provider-specific additional_parameters
+---        (preset defaults; nil is stored as {} for backward compatibility)
+---@return string|nil id
+---@return string|nil err
+function Registry.installProvider(assistant, handler, base_url, display_name, api_key, model, additional_parameters)
+    if not assistant._ui_provider_data then
+        return nil, _("Provider data not initialized.")
+    end
+
+    local record = {
+        display_name = display_name,
+        handler = handler,
+        base_url = base_url,
+        api_key = api_key,
+        model = model ~= "" and model or "auto",
+        additional_parameters = additional_parameters,
+    }
+    local id, err = Registry.add(assistant._ui_provider_data, record)
+    if not id then
+        return nil, err
+    end
+    Registry.save(assistant.settings, assistant._ui_provider_data)
+
+    -- Update merged config.
+    local stored = assistant._ui_provider_data.providers[id]
+    local newRecord = {
+        display_name = record.display_name,
+        handler = record.handler,
+        model = record.model,
+        base_url = record.base_url,
+        api_key = record.api_key,
+        additional_parameters = stored and stored.additional_parameters or {},
+        source = "ui",
+    }
+
+    -- Persist the selection before the config write: setProvider only hot-loads
+    -- the active provider, so the new record must already be selected.
+    assistant.settings:saveSetting("provider", id)
+    assistant.config:setProvider(id, newRecord)
+
+    return id
+end
+
+----------------------------------------------------------------------
+-- Additional parameters dialog
+----------------------------------------------------------------------
+
+-- Per-handler reasoning presets ("dialects"): each entry carries that
+-- platform's exact parameter shape. Selections live in a runtime overlay
+-- (settings key "reasoning_option_<id>"), merged over the base config in
+-- BaseHandler:SyncOptions. Graded keys offer a "none" (reasoning off) and a
+-- "low" (minimal reasoning) preset; boolean-only dialects offer their "none"
+-- (off) preset alone - they have no low level to offer.
+-- NOTE: desc strings are intentionally not _()-wrapped — verbatim parameter
+-- names and values only, nothing worth translating.
+Registry.PARAM_CATALOG = {
+    openai = {
+        { key = "reasoning_effort", value = "none",
+          desc = "reasoning_effort = none" },
+        { key = "reasoning_effort", value = "low",
+          desc = "reasoning_effort = low" },
+        { key = "thinking", value = { type = "disabled" },
+          desc = "thinking = {type = disabled}" },
+        { key = "enable_thinking", value = false,
+          desc = "enable_thinking = false" },
+        { key = "think", value = false,
+          desc = "think = false" },
+        { key = "reasoning", value = { effort = "none" },
+          desc = "reasoning = {effort = none}" },
+        { key = "reasoning", value = { effort = "low" },
+          desc = "reasoning = {effort = low}" },
+    },
+    responses = {
+        { key = "reasoning", value = { effort = "none" },
+          desc = "reasoning = {effort = none}" },
+        { key = "reasoning", value = { effort = "low" },
+          desc = "reasoning = {effort = low}" },
+    },
+    anthropic = {
+        { key = "thinking", value = { type = "disabled" },
+          desc = "thinking = {type = disabled}" },
+        { key = "thinking", value = { type = "enabled", budget_tokens = 1024 },
+          desc = "thinking = {type = enabled, budget_tokens = 1024} (must be < max_tokens)" },
+        { key = "thinking", value = { type = "enabled", budget_tokens = 10240 },
+          desc = "thinking = {type = enabled, budget_tokens = 10240} (must be < max_tokens)" },
+    },
+    gemini = {
+        -- Independent parameter shapes — pick the one the model accepts:
+        -- thinking_budget takes a token count (0 disables thinking);
+        -- thinkingConfig takes a thinking level. Level-based models cannot
+        -- always disable thinking, so their lowest level is the practical
+        -- "none" and the next level up is "low".
+        { key = "thinking_budget", value = 0,
+          desc = "thinking_budget = 0" },
+        { key = "thinking_budget", value = 1024,
+          desc = "thinking_budget = 1024" },
+        { key = "thinkingConfig", value = { thinkingLevel = "minimal" },
+          desc = "thinkingConfig = {thinkingLevel = minimal}" },
+        { key = "thinkingConfig", value = { thinkingLevel = "low" },
+          desc = "thinkingConfig = {thinkingLevel = low}" },
+    },
+}
+
+Registry.PARAM_CATALOG.opencode = Registry.PARAM_CATALOG.openai
+
+--- Settings key for the per-provider reasoning overlay (runtime only,
+--- never written back to configuration.lua / ui_providers).
+---@param provider_id string
+---@return string
+function Registry.getReasoningKey(provider_id)
+    return "reasoning_option_" .. tostring(provider_id)
+end
+
+--- Read the reasoning overlay table for a provider (selected catalog
+--- key->preset pairs only). Returns {} when unset or malformed.
+---@param settings table LuaSettings instance
+---@param provider_id string
+---@return table
+function Registry.getReasoningOverlay(settings, provider_id)
+    if not settings or not provider_id then return {} end
+    local overlay
+    if settings.readSetting then
+        local ok, val = pcall(function()
+            return settings:readSetting(Registry.getReasoningKey(provider_id))
+        end)
+        if ok then overlay = val end
+    end
+    if type(overlay) ~= "table" then return {} end
+    return overlay
+end
+
+--- Resolve the PARAM_CATALOG key for a provider, handling alias handlers.
+--- Alias handlers (deepseek, ollama, groq, mistral, openrouter, gigachat)
+--- are thin wrappers around openai; gemma dispatches between openai/gemini
+--- based on base_url. Returns the resolved key (e.g. "openai") that can be
+--- looked up in PARAM_CATALOG, or nil if unresolvable.
+---@param provider_id string The provider key (file key or "custom:N")
+---@param ps table|nil The provider settings record
+---@return string|nil resolved_key
+function Registry.resolveCatalogKey(provider_id, ps)
+    -- 1. Derive raw handler name
+    local raw
+    if ps then
+        raw = koutil.tableGetValue(ps, "handler")
+    end
+    if not raw and type(provider_id) == "string" then
+        raw = provider_id:match("^([^_]+)")
+    end
+    raw = raw or "openai"
+
+    -- 2. Alias mapping: thin openai wrappers → openai
+    local ALIAS_TO_OPENAI = {
+        deepseek = true,
+        ollama = true,
+        groq = true,
+        mistral = true,
+        openrouter = true,
+        gigachat = true,
+    }
+    if ALIAS_TO_OPENAI[raw] then
+        return "openai"
+    end
+
+    -- 3. Gemma: dispatch between openai/gemini by base_url (mirrors
+    --    api_handlers/gemma.lua FormatByURL).
+    if raw == "gemma" then
+        local base_url = ps and koutil.tableGetValue(ps, "base_url") or ""
+        if base_url:match("generativelanguage%.googleapis%.com")
+            and not base_url:match("/openai") then
+            return "gemini"
+        end
+        return "openai"
+    end
+
+    -- 4. Canonical handler name (openai, responses, anthropic, gemini)
+    if Registry.HANDLERS[raw] then
+        return raw
+    end
+
+    -- Unknown handler — no catalog available.
+    return nil
+end
+
+--- Check whether a provider has reasoning options available.
+---@param provider_id string The provider key (file key or "custom:N")
+---@param ps table|nil The provider settings record
+---@return boolean
+function Registry.hasReasoningOptions(provider_id, ps)
+    local catalog_key = Registry.resolveCatalogKey(provider_id, ps)
+    if not catalog_key then return false end
+    local catalog = Registry.PARAM_CATALOG[catalog_key]
+    return catalog ~= nil and #catalog > 0
+end
+
+--- Show a checkbox dialog to toggle reasoning options of any provider
+--- (file or UI). Selections are stored as a runtime overlay in settings
+--- under "reasoning_option_<provider_id>" and shallow-merged over
+--- same-name additional_parameters keys in BaseHandler:SyncOptions;
+--- configuration values stay untouched. Checked state reflects the overlay
+--- (not the effective/base parameters) so save/load round-trips stably.
+--- The Test button probes the checked options against the model without
+--- saving anything; only OK persists the overlay.
+---@param assistant table The Assistant instance
+---@param provider_id string The provider ID (file key or UI "custom:N")
+---@return table|nil dialog The shown dialog widget, or nil when the provider
+---                        is unknown or has no common parameters
+function Registry.showParametersDialog(assistant, provider_id)
+    local ps = assistant.config:getProvider(provider_id)
+    if not ps then return end
+
+    -- Resolve the catalog key, handling alias handlers (deepseek, ollama, etc.)
+    local catalog_key = Registry.resolveCatalogKey(provider_id, ps)
+    local catalog = (catalog_key and Registry.PARAM_CATALOG[catalog_key]) or {}
+    local handler = catalog_key or "openai"
+    local current = Registry.getReasoningOverlay(assistant.settings, provider_id)
+
+    local display_name = koutil.tableGetValue(ps, "display_name") or provider_id
+    local dialog_title = T(_("Reasoning Options - %1"), display_name)
+
+    if #catalog == 0 then
+        UIManager:show(InfoMessage:new{
+            text = T(_("No common parameters are available for handler %1."), handler),
+        })
+        return
+    end
+
+    local dialog
+    -- Checkbox widgets are kept in this local (not on the shared
+    -- PARAM_CATALOG entries): storing them on the catalog would pin the
+    -- whole widget tree in memory after close and leak state across dialogs.
+    -- NOTE: must be declared before the buttons table below — the OK
+    -- callback closes over it, and a later local would instead resolve
+    -- as a nil global inside the callback.
+    local checkboxes = {}
+    -- Checked state as it stands right now: later catalog entries win for
+    -- same-name keys, matching how SyncOptions merges the overlay. Both the
+    -- Test probe and the OK save read the dialog through this builder.
+    local function buildOverlay()
+        local overlay = {}
+        for i, item in ipairs(catalog) do
+            if checkboxes[i].checked then
+                overlay[item.key] = koutil.tableDeepCopy(item.value)
+            end
+        end
+        return overlay
+    end
+    local buttons = {{
+        {
+            text = _("Cancel"),
+            callback = function() UIManager:close(dialog) end,
+        },
+        {
+                id = "test",
+                text = _("Test"),
+                callback = function()
+                    -- Probe the checked options against the model as they are:
+                    -- nothing is written to settings until OK is tapped, and
+                    -- the dialog stays open for further adjustments.
+                    Registry.testReasoningOptions(assistant, provider_id, buildOverlay())
+                end,
+        },
+        {
+                id = "ok",
+                text = _("OK"),
+                callback = function()
+                    -- Runtime overlay only: never touches ui_providers or
+                    -- configuration.lua. Only selected catalog entries are
+                    -- stored; unselected entries simply leave the base values.
+                    local overlay = buildOverlay()
+                    local key = Registry.getReasoningKey(provider_id)
+                    if next(overlay) == nil then
+                        assistant.settings:delSetting(key)
+                    else
+                        assistant.settings:saveSetting(key, overlay)
+                    end
+                    -- Refresh the live handler when editing the active
+                    -- provider. Querier:load_model early-returns for the
+                    -- same provider, so SyncOptions must be called directly.
+                    if assistant.querier
+                        and assistant.querier.provider_name == provider_id
+                        and assistant.querier.handler
+                        and assistant.querier.handler.SyncOptions then
+                        assistant.querier.handler:SyncOptions(assistant.querier)
+                    end
+                    assistant.updated = true
+                    UIManager:close(dialog)
+                end,
+        },
+    }}
+
+    -- Hand-built dialog: plain InputDialog always renders an InputText, which
+    -- makes no sense for a checkbox-only form. Mirror ConfirmBox/ProviderDialog
+    -- composition: TitleBar -> notice -> CheckButtons -> ButtonTable inside a
+    -- MovableContainer+FrameContainer, centered on screen.
+    local screen_w, screen_h = Screen:getWidth(), Screen:getHeight()
+    local width = math.floor(math.min(screen_w, screen_h) * 0.8)
+    local inner_width = width - 2 * (Size.padding.default + Size.margin.small)
+
+    dialog = InputContainer:new{ modal = true }
+    -- Mirror ConfirmBox/InputDialog: without onShow/onCloseWidget dirty
+    -- callbacks the widget is never painted (or cleared) on screen.
+    local movable
+    local frame
+    dialog.onShow = function()
+        UIManager:setDirty(dialog, function()
+            return "ui", movable and movable.dimen or frame.dimen
+        end)
+    end
+    dialog.onCloseWidget = function()
+        UIManager:setDirty(nil, function()
+            return "ui", movable and movable.dimen or frame.dimen
+        end)
+    end
+
+    local vgroup = VerticalGroup:new{
+        align = "left",
+        TitleBar:new{
+            width = width,
+            align = "left",
+            with_bottom_line = true,
+            title = dialog_title,
+            show_parent = dialog,
+        },
+        FrameContainer:new{
+            padding = Size.padding.default,
+            margin = Size.margin.small,
+            bordersize = 0,
+            TextBoxWidget:new{
+                text = TextUtils.bold_format(_("Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n\nSelected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used.")),
+                face = Font:getFace("xx_smallinfofont"),
+                width = inner_width,
+            },
+        },
+    }
+    -- Same-key entries (e.g. Anthropic enable/disable) share one overlay
+    -- slot, so checked state must compare values, not just key presence.
+    local function isSelected(item)
+        local v = current[item.key]
+        if v == nil then return false end
+        if type(v) ~= type(item.value) then return false end
+        if type(v) ~= "table" then return v == item.value end
+        return koutil.tableEquals(v, item.value)
+    end
+    for i, item in ipairs(catalog) do
+        checkboxes[i] = CheckButton:new{
+            text = item.desc,
+            checked = isSelected(item),
+            face = Font:getFace("xx_smallinfofont"),
+            checkmark_face = Font:getFace("xx_smallinfofont"),
+            width = inner_width,
+            parent = dialog,
+            show_parent = dialog,
+        }
+        table.insert(vgroup, FrameContainer:new{
+            padding = Size.padding.default,
+            margin = Size.margin.small,
+            bordersize = 0,
+            checkboxes[i],
+        })
+    end
+
+    local button_table = ButtonTable:new{
+        width = width - 2 * Size.padding.default,
+        buttons = buttons,
+        zero_sep = true,
+        show_parent = dialog,
+    }
+    table.insert(vgroup, CenterContainer:new{
+        dimen = Geom:new{
+            w = width,
+            h = button_table:getSize().h,
+        },
+        button_table,
+    })
+
+    frame = FrameContainer:new{
+        radius = Size.radius.window,
+        bordersize = Size.border.window,
+        padding = 0,
+        margin = 0,
+        background = Blitbuffer.COLOR_WHITE,
+        vgroup,
+    }
+    movable = MovableContainer:new{
+        frame,
+    }
+    dialog[1] = CenterContainer:new{
+        dimen = Geom:new{ w = screen_w, h = screen_h },
+        movable,
+    }
+    UIManager:show(dialog)
+    return dialog
+end
+
+----------------------------------------------------------------------
+-- Add/Edit provider dialog
+----------------------------------------------------------------------
+
+--- Dismiss the main menu that launched the provider flow, if any. The menu
+--- stays open behind these dialogs, so a confirmed change should leave the
+--- user with the Provider Settings window instead of a stale menu underneath.
+--- The instance is remembered by the Provider API menu entries.
+local function dismissMenu(assistant)
+    local menu_instance = assistant._menu_instance
+    if not menu_instance then return end
+    assistant._menu_instance = nil
+    menu_instance:closeMenu()
+end
+
+--- Show a unified dialog for adding or editing a provider (Name, Base URL, API Key, Model).
+--- For preset providers: Name + Base URL are pre-filled from the preset.
+--- For Edit (edit_id ~= nil): all fields are pre-filled from the existing record.
+--- In add mode a Clear button empties the preset pre-fill (Name, Base URL, Model)
+--- while leaving the user-typed API Key untouched.
+---@param assistant table The Assistant instance
+---@param preset_name string|nil Preset display name
+---@param handler string API handler name (e.g. "openai")
+---@param base_url string Pre-filled base URL
+---@param additional_parameters table|nil Provider-specific additional_parameters
+---        (preset defaults; Custom passes nil which is stored as {})
+---@param edit_id string|nil When non-nil, edit the existing provider with this ID
+function Registry.showProviderDialog(assistant, preset_name, handler, base_url, additional_parameters, edit_id)
+    local is_edit = edit_id ~= nil
+    local dialog_title
+    local default_name
+    local default_api_key = ""
+    local default_model = ""
+    local can_delete = false
+
+    if is_edit then
+        -- Pre-fill from the existing provider record
+        local ps = assistant.config:getProvider(edit_id)
+        can_delete = Registry.is_deletable(ps)
+        dialog_title = T(_("Edit %1"), koutil.tableGetValue(ps, "display_name") or edit_id)
+        default_name = koutil.tableGetValue(ps, "display_name") or ""
+        base_url = koutil.tableGetValue(ps, "base_url") or base_url or ""
+        default_api_key = koutil.tableGetValue(ps, "api_key") or ""
+        -- Show the model actually in effect: the runtime picker stores its
+        -- choice as selected_model_<id>, which overrides the record's model.
+        default_model = assistant.settings:readSetting("selected_model_" .. edit_id)
+            or koutil.tableGetValue(ps, "model") or ""
+        -- Preserve the existing additional_parameters (not exposed in dialog)
+        additional_parameters = koutil.tableGetValue(ps, "additional_parameters") or {}
+        -- Handler comes from the existing record, not the parameter
+        handler = koutil.tableGetValue(ps, "handler") or handler
+    else
+        dialog_title = preset_name and T(_("Add %1"), preset_name) or T(_("Add %1 Provider"), handler)
+        default_name = preset_name or ""
+        for i, preset in ipairs(PRESET_PROVIDERS) do
+            if preset.name == preset_name and preset.handler == handler and preset.base_url == base_url then
+                default_model = preset.model or ""
+                break
+            end
+        end
+    end
+
+    -- Handler-aware guidance for the Base URL field (handler is resolved from
+    -- the record in edit mode, so compute it after the branch above).
+    local base_url_desc = BASE_URL_DESCRIPTIONS[handler]
+        or _("Base URL, e.g. https://example.com/v1")
+
+    local dialog_ref = {}  -- forward ref for enabled_func closure in buttons
+    local dialog
+    local function readFields()
+        return DocUtils.trimDialogFields(dialog)
+    end
+    local dialog_buttons = {{
+        {
+            id = "cancel",
+            text = _("Cancel"),
+            callback = function() UIManager:close(dialog) end,
+        },
+        {
+            id = "browse_models",
+            text = _("Browse Models"),
+            enabled_func = function()
+                local d = dialog_ref[1]
+                if not d then return false end
+                return koutil.trim(d:getFields()[3] or "") ~= ""  -- enabled when API key is filled
+            end,
+            callback = function()
+                dialog:onCloseKeyboard()  -- free the screen for the model list
+                local fields = readFields()
+                local api_key = fields[3]
+                local url = fields[2]
+                if api_key == "" or url == "" then return end
+                -- Fetch models through the provider handler's own
+                -- FetchModels (api_handlers), then reuse model_picker's
+                -- showPickerDialog. Each handler builds its endpoint,
+                -- auth headers and post-processing itself, and runs the
+                -- request behind a dismissable InfoMessage so a stalled
+                -- network can be cancelled by tapping.
+                NetUtils.runWhenOnlineFast(function()
+                    Trapper:wrap(function()
+                        local mp = require("dialogs/model_picker")
+                        local model_list, err = mp.fetchModels(handler, url, api_key)
+                        if err == NetUtils.HANDLERCODE.CODE_CANCELLED then
+                            return  -- user dismissed the InfoMessage
+                        end
+                        if err or not model_list or #model_list == 0 then
+                            UIManager:show(InfoMessage:new{
+                                icon = "notice-warning",
+                                text = err or _("No models available."),
+                            })
+                            return
+                        end
+                        mp.showPickerDialog(assistant, model_list, nil, "",
+                            mp.initialPage(assistant, model_list),
+                            function(model_id)
+                                if dialog.input_fields[4] then
+                                    dialog.input_fields[4]:setText(model_id)
+                                    dialog.input_fields[4]:moveCursorToCharPos(#model_id + 1)
+                                end
+                            end,
+                            -- Title shows the provider being edited.
+                            fields[1] ~= "" and fields[1] or nil,
+                            nil,  -- selected_model
+                            nil,  -- reopen_callback
+                            -- Test with the same credentials the list came from.
+                            { handler = handler, base_url = url, api_key = api_key }
+                        )
+                    end)
+                end)
+            end,
+        },
+        {
+            id = "test",
+            text = _("Test"),
+            enabled_func = function()
+                local d = dialog_ref[1]
+                if not d then return false end
+                local f = d:getFields()
+                return f[1] ~= "" and f[2] ~= "" and f[3] ~= "" and f[4] ~= ""
+            end,
+            callback = function()
+                dialog:onCloseKeyboard()  -- free the screen for the test report
+                local fields = readFields()
+                local url, api_key, model = fields[2], fields[3], fields[4]
+                Registry.testConnection(handler, url, api_key, model)
+            end,
+        },
+        {
+            text = _("OK"),
+            is_enter_default = true,
+            callback = function()
+                local fields = readFields()
+                local name = fields[1]
+                local url = fields[2]
+                local api_key = fields[3]
+                local model = fields[4]
+                if name == "" then name = handler end
+                if url == "" then
+                    UIManager:show(InfoMessage:new{ text = _("Base URL is required.") })
+                    return
+                end
+                if api_key == "" then
+                    UIManager:show(InfoMessage:new{ text = _("API key is required.") })
+                    return
+                end
+                if is_edit and edit_id then
+                    ---@cast edit_id string
+                    local saved, err = Registry.updateProvider(assistant, edit_id, name, url, api_key, model)
+                    if not saved then
+                        UIManager:show(InfoMessage:new{
+                            icon = "notice-warning",
+                            text = err or _("Failed to save provider."),
+                        })
+                        return
+                    end
+                else
+                    local saved, err = Registry.installProvider(assistant, handler, url, name, api_key, model, additional_parameters)
+                    if not saved then
+                        UIManager:show(InfoMessage:new{
+                            icon = "notice-warning",
+                            text = err or _("Failed to save provider."),
+                        })
+                        return
+                    end
+                end
+                UIManager:close(dialog)
+                dismissMenu(assistant)
+                -- Close any stale settings dialog, then open a fresh
+                -- Provider Settings window so the added/edited provider
+                -- is immediately visible and selectable.
+                if assistant._provider_dialog then
+                    UIManager:close(assistant._provider_dialog)
+                    assistant._provider_dialog = nil
+                end
+                UIManager:scheduleIn(0.15, function() require("dialogs/settings_menu").showProviderDialog(assistant) end)
+            end,
+        },
+    }}
+    if is_edit and can_delete then
+        -- Only UI-configured providers are deletable; the Delete action
+        -- therefore lives inside the edit dialog, next to Save.
+        table.insert(dialog_buttons[1], #dialog_buttons[1], {
+            id = "delete",
+            text = _("Delete"),
+            callback = function()
+                local ps = assistant.config:getProvider(edit_id)
+                if not Registry.is_deletable(ps) then return end
+                local display_name = koutil.tableGetValue(ps, "display_name") or edit_id
+                UIManager:show(ConfirmBox:new{
+                    text = T(_("Delete provider %1?"), display_name),
+                    ok_text = _("Delete"),
+                    ok_callback = function()
+                        local ui_data = assistant._ui_provider_data
+                        ---@cast edit_id string
+                        Registry.delete(ui_data, edit_id)
+                        Registry.save(assistant.settings, ui_data)
+                        assistant.config:deleteProvider(edit_id)
+
+                        -- Clean up reasoning overlay for the deleted provider.
+                        ---@cast edit_id string
+                        assistant.settings:delSetting(Registry.getReasoningKey(edit_id))
+
+                        -- Fallback: reselect a valid provider
+                        local new_provider = assistant.config:getActiveProviderId()
+                        if new_provider then
+                            assistant.querier:load_model(new_provider)
+                        end
+
+                        UIManager:close(dialog)
+                        dismissMenu(assistant)
+                        -- Close any stale settings dialog, then open a fresh
+                        -- Provider Settings window reflecting the deletion.
+                        if assistant._provider_dialog then
+                            UIManager:close(assistant._provider_dialog)
+                            assistant._provider_dialog = nil
+                        end
+                        UIManager:scheduleIn(0.15, function() require("dialogs/settings_menu").showProviderDialog(assistant) end)
+                    end,
+                })
+            end,
+        })
+    end
+    if not is_edit then
+        -- Clear the fields pre-filled from the preset (Name, Base URL, Model);
+        -- leaves the user-typed API Key untouched.
+        table.insert(dialog_buttons[1], 2, {
+            id = "clear",
+            text = _("Clear"),
+            callback = function()
+                local fields = dialog.input_fields
+                for i, index in ipairs({1, 2, 4}) do
+                    if fields[index] then
+                        fields[index]:setText("")
+                        fields[index]:moveCursorToCharPos(1)
+                    end
+                end
+            end,
+        })
+    end
+    dialog = MultiInputDialog:new{
+        title = dialog_title,
+        fields = {
+            { description = _("Provider Name"),
+              hint = _("Display name"), text = default_name },
+            { description = base_url_desc,
+              hint = _("Base URL"),   text = base_url },
+            { description = _("API Key"),
+              hint = _("Your API key"),  text = default_api_key },
+            { description = _("Model"),
+              hint = _("Pick one via Browse Models"), text = default_model },
+        },
+        input_face = Font:getFace("xx_smallinfofont"),
+        buttons = dialog_buttons,
+    }
+    dialog_ref[1] = dialog
+    UIManager:show(dialog)
+end
+
+----------------------------------------------------------------------
+-- Provider menu
+----------------------------------------------------------------------
+
+--- Build the "Provider API" menu item used by the Settings dialog.
+--- Returns a TouchMenu item with a sub-menu listing the preset providers.
+--- Selecting an entry opens the add-provider dialog through
+--- Registry.showProviderDialog; the fields remain editable so users
+--- can point a preset at a custom base URL.
+---@param assistant table The Assistant instance
+---@return table menu item spec
+function Registry.getAddProviderMenuItem(assistant)
+    return {
+        text = _("Provider API"),
+        keep_menu_open = true,
+        sub_item_table_func = function()
+            local items = {}
+            for i, preset in ipairs(PRESET_PROVIDERS) do
+                table.insert(items, {
+                    text = preset.name,
+                    keep_menu_open = true,
+                    callback = function(touchmenu_instance)
+                        -- Remember the menu so a confirmed add can dismiss it.
+                        assistant._menu_instance = touchmenu_instance
+                        Registry.showProviderDialog(assistant, preset.name, preset.handler, preset.base_url,
+                            preset.additional_parameters)
+                    end,
+                })
+            end
+            return items
+        end,
+    }
+end
+
+return Registry

@@ -1,12 +1,12 @@
 local BaseHandler = require("api_handlers.base")
-local NetUtils = require("assistant_net_utils")
-local TextUtils = require("assistant_text_utils")
+local NetUtils = require("utils/net")
+local TextUtils = require("utils/text")
 local json = require("rapidjson")
 local koutil = require("util")
 local logger = require("logger")
-local ToolExecutor = require("assistant_tool_executor")
+local ToolExecutor = require("core/tool_executor")
 local UIManager = require("ui/uimanager")
-local _ = require("assistant_gettext")
+local _ = require("core/gettext")
 local InfoMessage = require("ui/widget/infomessage")
 
 local AnthropicHandler = BaseHandler:new({
@@ -25,13 +25,16 @@ function AnthropicHandler:getApiUrl()
 end
 
 --- Connection test: minimal non-stream messages request with the static echo
---- instruction (max_tokens is a required Anthropic field).
+--- instruction (max_tokens is a required Anthropic field). Whitelisted
+--- additional_parameters ride along and win over the test defaults, so a
+--- configured max_tokens keeps a thinking budget legal.
 function AnthropicHandler:Test()
     local body = {
         model      = self.model,
-        max_tokens = 64,
+        max_tokens = self.TEST_MAX_OUTPUT_TOKENS,
         messages   = { { role = "user", content = self.TEST_PROMPT } },
     }
+    self:mergeSupportedOptions(body)
     local headers = {
         ["Content-Type"]       = "application/json",
         ["x-api-key"]          = self.api_key,
@@ -39,7 +42,9 @@ function AnthropicHandler:Test()
                                  or "2023-06-01",
     }
     return self:testRequest(self:getApiUrl(), headers, body, function(data)
-        return koutil.tableGetValue(data, "content", 1, "text")
+        local parsed = ToolExecutor.parseToolCallsResponse(data, "anthropic")
+        if type(parsed) == "table" then return parsed.content, parsed.reasoning end
+        return nil
     end)
 end
 
@@ -106,11 +111,7 @@ function AnthropicHandler:buildRequestBody(messages, tools, stream)
         messages   = prepared.messages,
         stream     = stream or false,
     }
-    if type(self.additional_parameters) == "table" and next(self.additional_parameters) then
-        for o, v in pairs(self.additional_parameters) do
-            if self.SupportedOptions[o] then body[o] = v end
-        end
-    end
+    self:mergeSupportedOptions(body)
 
     if tools then
         -- Injected tools (e.g. from Querier's web_search support)
@@ -132,7 +133,8 @@ end
 --- summarized into the text: concatenate every text block, ignore the
 --- server blocks (never tool calls), and carry citations forward.
 --- @param responseData table decoded JSON body
---- @return string|table|nil result, string|nil error
+--- @return string|table|nil result
+--- @return string|nil error
 function AnthropicHandler:parseBuiltinResponse(responseData)
     local content_blocks = koutil.tableGetValue(responseData, "content")
     if type(content_blocks) ~= "table" then

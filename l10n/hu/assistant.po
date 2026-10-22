@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 10:35+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Cím : %1\n"
-" - Szerző: %2\n"
-" - Olvasási haladás: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - o. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Nincs válasz)"
 
 msgid "(empty response body)"
 msgstr "(üres választörzs)"
+
+msgid "(none)"
+msgstr "(nincs)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>Az API hibát adott vissza</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Hozzáadva</b>: [%1 (AI)] a kiemelés menühöz."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>Az API nem adott használható választ</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>A könyv kontextusának elemzése a Term X-Ray funkcióhoz...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>Tegyél fel kérdést erről a könyvről:</b>\n"
-"%1 – %2"
+"<b>Kérdezz erről a könyvről:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>Telepítés: %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>A modell válasza:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Paraméterek</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Eltávolítva</b>: [%1 (AI)] a kiemelés menüből."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Gondolkodás (nincs végső válasz)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Érvelés:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>Kérés</b> – POST %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "Az AI-összefoglaló a következő alkalommal lesz engedélyezve, amikor egy régóta nem olvasott könyvet megnyit."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AI-összefoglalók"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Adjon hozzá szolgáltatókat a főmenüből:\n"
 "%1 -> AI asszisztens -> Beállítások -> Szolgáltató API"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Hozzáadva: <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Hozzáadva a szókincsbővítőhöz"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Minden szót, amit a szótárban megkeresel, azonnal hozzáad a Szókincsépítőhöz, amint megjelenik az eredmény."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "A könyvben található kiemelések, jegyzetek és AI-jegyzetek tartalmának elemzése."
@@ -369,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Biztosan törlöd az asszisztens plugin beállításait?\n"
-"Ez visszaállítja az asszisztens plugint az első telepítéskori állapotára.\n"
+"Biztosan törli az asszisztens bővítmény beállításait?\n"
+"Ezzel az asszisztens bővítmény visszaáll a legelső telepítéskori állapotára.\n"
 "\n"
-"A configuration.lua biztonságban marad, csak a beállítások törlődnek."
+"A configuration.lua érintetlen marad, csak a beállítások törlődnek."
 
 msgid "Ask"
 msgstr "Kérdezés"
@@ -404,6 +403,9 @@ msgstr "Kérdezz bármit..."
 msgid "Ask the AI a question"
 msgstr "Tegyen fel egy kérdést az AI-nak"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "Kérd meg az AI-t, hogy a megnyitott könyv nyitószövege alapján azonosítsa a könyv címét és szerzőjét."
+
 msgid "Assistant settings are not available."
 msgstr "Az asszisztens beállításai nem érhetők el."
 
@@ -412,6 +414,16 @@ msgstr "Előző szöveg csatolása"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "A választ könyvjegyzetként csatolja a jelenlegi kiemeléshez"
+
+msgid "Author"
+msgstr "Szerző"
+
+msgid "Auto"
+msgstr "Automatikus"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Szó automatikus hozzáadása a Szókincsépítőhöz"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "Könyv betekintések"
 
 msgid "Book Summary & Recs"
 msgstr "Könyv összefoglaló és ajánlások"
+
+msgid "Book metadata updated."
+msgstr "A könyv metaadatai frissítve."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "A \"%1\" ág/címke nem található."
@@ -530,11 +545,17 @@ msgstr "Kontextuális jegyzetek"
 msgid "Contextual Notes / Reflections"
 msgstr "Kontextuális jegyzetek / Reflexiók"
 
+msgid "Continue"
+msgstr "Folytatás"
+
 msgid "Contradictions / Open Questions"
 msgstr "Ellentmondások / Nyitott kérdések"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "A beszélgetés mentve az AI-jegyzetekbe"
+
+msgid "Copied to clipboard."
+msgstr "Vágólapra másolva."
 
 msgid "Copy"
 msgstr "Másolás"
@@ -562,11 +583,17 @@ msgstr "Nem sikerült létrehozni az AI-jegyzetet."
 msgid "Could not create AI note: %1"
 msgstr "Nem sikerült létrehozni az AI-jegyzetet: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Nem sikerült szöveget kinyerni ebből a könyvből."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "Nem sikerült listázni az AI-jegyzetek mappát: %1"
 
 msgid "Could not open AI note file."
 msgstr "Nem sikerült megnyitni az AI-jegyzet fájlt."
+
+msgid "Could not parse the identification result."
+msgstr "Nem sikerült feldolgozni az azonosítás eredményét."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Egyéni prompt"
 msgid "Custom Prompts"
 msgstr "Egyéni promptok"
 
-msgid "Deeply Thought"
-msgstr "Mély gondolat"
+msgid "Default"
+msgstr "Alapértelmezett"
 
 msgid "Delete"
 msgstr "Törlés"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "Törlöd a(z) %1 szolgáltatót?"
 
+msgid "Description: %1"
+msgstr "Leírás: %1"
+
 msgid "Device"
 msgstr "Eszköz"
 
@@ -630,8 +660,8 @@ msgstr "Szótár"
 msgid "Dictionary Language"
 msgstr "Szótár nyelve"
 
-msgid "Dictionary Popup"
-msgstr "Szótár felugró ablaka"
+msgid "Dictionary Popup Buttons"
+msgstr "Szótár felugró ablak gombjai"
 
 msgid "Dictionary Settings"
 msgstr "Szótár beállításai"
@@ -770,11 +800,11 @@ msgstr "Általános beszélgetés"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Általában <b>NE</b> válasszon ki egynél többet - olyan paramétert válasszon, amelyik illeszkedik a modellhez és a platformhoz. A rossz paraméter API-hibákat okozhat. \n"
+"Általában <b>NE</b> válassz egynél többet – olyan paramétert válassz, amely illik a modelledhez és a platformodhoz. A hibás paraméter API-hibákat okozhat. \n"
 "\n"
-"A kiválasztott érték felülírja a konfiguráció additional_parameters értékét."
+"A kiválasztott érték felülírja a konfiguráció additional_parameters beállítását. Ha a kiválasztott opciók ugyanazzal a kulccsal rendelkeznek, csak a listában utolsóként szereplő lesz használva."
 
 msgid "Genre"
 msgstr "Műfaj"
@@ -803,12 +833,22 @@ msgstr "Történelmi kontextus"
 msgid "Historical and Cultural Context"
 msgstr "Történelmi és kulturális kontextus"
 
+msgid "Identify (AI)"
+msgstr "Azonosítás (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Könyv azonosítása"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Javítja a válaszok pontosságát valós idejű webes eredményekkel. \n"
 "Megjegyzés: Magasabb tokenfelhasználás és további API-költségek érvényesek."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "A megnyitott könyv nyitószövege alapján következtesd ki a könyv címét és szerzőjét, majd mentse el azokat egyéni metaadatként."
 
 msgid "Integrated Summary"
 msgstr "Integrált összefoglaló"
@@ -849,6 +889,9 @@ msgstr "Hagyd üresen a(z) %1 használatához"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Hagyd üresen ezeket a mezőket a felület nyelvének használatához: %1"
 
+msgid "Left to Right"
+msgstr "Balról jobbra"
+
 msgid "Locations"
 msgstr "Helyszínek"
 
@@ -863,6 +906,12 @@ msgstr "Markdown motor"
 
 msgid "Meaning & Usage"
 msgstr "Jelentés és használat"
+
+msgid "Metadata could not be saved."
+msgstr "A metaadatok mentése nem sikerült."
+
+msgid "Minimalist Mode"
+msgstr "Minimalista mód"
 
 msgid "Model"
 msgstr "Modell"
@@ -912,11 +961,17 @@ msgstr "Nincs aktív szolgáltató beállítva. Kérjük, adjon hozzá egyet a B
 msgid "No base folder is available for AI Notes."
 msgstr "Nincs elérhető alapmappa az AI-jegyzetekhez."
 
+msgid "No book is open."
+msgstr "Nincs megnyitott könyv."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Nincs megnyitott könyv. Nyomja meg hosszan a fájlkezelőben a kívánt könyvet, és válassza a Könyvinformációk (AI) lehetőséget."
 
 msgid "No common parameters are available for handler %1."
 msgstr "A(z) %1 kezelőhöz nem állnak rendelkezésre közös paraméterek."
+
+msgid "No highlight to annotate"
+msgstr "Nincs kijelölés a megjegyzéshez"
 
 msgid "No models available."
 msgstr "Nincs elérhető modell."
@@ -932,6 +987,9 @@ msgstr "Nem érkezett válasz."
 
 msgid "No text left to annotate"
 msgstr "Nincs több jegyzetelhető szöveg"
+
+msgid "No text selected"
+msgstr "Nincs kijelölt szöveg"
 
 msgid "No text to annotate"
 msgstr "Nincs jegyzetelhető szöveg"
@@ -1071,26 +1129,20 @@ msgstr "Törlés"
 msgid "Purge Settings"
 msgstr "Beállítások törlése"
 
-msgid "Question"
-msgstr "Kérdés"
-
 msgid "Quick Note"
 msgstr "Gyors jegyzet"
 
 msgid "Quick note saved successfully"
 msgstr "A gyorsjegyzet sikeresen elmentve"
 
-msgid "RTL Layout"
-msgstr "Jobbról balra elrendezés"
-
-msgid "RTL written Language"
-msgstr "RTL írású nyelv"
-
 msgid "Re-immersion"
 msgstr "Visszamerülés"
 
 msgid "Reader settings are not available."
 msgstr "Az olvasó beállításai nem érhetők el."
+
+msgid "Reading progress"
+msgstr "Olvasási előrehaladás"
 
 msgid "Reasoning Option"
 msgstr "Gondolkodási opció"
@@ -1111,6 +1163,9 @@ msgstr "Eltávolítás"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "Eltávolítod a(z) [%s] elemet a kiemelés menüből?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Eltávolítva: <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "A kérést a felhasználó megszakította."
@@ -1140,14 +1195,17 @@ msgstr ""
 "hozzáadott szolgáltatók, API-kulcsok és keresőeszköz hitelesítő adatok\n"
 "törlésre kerülnek. A configuration.lua fájl megmarad."
 
-msgid "Response"
-msgstr "Válasz"
+msgid "Response Font: %1"
+msgstr "Válasz betűtípusa: %1"
 
 msgid "Response Settings"
 msgstr "Válaszbeállítások"
 
 msgid "Response Text Font Size"
 msgstr "Válasz szövegének betűmérete"
+
+msgid "Right to Left"
+msgstr "Jobbról balra"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1216,14 +1274,26 @@ msgstr "AI-jegyzet kiválasztása"
 msgid "Select a model:"
 msgstr "Válasszon modellt:"
 
-msgid "Selection copied to clipboard."
-msgstr "A kijelölés átmásolva a vágólapra."
+msgid "Set"
+msgstr "Beállítás"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Beállítja a könyv metaadatait?\n"
+"Cím: %1\n"
+"Szerző: %2"
 
 msgid "Settings"
 msgstr "Beállítások"
 
 msgid "Show Follow-up Questions"
 msgstr "További kérdések megjelenítése"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Kiemelt szöveg megjelenítése felül"
 
 msgid "Show Reasoning"
 msgstr "Gondolatmenet megjelenítése"
@@ -1236,6 +1306,12 @@ msgstr "Az AI válasz mély gondolkodási folyamatának (reasoning) megjelenít�
 
 msgid "Show follow up questions related to the response content."
 msgstr "A válasz tartalmához kapcsolódó további kérdések megjelenítése."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Csak a választ jeleníti meg: nincsenek Felhasználó/Asszisztens címek, nincs első gombsor, nincs érvelés és nincsenek utókérdések. A Bezárás mellett csak a válaszon lévő műveleteket (Megjegyzés, Szókincsépítő) tartja meg. Aktív állapotban kikapcsolja az Érvelési szöveget és az Utókérdéseket."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "A prompt által megcélzott szöveget külön blokként jeleníti meg a forduló tetején, a kérdés fölött, így az eredeti összehasonlítható a válasszal. A kérdésbuborék ezután már nem ismétli meg."
 
 msgid "Similar Books Recommendations"
 msgstr "Hasonló könyvek ajánlása"
@@ -1297,7 +1373,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Készíts gyorsjegyzeteket, amelyek az AI-jegyzeteidbe mentődnek."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Term X-Ray"
 
@@ -1307,6 +1382,12 @@ msgstr "Kifejezések és fogalmak"
 msgid "Test"
 msgstr "Teszt"
 
+msgid "Text Appearance"
+msgstr "Szöveg megjelenése"
+
+msgid "Text Direction: %1"
+msgstr "Szövegirány: %1"
+
 msgid "Text Size: %1"
 msgstr "Betűméret: %1"
 
@@ -1315,6 +1396,12 @@ msgstr "A szöveg a vágólapra másolva."
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "A(z) %1 kezelő nem található. Győződjön meg róla, hogy a kezelő létezik az api_handlers könyvtárban."
+
+msgid "The model could not identify this book."
+msgstr "A modell nem tudta azonosítani ezt a könyvet."
+
+msgid "Thinking ..."
+msgstr "Gondolkodás ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Ez a gomb gyors jegyzetet hoz létre a kiemelt szöveggel."
@@ -1378,6 +1465,12 @@ msgstr "Ez a prompt lefordítja a kiemelt szöveget egy másik nyelvre."
 msgid "Timeline"
 msgstr "Idővonal"
 
+msgid "Title"
+msgstr "Cím"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "A cím vagy a szerző metaadatai hiányoznak vagy hiányosak, ezért az AI eredménye megbízhatatlan lehet. Először használd az Azonosítás (AI) funkciót a beállításukhoz."
+
 msgid "To-Do / Action Items"
 msgstr "Teendők / Feladatok"
 
@@ -1393,6 +1486,13 @@ msgstr "Az eszközhívás nem tartalmazott keresési kulcsszavakat."
 msgid "Translate"
 msgstr "Fordítás"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Fordítás (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "AI segítségével lefordítja a könyv leírását."
+
 msgid "Translation"
 msgstr "Fordítás"
 
@@ -1404,6 +1504,12 @@ msgstr "Írd ide a kérdésedet..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Ismeretlen szerző"
+
+msgid "Unknown Title"
+msgstr "Ismeretlen cím"
 
 msgid "Unknown error"
 msgstr "Ismeretlen hiba"
@@ -1473,6 +1579,13 @@ msgstr "Megtekintés"
 msgid "Vocabulary"
 msgstr "Szókincs"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Szókincsépítő"
+
+msgid "Waiting for the model ..."
+msgstr "Várakozás a modellre ..."
+
 msgid "Web Search"
 msgstr "Webes keresés"
 
@@ -1504,9 +1617,6 @@ msgstr "Szóalak és lemma"
 msgid "Word Origin"
 msgstr "Szóeredet"
 
-msgid "Word copied to clipboard."
-msgstr "A szó átmásolva a vágólapra."
-
 msgid "Write quick notes here"
 msgstr "Írj ide gyors jegyzeteket"
 
@@ -1533,6 +1643,3 @@ msgstr "pl. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: nem sikerült elemezni a visszakapott adatokat"
-
-msgid "https://..."
-msgstr "https://..."

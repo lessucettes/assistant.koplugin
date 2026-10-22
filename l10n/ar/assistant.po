@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 02:47+0000\n"
 "Last-Translator: AI (auto)\n"
 "Language-Team: عربى (AI translation)\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 ? 4 : 5;\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - العنوان: %1\n"
-" - المؤلف: %2\n"
-" - تقدم القراءة: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - ص. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(لا يوجد رد)"
 
 msgid "(empty response body)"
 msgstr "(نص استجابة فارغ)"
+
+msgid "(none)"
+msgstr "(لا شيء)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>أعاد API خطأ</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>تمت الإضافة</b> [%1 (AI)] إلى قائمة التمييز."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>لم يُرجع API أي إجابة قابلة للاستخدام</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>جارٍ تحليل سياق الكتاب لـ Term X-Ray...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>اسأل سؤالاً عن هذا الكتاب:</b>\n"
-"%1 من %2"
+"<b>اطرح سؤالًا حول هذا الكتاب:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>جارٍ تثبيت %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>رد النموذج:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>المعلمات</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>تمت الإزالة</b> [%1 (AI)] من قائمة التمييز."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>الاستدلال (لا توجد إجابة نهائية)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>الاستدلال:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>الطلب</b> - POST %1"
@@ -189,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>الاستجابة</b> - HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "جارٍ اختبار الاتصال..."
+msgstr "<b>جارٍ اختبار الاتصال...</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>نوع ميزة غير معروف:</b> %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "سيُفعَّل الملخّص بالذكاء الاصطناعي في المرة القادمة التي يُفتح فيها كتاب لم يُقرأ منذ فترة طويلة."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "ملخّصات الذكاء الاصطناعي"
 
@@ -353,8 +346,14 @@ msgstr ""
 "أضف المزودين من القائمة الرئيسية:\n"
 "%1 -> مساعد الذكاء الاصطناعي -> الإعدادات -> API المزود"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "أُضيف <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "أُضيف إلى باني المفردات"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "يضيف كل كلمة تبحث عنها في القاموس إلى باني المفردات بمجرد ظهور النتيجة."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "تحليل التظليلات والملاحظات ومحتوى ملاحظات الذكاء الاصطناعي من الكتاب."
@@ -369,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"هل أنت متأكد من مسح إعدادات إضافة المساعد؟ \n"
-"سيؤدي هذا إلى إعادة تعيين إضافة المساعد إلى الحالة التي كانت عليها عند تثبيتها لأول مرة.\n"
+"هل أنت متأكد من إفراغ إعدادات إضافة المساعد؟\n"
+"سيؤدي هذا إلى إعادة تعيين إضافة المساعد إلى الحالة التي كانت عليها عند أول تثبيت لها.\n"
 "\n"
-"ملف configuration.lua آمن، حيث يتم مسح الإعدادات فقط."
+"ملف configuration.lua آمن، إذ تُفرَغ الإعدادات فقط."
 
 msgid "Ask"
 msgstr "اسأل"
@@ -404,6 +403,9 @@ msgstr "اسأل أي شيء..."
 msgid "Ask the AI a question"
 msgstr "اسأل الذكاء الاصطناعي سؤالًا"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "اطلب من الذكاء الاصطناعي تحديد عنوان الكتاب المفتوح ومؤلفه من نصّه الافتتاحي."
+
 msgid "Assistant settings are not available."
 msgstr "إعدادات المساعد غير متاحة."
 
@@ -412,6 +414,16 @@ msgstr "إرفاق النص السابق"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "يُرفق الإجابة كملاحظة في الكتاب بالتظليل الحالي"
+
+msgid "Author"
+msgstr "المؤلف"
+
+msgid "Auto"
+msgstr "تلقائي"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "إضافة الكلمات تلقائيًا إلى باني المفردات"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "رؤى الكتاب"
 
 msgid "Book Summary & Recs"
 msgstr "ملخص الكتاب والتوصيات"
+
+msgid "Book metadata updated."
+msgstr "تم تحديث بيانات الكتاب الوصفية."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "الفرع/الوسم \"%1\" غير موجود."
@@ -530,11 +545,17 @@ msgstr "ملاحظات سياقية"
 msgid "Contextual Notes / Reflections"
 msgstr "ملاحظات سياقية / تأملات"
 
+msgid "Continue"
+msgstr "متابعة"
+
 msgid "Contradictions / Open Questions"
 msgstr "تناقضات / أسئلة مفتوحة"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "تم حفظ المحادثة في ملاحظات الذكاء الاصطناعي"
+
+msgid "Copied to clipboard."
+msgstr "تم النسخ إلى الحافظة."
 
 msgid "Copy"
 msgstr "نسخ"
@@ -562,11 +583,17 @@ msgstr "تعذّر إنشاء ملاحظة الذكاء الاصطناعي."
 msgid "Could not create AI note: %1"
 msgstr "تعذّر إنشاء ملاحظة الذكاء الاصطناعي: %1"
 
+msgid "Could not extract text from this book."
+msgstr "تعذّر استخراج النص من هذا الكتاب."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "تعذّر سرد مجلد ملاحظات الذكاء الاصطناعي: %1"
 
 msgid "Could not open AI note file."
 msgstr "تعذّر فتح ملف ملاحظة الذكاء الاصطناعي."
+
+msgid "Could not parse the identification result."
+msgstr "تعذّر تحليل نتيجة التحديد."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "موجه مخصص"
 msgid "Custom Prompts"
 msgstr "الموجهات المخصصة"
 
-msgid "Deeply Thought"
-msgstr "تفكير عميق"
+msgid "Default"
+msgstr "افتراضي"
 
 msgid "Delete"
 msgstr "حذف"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "حذف مزود الخدمة %1؟"
 
+msgid "Description: %1"
+msgstr "الوصف: %1"
+
 msgid "Device"
 msgstr "الجهاز"
 
@@ -630,8 +660,8 @@ msgstr "القاموس"
 msgid "Dictionary Language"
 msgstr "لغة القاموس"
 
-msgid "Dictionary Popup"
-msgstr "نافذة القاموس المنبثقة"
+msgid "Dictionary Popup Buttons"
+msgstr "أزرار النافذة المنبثقة للقاموس"
 
 msgid "Dictionary Settings"
 msgstr "إعدادات القاموس"
@@ -770,11 +800,11 @@ msgstr "محادثة عامة"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"بشكل عام، <b>لا</b> تختار أكثر من معامل - اختر معاملًا يطابق نموذجك ومنصتك. قد يتسبب معامل خاطئ في أخطاء API. \n"
+"بشكل عام <b>لا</b> تختر أكثر من واحد - اختر معاملًا يطابق نموذجك ومنصتك. قد يؤدي اختيار معامل خاطئ إلى أخطاء في API.\n"
 "\n"
-"القيمة المحددة تتجاوز additional_parameters الخاصة بالتكوين."
+"القيمة المحددة تتجاوز additional_parameters في الإعدادات. إذا اشتركت الخيارات المحددة في المفتاح نفسه، فسيُستخدم الخيار الأخير في القائمة فقط."
 
 msgid "Genre"
 msgstr "النوع الأدبي"
@@ -803,12 +833,22 @@ msgstr "السياق التاريخي"
 msgid "Historical and Cultural Context"
 msgstr "السياق التاريخي والثقافي"
 
+msgid "Identify (AI)"
+msgstr "تحديد (بالذكاء الاصطناعي)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "حدّد هذا الكتاب"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "يحسّن دقة الاستجابات باستخدام نتائج الويب في الوقت الفعلي. \n"
 "ملاحظة: يترتب على ذلك استخدام توكنات أعلى ورسوم API إضافية."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "استنتج عنوان الكتاب المفتوح ومؤلفه من نصّه الافتتاحي واحفظهما كبيانات وصفية مخصّصة."
 
 msgid "Integrated Summary"
 msgstr "ملخص متكامل"
@@ -853,6 +893,9 @@ msgstr "اتركه فارغًا لاستخدام: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "اترك هذه الحقول فارغة لاستخدام لغة الواجهة: %1"
 
+msgid "Left to Right"
+msgstr "من اليسار إلى اليمين"
+
 msgid "Locations"
 msgstr "الأماكن"
 
@@ -867,6 +910,12 @@ msgstr "محرك ماركداون"
 
 msgid "Meaning & Usage"
 msgstr "المعنى والاستخدام"
+
+msgid "Metadata could not be saved."
+msgstr "تعذّر حفظ البيانات الوصفية."
+
+msgid "Minimalist Mode"
+msgstr "الوضع المبسّط"
 
 msgid "Model"
 msgstr "النموذج"
@@ -916,11 +965,17 @@ msgstr "لا يوجد مزود خدمة نشط مُكوَّن. يرجى إضاف
 msgid "No base folder is available for AI Notes."
 msgstr "لا يتوفر مجلد أساسي لملاحظات الذكاء الاصطناعي."
 
+msgid "No book is open."
+msgstr "لا يوجد كتاب مفتوح."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "لا يوجد كتاب مفتوح. اضغط مطولًا على كتاب في مدير الملفات ثم اختر معلومات الكتاب (AI)."
 
 msgid "No common parameters are available for handler %1."
 msgstr "النموذج"
+
+msgid "No highlight to annotate"
+msgstr "لا يوجد نص مميّز لتدوينه"
 
 msgid "No models available."
 msgstr "لا توجد نماذج متاحة."
@@ -936,6 +991,9 @@ msgstr "لم يتم تلقي أي استجابة."
 
 msgid "No text left to annotate"
 msgstr "لا يتبقى نص لإضافة تعليق عليه"
+
+msgid "No text selected"
+msgstr "لم يتم تحديد أي نص"
 
 msgid "No text to annotate"
 msgstr "لا يوجد نص لإضافة تعليق عليه"
@@ -1075,26 +1133,20 @@ msgstr "مسح"
 msgid "Purge Settings"
 msgstr "مسح الإعدادات"
 
-msgid "Question"
-msgstr "سؤال"
-
 msgid "Quick Note"
 msgstr "ملاحظة سريعة"
 
 msgid "Quick note saved successfully"
 msgstr "تم حفظ الملاحظة السريعة بنجاح"
 
-msgid "RTL Layout"
-msgstr "تخطيط من اليمين إلى اليسار"
-
-msgid "RTL written Language"
-msgstr "لغة مكتوبة من اليمين إلى اليسار"
-
 msgid "Re-immersion"
 msgstr "إعادة الانغماس"
 
 msgid "Reader settings are not available."
 msgstr "إعدادات القارئ غير متاحة."
+
+msgid "Reading progress"
+msgstr "تقدّم القراءة"
 
 msgid "Reasoning Option"
 msgstr "خيار الاستدلال"
@@ -1115,6 +1167,9 @@ msgstr "إزالة"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "إزالة [%s] من قائمة التمييز؟"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "أُزيل <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "تم إلغاء الطلب من قبل المستخدم."
@@ -1143,14 +1198,17 @@ msgstr ""
 "سيؤدي هذا إلى استعادة الملحق إلى إعداداته الافتراضية. ستتم إزالة المزودين ومفاتيح API وبيانات اعتماد أداة البحث المضافة عبر واجهة الإعدادات.\n"
 "سيتم الاحتفاظ بملف configuration.lua."
 
-msgid "Response"
-msgstr "الرد"
+msgid "Response Font: %1"
+msgstr "خط الرد: %1"
 
 msgid "Response Settings"
 msgstr "إعدادات الاستجابة"
 
 msgid "Response Text Font Size"
 msgstr "حجم خط نص الرد"
+
+msgid "Right to Left"
+msgstr "من اليمين إلى اليسار"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1219,14 +1277,26 @@ msgstr "اختر ملاحظة ذكاء اصطناعي"
 msgid "Select a model:"
 msgstr "اختر نموذجًا:"
 
-msgid "Selection copied to clipboard."
-msgstr "تم نسخ التحديد إلى الحافظة."
+msgid "Set"
+msgstr "تعيين"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"تعيين بيانات الكتاب الوصفية؟\n"
+"العنوان: %1\n"
+"المؤلف: %2"
 
 msgid "Settings"
 msgstr "الإعدادات"
 
 msgid "Show Follow-up Questions"
 msgstr "إظهار أسئلة المتابعة"
+
+msgid "Show Highlighted Text at Top"
+msgstr "إظهار النص المُظلَّل في الأعلى"
 
 msgid "Show Reasoning"
 msgstr "إظهار الاستدلال"
@@ -1239,6 +1309,12 @@ msgstr "إظهار عملية التفكير العميق (الاستدلال) �
 
 msgid "Show follow up questions related to the response content."
 msgstr "إظهار أسئلة متابعة متعلقة بمحتوى الاستجابة."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "يعرض الإجابة وحدها: بلا عنوانَي «المستخدم/المساعد»، وبلا صف الأزرار الأول، وبلا تفكير ولا أسئلة متابعة. يُبقي فقط الإجراءات على الإجابة نفسها (تدوين، بنّاء المفردات) بجانب «إغلاق». يُعطّل نص التفكير والأسئلة المتابعة أثناء تفعيله."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "يعرض النص الذي استهدفه التوجيه ككتلة خاصة به في أعلى الدور، فوق السؤال، بحيث يمكن مقارنة الأصل بالإجابة. ثم تتوقف فقاعة السؤال عن تكراره."
 
 msgid "Similar Books Recommendations"
 msgstr "توصيات بكتب مشابهة"
@@ -1300,7 +1376,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "دوّن ملاحظات سريعة ستُحفظ في ملاحظات الذكاء الاصطناعي."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "الأشعة السينية للمصطلح"
 
@@ -1310,6 +1385,12 @@ msgstr "المصطلحات والمفاهيم"
 msgid "Test"
 msgstr "اختبار"
 
+msgid "Text Appearance"
+msgstr "مظهر النص"
+
+msgid "Text Direction: %1"
+msgstr "اتجاه النص: %1"
+
 msgid "Text Size: %1"
 msgstr "حجم النص: %1"
 
@@ -1318,6 +1399,12 @@ msgstr "تم نسخ النص إلى الحافظة"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "لم يتم العثور على المعالج لـ %1. يرجى التأكد من وجود المعالج في مجلد api_handlers."
+
+msgid "The model could not identify this book."
+msgstr "تعذّر على النموذج تحديد هذا الكتاب."
+
+msgid "Thinking ..."
+msgstr "جارٍ التفكير ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "ينشئ هذا الزر ملاحظة سريعة بالنص المميز."
@@ -1381,6 +1468,12 @@ msgstr "يترجم هذا الموجّه النص المميز إلى لغة أ�
 msgid "Timeline"
 msgstr "الخط الزمني"
 
+msgid "Title"
+msgstr "العنوان"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "بيانات العنوان أو المؤلف الوصفية مفقودة أو غير مكتملة، لذا قد تكون نتيجة الذكاء الاصطناعي غير موثوقة. استخدم «تحديد (بالذكاء الاصطناعي)» لتعيينها أولًا."
+
 msgid "To-Do / Action Items"
 msgstr "المهام / بنود العمل"
 
@@ -1396,6 +1489,13 @@ msgstr "استدعاء الأداة لم يتضمن كلمات بحث."
 msgid "Translate"
 msgstr "ترجم"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "ترجمة (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "يترجم وصف الكتاب بالذكاء الاصطناعي."
+
 msgid "Translation"
 msgstr "الترجمة"
 
@@ -1407,6 +1507,12 @@ msgstr "اكتب سؤالك هنا..."
 
 msgid "URL: %1"
 msgstr "الرابط: %1"
+
+msgid "Unknown Author"
+msgstr "مؤلف غير معروف"
+
+msgid "Unknown Title"
+msgstr "عنوان غير معروف"
 
 msgid "Unknown error"
 msgstr "خطأ غير معروف"
@@ -1476,6 +1582,13 @@ msgstr "عرض"
 msgid "Vocabulary"
 msgstr "المفردات"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "بنّاء المفردات"
+
+msgid "Waiting for the model ..."
+msgstr "في انتظار النموذج ..."
+
 msgid "Web Search"
 msgstr "البحث على الويب"
 
@@ -1507,9 +1620,6 @@ msgstr "صيغة الكلمة والأصل"
 msgid "Word Origin"
 msgstr "أصل الكلمة"
 
-msgid "Word copied to clipboard."
-msgstr "تم نسخ الكلمة إلى الحافظة."
-
 msgid "Write quick notes here"
 msgstr "اكتب ملاحظات سريعة هنا"
 
@@ -1536,6 +1646,3 @@ msgstr "مثال: google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: فشل تحليل البيانات المسترجعة"
-
-msgid "https://..."
-msgstr "https://..."

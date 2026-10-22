@@ -1,12 +1,12 @@
 local BaseHandler = require("api_handlers.base")
-local NetUtils = require("assistant_net_utils")
-local TextUtils = require("assistant_text_utils")
+local NetUtils = require("utils/net")
+local TextUtils = require("utils/text")
 local json = require("rapidjson")
 local koutil = require("util")
 local logger = require("logger")
-local ToolExecutor = require("assistant_tool_executor")
+local ToolExecutor = require("core/tool_executor")
 local UIManager = require("ui/uimanager")
-local _ = require("assistant_gettext")
+local _ = require("core/gettext")
 local InfoMessage = require("ui/widget/infomessage")
 
 local GeminiHandler = BaseHandler:new({
@@ -65,7 +65,8 @@ end
 --- (role="model") or functionResponse user turns (role="user", .parts set).
 ---
 --- @param messages table
---- @return table contents, string system_content
+--- @return table contents
+--- @return string system_content
 local function toGeminiContents(messages)
     local contents      = {}
     local system_parts = {}
@@ -174,6 +175,9 @@ end
 
 --- Connection test: minimal generateContent request with the static echo
 --- instruction. base_url must keep the /models segment (same rule as query).
+--- The generation config comes from the same builder a real query uses, so
+--- the tested thinking options take their production shape; only the token
+--- budget defaults to the test limit.
 function GeminiHandler:Test()
     local base_url = (self.base_url or "https://generativelanguage.googleapis.com/v1beta/models")
                        :gsub("/+$", "")
@@ -182,12 +186,16 @@ function GeminiHandler:Test()
         ["Content-Type"]   = "application/json",
         ["x-goog-api-key"] = self.api_key,
     }
+    local gc = buildGenerationConfig(self.additional_parameters) or {}
+    gc.maxOutputTokens = gc.maxOutputTokens or self.TEST_MAX_OUTPUT_TOKENS
     local body = {
         contents = { { role = "user", parts = { { text = self.TEST_PROMPT } } } },
-        generationConfig = { maxOutputTokens = 64 },
+        generationConfig = gc,
     }
     return self:testRequest(url, headers, body, function(data)
-        return koutil.tableGetValue(data, "candidates", 1, "content", "parts", 1, "text")
+        local parsed = ToolExecutor.parseToolCallsResponse(data, "gemini")
+        if type(parsed) == "table" then return parsed.content, parsed.reasoning end
+        return nil
     end)
 end
 

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 10:35+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Başlık : %1\n"
-" - Yazar: %2\n"
-" - Okuma ilerlemesi: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - s. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Yanıt yok)"
 
 msgid "(empty response body)"
 msgstr "(boş yanıt gövdesi)"
+
+msgid "(none)"
+msgstr "(yok)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API bir hata döndürdü</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Eklendi</b> [%1 (AI)] Vurgu Menüsüne."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API kullanılabilir bir yanıt döndürmedi</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Terim X-Ray için kitap bağlamı analiz ediliyor...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
 "<b>Bu kitap hakkında bir soru sorun:</b>\n"
-"%1 - %2"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>%1 yükleniyor...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Model yanıtı:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Parametreler</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Kaldırıldı</b> [%1 (AI)] Vurgu Menüsünden."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Akıl yürütme (nihai yanıt yok)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Akıl yürütme:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>İstek</b> - POST %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "AI Özeti, uzun süredir okunmayan bir kitap bir sonraki açılışında etkinleştirilecek."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AI Özetleri"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Ana menüden sağlayıcı ekleyin:\n"
 "%1 -> Yapay Zeka Asistanı -> Ayarlar -> Sağlayıcı API'si"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Eklendi <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Kelime dağarcığı oluşturucuya eklendi"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Sözlükte aradığınız her sözcüğü, sonuç görünür görünmez Kelime Hazinesi Oluşturucu'ya ekler."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Kitaptaki vurgularınızın, notlarınızın ve AI Notları içeriğinin analizi."
@@ -369,13 +368,13 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Asistan eklentisi ayarlarını temizlemek istediğinize emin misiniz? \n"
-"Bu, asistan eklentisini ilk kurduğunuz zamanki durumuna sıfırlar.\n"
+"Asistan eklentisi ayarlarını temizlemek istediğinizden emin misiniz?\n"
+"Bu, asistan eklentisini ilk yüklediğiniz andaki durumuna sıfırlar.\n"
 "\n"
 "configuration.lua güvende, yalnızca ayarlar temizlenir."
 
@@ -404,6 +403,9 @@ msgstr "Her şeyi sorun..."
 msgid "Ask the AI a question"
 msgstr "AI'ya bir soru sorun"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "AI'dan açık kitabın başlığını ve yazarını açılış metninden belirlemesini isteyin."
+
 msgid "Assistant settings are not available."
 msgstr "Asistan ayarları mevcut değil."
 
@@ -412,6 +414,16 @@ msgstr "Önceki Metni Ekle"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Yanıtı geçerli vurguya kitap notu olarak ekler"
+
+msgid "Author"
+msgstr "Yazar"
+
+msgid "Auto"
+msgstr "Otomatik"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Kelimeyi Kelime Hazinesi Oluşturucu'ya Otomatik Ekle"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "Kitap İçgörüleri"
 
 msgid "Book Summary & Recs"
 msgstr "Kitap Özeti ve Öneriler"
+
+msgid "Book metadata updated."
+msgstr "Kitap meta verisi güncellendi."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "\"%1\" dalı/etiketi bulunamadı."
@@ -530,11 +545,17 @@ msgstr "Bağlam Notları"
 msgid "Contextual Notes / Reflections"
 msgstr "Bağlam Notları / Düşünceler"
 
+msgid "Continue"
+msgstr "Devam et"
+
 msgid "Contradictions / Open Questions"
 msgstr "Çelişkiler / Açık Sorular"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "Sohbet AI Notlarına kaydedildi"
+
+msgid "Copied to clipboard."
+msgstr "Panoya kopyalandı."
 
 msgid "Copy"
 msgstr "Kopyala"
@@ -562,11 +583,17 @@ msgstr "AI notu oluşturulamadı."
 msgid "Could not create AI note: %1"
 msgstr "AI notu oluşturulamadı: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Bu kitaptan metin çıkarılamadı."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "AI Notları klasörü listelenemedi: %1"
 
 msgid "Could not open AI note file."
 msgstr "AI notu dosyası açılamadı."
+
+msgid "Could not parse the identification result."
+msgstr "Tanımlama sonucu ayrıştırılamadı."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Özel İstem"
 msgid "Custom Prompts"
 msgstr "Özel İstemler"
 
-msgid "Deeply Thought"
-msgstr "Derin Düşünce"
+msgid "Default"
+msgstr "Varsayılan"
 
 msgid "Delete"
 msgstr "Sil"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "%1 sağlayıcısı silinsin mi?"
 
+msgid "Description: %1"
+msgstr "Açıklama: %1"
+
 msgid "Device"
 msgstr "Cihaz"
 
@@ -630,8 +660,8 @@ msgstr "Sözlük"
 msgid "Dictionary Language"
 msgstr "Sözlük Dili"
 
-msgid "Dictionary Popup"
-msgstr "Sözlük Açılır Penceresi"
+msgid "Dictionary Popup Buttons"
+msgstr "Sözlük Açılır Pencere Düğmeleri"
 
 msgid "Dictionary Settings"
 msgstr "Sözlük Ayarları"
@@ -770,11 +800,11 @@ msgstr "Genel Sohbet"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Genel olarak <b>birden fazla</b> seçmeyin - modelinize ve platformunuza uyan bir parametre seçin. Yanlış bir parametre API hatalarına neden olabilir. \n"
+"Genellikle birden fazla parametre <b>SEÇMEYİN</b> - modelinizle ve platformunuzla eşleşen bir parametre seçin. Yanlış bir parametre API hatalarına yol açabilir. \n"
 "\n"
-"Seçilen değer, yapılandırmanın additional_parameters alanını geçersiz kılar."
+"Seçilen değer, yapılandırmanın additional_parameters ayarını geçersiz kılar. Seçilen seçenekler aynı anahtarı paylaşıyorsa, listedeki yalnızca son seçenek kullanılır."
 
 msgid "Genre"
 msgstr "Tür"
@@ -803,12 +833,22 @@ msgstr "Tarihsel Bağlam"
 msgid "Historical and Cultural Context"
 msgstr "Tarihsel ve Kültürel Bağlam"
 
+msgid "Identify (AI)"
+msgstr "Tanımla (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Bu Kitabı Tanımla"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Gerçek zamanlı web sonuçlarıyla yanıt doğruluğunu artırır. \n"
 "Not: Daha yüksek token kullanımı ve ek API ücretleri uygulanır."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Açık kitabın başlığını ve yazarını açılış metninden tahmin edip özel meta veri olarak kaydedin."
 
 msgid "Integrated Summary"
 msgstr "Bütünleşik Özet"
@@ -849,6 +889,9 @@ msgstr "Kullanmak için boş bırakın: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Arayüz dilini kullanmak için bu alanları boş bırakın: %1"
 
+msgid "Left to Right"
+msgstr "Soldan Sağa"
+
 msgid "Locations"
 msgstr "Mekânlar"
 
@@ -863,6 +906,12 @@ msgstr "Markdown Motoru"
 
 msgid "Meaning & Usage"
 msgstr "Anlam ve Kullanım"
+
+msgid "Metadata could not be saved."
+msgstr "Meta veri kaydedilemedi."
+
+msgid "Minimalist Mode"
+msgstr "Minimalist Mod"
 
 msgid "Model"
 msgstr "Model"
@@ -912,11 +961,17 @@ msgstr "Etkin sağlayıcı yapılandırılmadı. Lütfen Ayarlar'dan bir tane ek
 msgid "No base folder is available for AI Notes."
 msgstr "Yapay Zeka Notları için kullanılabilir bir temel klasör yok."
 
+msgid "No book is open."
+msgstr "Açık kitap yok."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Açık bir kitap yok. Dosya yöneticisinde bir kitaba uzun basın ve Kitap Bilgisi (AI) seçeneğini seçin."
 
 msgid "No common parameters are available for handler %1."
 msgstr "%1 için kullanılabilir parametre yok."
+
+msgid "No highlight to annotate"
+msgstr "Not eklenecek vurgu yok"
 
 msgid "No models available."
 msgstr "Kullanılabilir model yok."
@@ -932,6 +987,9 @@ msgstr "Yanıt alınmadı."
 
 msgid "No text left to annotate"
 msgstr "Not eklenecek metin kalmadı"
+
+msgid "No text selected"
+msgstr "Metin seçilmedi"
 
 msgid "No text to annotate"
 msgstr "Not eklenecek metin yok"
@@ -1071,26 +1129,20 @@ msgstr "Temizle"
 msgid "Purge Settings"
 msgstr "Ayarları Temizle"
 
-msgid "Question"
-msgstr "Soru"
-
 msgid "Quick Note"
 msgstr "Hızlı Not"
 
 msgid "Quick note saved successfully"
 msgstr "Hızlı not başarıyla kaydedildi"
 
-msgid "RTL Layout"
-msgstr "Sağdan sola düzen"
-
-msgid "RTL written Language"
-msgstr "RTL Yazılan Dil"
-
 msgid "Re-immersion"
 msgstr "Hikâyeye Yeniden Dalış"
 
 msgid "Reader settings are not available."
 msgstr "Okuyucu ayarları kullanılamıyor."
+
+msgid "Reading progress"
+msgstr "Okuma ilerlemesi"
 
 msgid "Reasoning Option"
 msgstr "Muhakeme Seçeneği"
@@ -1111,6 +1163,9 @@ msgstr "Kaldır"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "[%s] Vurgu Menüsünden kaldırılsın mı?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Kaldırıldı <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "İstek kullanıcı tarafından iptal edildi."
@@ -1139,14 +1194,17 @@ msgstr ""
 "Bu, eklentiyi fabrika varsayılanlarına döndürür. Ayarlar arayüzü üzerinden eklenen sağlayıcılar, API anahtarları ve arama aracı kimlik bilgileri kaldırılacaktır.\n"
 "configuration.lua dosyası korunacaktır."
 
-msgid "Response"
-msgstr "Yanıt"
+msgid "Response Font: %1"
+msgstr "Yanıt Yazı Tipi: %1"
 
 msgid "Response Settings"
 msgstr "Yanıt Ayarları"
 
 msgid "Response Text Font Size"
 msgstr "Yanıt Metni Yazı Boyutu"
+
+msgid "Right to Left"
+msgstr "Sağdan Sola"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1215,14 +1273,26 @@ msgstr "Yapay Zeka Notu Seç"
 msgid "Select a model:"
 msgstr "Bir model seçin:"
 
-msgid "Selection copied to clipboard."
-msgstr "Seçim panoya kopyalandı."
+msgid "Set"
+msgstr "Ayarla"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Kitap meta verisi ayarlansın mı?\n"
+"Başlık: %1\n"
+"Yazar: %2"
 
 msgid "Settings"
 msgstr "Ayarlar"
 
 msgid "Show Follow-up Questions"
 msgstr "Devam Sorularını Göster"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Vurgulanan Metni Üstte Göster"
 
 msgid "Show Reasoning"
 msgstr "Akıl yürütmeyi göster"
@@ -1235,6 +1305,12 @@ msgstr "AI yanıtında varsa derin düşünme sürecini (akıl yürütme) göste
 
 msgid "Show follow up questions related to the response content."
 msgstr "Yanıt içeriğiyle ilgili devam sorularını göster."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Yanıtı tek başına gösterir: Kullanıcı/Asistan başlıkları, ilk düğme satırı, akıl yürütme ve takip soruları olmaz. Kapat'ın yanında yalnızca yanıtın kendisindeki eylemleri (Not Ekle, Kelime Dağarcığı) tutar. Etkinken Akıl Yürütme Metni ve Takip Soruları'nı devre dışı bırakır."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Bir istemin hedeflediği metni, turun en üstünde, sorunun üzerinde kendi bloğu olarak gösterir; böylece özgün metin yanıtla karşılaştırılabilir. Soru balonu da böylece bu metni tekrarlamayı bırakır."
 
 msgid "Similar Books Recommendations"
 msgstr "Benzer Kitap Önerileri"
@@ -1296,7 +1372,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Yapay Zeka Notlarınıza kaydedilecek hızlı notlar alın."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Terim X-Ray"
 
@@ -1306,6 +1381,12 @@ msgstr "Terimler ve Kavramlar"
 msgid "Test"
 msgstr "Test"
 
+msgid "Text Appearance"
+msgstr "Metin Görünümü"
+
+msgid "Text Direction: %1"
+msgstr "Metin Yönü: %1"
+
 msgid "Text Size: %1"
 msgstr "Yazı Boyutu: %1"
 
@@ -1314,6 +1395,12 @@ msgstr "Metin panoya kopyalandı"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "%1 için işleyici bulunamadı. Lütfen işleyicinin api_handlers dizininde mevcut olduğundan emin olun."
+
+msgid "The model could not identify this book."
+msgstr "Model bu kitabı tanımlayamadı."
+
+msgid "Thinking ..."
+msgstr "Düşünüyor ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Bu düğme, vurgulanan metinle hızlı bir not oluşturur."
@@ -1377,6 +1464,12 @@ msgstr "Bu istem, vurgulanan metni başka bir dile çevirir."
 msgid "Timeline"
 msgstr "Zaman Çizelgesi"
 
+msgid "Title"
+msgstr "Başlık"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Başlık veya yazar meta verisi eksik ya da tamamlanmamış; bu yüzden AI sonucu güvenilir olmayabilir. Önce ayarlamak için Tanımla (AI) seçeneğini kullanın."
+
 msgid "To-Do / Action Items"
 msgstr "Yapılacaklar / Eylem Maddeleri"
 
@@ -1392,6 +1485,13 @@ msgstr "Araç çağrısı arama anahtar kelimeleri içermiyor."
 msgid "Translate"
 msgstr "Çevir"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Çevir (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "Kitap açıklamasını AI ile çevirir."
+
 msgid "Translation"
 msgstr "Çeviri"
 
@@ -1403,6 +1503,12 @@ msgstr "Sorunuzu buraya yazın..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Bilinmeyen Yazar"
+
+msgid "Unknown Title"
+msgstr "Bilinmeyen Başlık"
 
 msgid "Unknown error"
 msgstr "Bilinmeyen hata"
@@ -1472,6 +1578,13 @@ msgstr "Görüntüle"
 msgid "Vocabulary"
 msgstr "Kelime Bilgisi"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Kelime Dağarcığı"
+
+msgid "Waiting for the model ..."
+msgstr "Model bekleniyor ..."
+
 msgid "Web Search"
 msgstr "Web Araması"
 
@@ -1503,9 +1616,6 @@ msgstr "Kelime Formu ve Lemma"
 msgid "Word Origin"
 msgstr "Kelime Kökeni"
 
-msgid "Word copied to clipboard."
-msgstr "Kelime panoya kopyalandı."
-
 msgid "Write quick notes here"
 msgstr "Buraya hızlı notlar yazın"
 
@@ -1532,6 +1642,3 @@ msgstr "ör. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: döndürülen veri ayrıştırılamadı"
-
-msgid "https://..."
-msgstr "https://..."

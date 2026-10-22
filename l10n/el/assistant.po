@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 10:35+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Τίτλος : %1\n"
-" - Συγγραφέας: %2\n"
-" - Πρόοδος ανάγνωσης: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - σ. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Καμία απάντηση)"
 
 msgid "(empty response body)"
 msgstr "(κενό σώμα απόκρισης)"
+
+msgid "(none)"
+msgstr "(κανένα)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>Το API επέστρεψε σφάλμα</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Προστέθηκε</b> το [%1 (AI)] στο Μενού Επισήμανσης."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>Το API δεν επέστρεψε αξιοποιήσιμη απάντηση</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Ανάλυση του πλαισίου του βιβλίου για Term X-Ray...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>Κάντε μια ερώτηση σχετικά με αυτό το βιβλίο:</b>\n"
-"%1 από %2"
+"<b>Κάντε μια ερώτηση για αυτό το βιβλίο:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>Εγκατάσταση %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Απάντηση μοντέλου:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Παράμετροι</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Αφαιρέθηκε</b> το [%1 (AI)] από το Μενού Επισήμανσης."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Συλλογισμός (χωρίς τελική απάντηση)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Συλλογισμός:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>Αίτημα</b> - POST %1"
@@ -189,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>Απόκριση</b> - HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "Δοκιμή σύνδεσης"
+msgstr "<b>Δοκιμή σύνδεσης...</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>Άγνωστος τύπος δυνατότητας:</b> %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "Το AI Recap θα ενεργοποιηθεί την επόμενη φορά που θα ανοίξει ένα βιβλίο που έχει μείνει καιρό αδιάβαστο."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "Ανακεφαλαιώσεις AI"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Προσθέστε παρόχους από το κύριο μενού:\n"
 "%1 -> AI Assistant -> Ρυθμίσεις -> API Παρόχου"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Προστέθηκε <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Προστέθηκε στο εργαλείο λεξιλογίου"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Προσθέτει κάθε λέξη που αναζητάτε στο λεξικό στη Δόμηση Λεξιλογίου μόλις εμφανιστεί το αποτέλεσμα."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Ανάλυση του περιεχομένου των επισημάνσεων, των σημειώσεων και των Σημειώσεων AI σας από το βιβλίο."
@@ -369,13 +368,13 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Είστε βέβαιοι ότι θέλετε να εκκαθαρίσετε τις ρυθμίσεις του πρόσθετου βοηθού; \n"
-"Αυτό επαναφέρει το πρόσθετο βοηθού στην κατάσταση που ήταν όταν το εγκαταστήσατε για πρώτη φορά.\n"
+"Είστε βέβαιοι ότι θέλετε να εκκαθαρίσετε τις ρυθμίσεις του πρόσθετου βοηθού;\n"
+"Αυτό επαναφέρει το πρόσθετο βοηθού στην κατάσταση της πρώτης εγκατάστασής του.\n"
 "\n"
 "Το configuration.lua είναι ασφαλές, εκκαθαρίζονται μόνο οι ρυθμίσεις."
 
@@ -404,6 +403,9 @@ msgstr "Ρωτήστε οτιδήποτε..."
 msgid "Ask the AI a question"
 msgstr "Κάντε μια ερώτηση στο AI"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "Ζητήστε από την AI να αναγνωρίσει τον τίτλο και τον συγγραφέα του ανοιχτού βιβλίου από το αρχικό του κείμενο."
+
 msgid "Assistant settings are not available."
 msgstr "Οι ρυθμίσεις του βοηθού δεν είναι διαθέσιμες."
 
@@ -412,6 +414,16 @@ msgstr "Επισύναψη προηγούμενου κειμένου"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Επισυνάπτει την απάντηση ως σημείωση βιβλίου στην τρέχουσα επισήμανση"
+
+msgid "Author"
+msgstr "Συγγραφέας"
+
+msgid "Auto"
+msgstr "Αυτόματα"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Αυτόματη προσθήκη λέξης στη Δόμηση Λεξιλογίου"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "Πληροφορίες Βιβλίου"
 
 msgid "Book Summary & Recs"
 msgstr "Περίληψη Βιβλίου & Προτάσεις"
+
+msgid "Book metadata updated."
+msgstr "Τα μεταδεδομένα του βιβλίου ενημερώθηκαν."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "Ο κλάδος/η ετικέτα \"%1\" δεν βρέθηκε."
@@ -530,11 +545,17 @@ msgstr "Σημειώσεις Πλαισίου"
 msgid "Contextual Notes / Reflections"
 msgstr "Σημειώσεις Πλαισίου / Σκέψεις"
 
+msgid "Continue"
+msgstr "Συνέχεια"
+
 msgid "Contradictions / Open Questions"
 msgstr "Αντιφάσεις / Ανοιχτά Ερωτήματα"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "Η συνομιλία αποθηκεύεται στις Σημειώσεις AI"
+
+msgid "Copied to clipboard."
+msgstr "Αντιγράφηκε στο πρόχειρο."
 
 msgid "Copy"
 msgstr "Αντιγραφή"
@@ -562,11 +583,17 @@ msgstr "Δεν ήταν δυνατή η δημιουργία σημείωσης 
 msgid "Could not create AI note: %1"
 msgstr "Δεν ήταν δυνατή η δημιουργία σημείωσης AI: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Δεν ήταν δυνατή η εξαγωγή κειμένου από αυτό το βιβλίο."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "Δεν ήταν δυνατή η καταγραφή του φακέλου Σημειώσεων AI: %1"
 
 msgid "Could not open AI note file."
 msgstr "Δεν ήταν δυνατό το άνοιγμα του αρχείου σημείωσης AI."
+
+msgid "Could not parse the identification result."
+msgstr "Δεν ήταν δυνατή η ανάλυση του αποτελέσματος αναγνώρισης."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Προσαρμοσμένη Προτροπή"
 msgid "Custom Prompts"
 msgstr "Προσαρμοσμένα Prompts"
 
-msgid "Deeply Thought"
-msgstr "Βαθιά σκέψη"
+msgid "Default"
+msgstr "Προεπιλογή"
 
 msgid "Delete"
 msgstr "Διαγραφή"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "Διαγραφή παρόχου %1;"
 
+msgid "Description: %1"
+msgstr "Περιγραφή: %1"
+
 msgid "Device"
 msgstr "Συσκευή"
 
@@ -630,8 +660,8 @@ msgstr "Λεξικό"
 msgid "Dictionary Language"
 msgstr "Γλώσσα λεξικού"
 
-msgid "Dictionary Popup"
-msgstr "Αναδυόμενο παράθυρο λεξικού"
+msgid "Dictionary Popup Buttons"
+msgstr "Κουμπιά αναδυόμενου παραθύρου λεξικού"
 
 msgid "Dictionary Settings"
 msgstr "Ρυθμίσεις λεξικού"
@@ -770,11 +800,11 @@ msgstr "Γενική Συνομιλία"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Γενικά <b>μην</b> επιλέγετε περισσότερες από μία - διαλέξτε μια παράμετρο που ταιριάζει με το μοντέλο και την πλατφόρμα σας. Μια λανθασμένη παράμετρος ενδέχεται να προκαλέσει σφάλματα API.\n"
+"Γενικά <b>ΜΗΝ</b> επιλέγετε περισσότερα από ένα - επιλέξτε μια παράμετρο που ταιριάζει με το μοντέλο και την πλατφόρμα σας. Μια λανθασμένη παράμετρος μπορεί να προκαλέσει σφάλματα API. \n"
 "\n"
-"Η επιλεγμένη τιμή παρακάμπτει τις additional_parameters της διαμόρφωσης."
+"Η επιλεγμένη τιμή υπερισχύει του additional_parameters της διαμόρφωσης. Αν οι επιλεγμένες επιλογές μοιράζονται το ίδιο κλειδί, χρησιμοποιείται μόνο η τελευταία στη λίστα."
 
 msgid "Genre"
 msgstr "Είδος"
@@ -803,12 +833,22 @@ msgstr "Ιστορικό πλαίσιο"
 msgid "Historical and Cultural Context"
 msgstr "Ιστορικό και Πολιτισμικό Πλαίσιο"
 
+msgid "Identify (AI)"
+msgstr "Αναγνώριση (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Αναγνώριση αυτού του βιβλίου"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Βελτιώνει την ακρίβεια των απαντήσεων με αποτελέσματα ιστού σε πραγματικό χρόνο. \n"
 "Σημείωση: Ισχύει μεγαλύτερη χρήση token και επιπλέον χρεώσεις API."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Συμπεράνετε τον τίτλο και τον συγγραφέα του ανοιχτού βιβλίου από το αρχικό του κείμενο και αποθηκεύστε τα ως προσαρμοσμένα μεταδεδομένα."
 
 msgid "Integrated Summary"
 msgstr "Ενοποιημένη Περίληψη"
@@ -849,6 +889,9 @@ msgstr "Αφήστε κενό για χρήση: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Αφήστε αυτά τα πεδία κενά για να χρησιμοποιηθεί η γλώσσα διεπαφής: %1"
 
+msgid "Left to Right"
+msgstr "Αριστερά προς δεξιά"
+
 msgid "Locations"
 msgstr "Τοποθεσίες"
 
@@ -863,6 +906,12 @@ msgstr "Μηχανή Markdown"
 
 msgid "Meaning & Usage"
 msgstr "Σημασία & Χρήση"
+
+msgid "Metadata could not be saved."
+msgstr "Δεν ήταν δυνατή η αποθήκευση των μεταδεδομένων."
+
+msgid "Minimalist Mode"
+msgstr "Μινιμαλιστική λειτουργία"
 
 msgid "Model"
 msgstr "Μοντέλο"
@@ -912,11 +961,17 @@ msgstr "Δεν έχει ρυθμιστεί ενεργός πάροχος. Προ
 msgid "No base folder is available for AI Notes."
 msgstr "Δεν υπάρχει διαθέσιμος βασικός φάκελος για τις σημειώσεις AI."
 
+msgid "No book is open."
+msgstr "Δεν υπάρχει ανοιχτό βιβλίο."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Δεν υπάρχει ανοιχτό βιβλίο. Κρατήστε πατημένο ένα βιβλίο στη διαχείριση αρχείων και επιλέξτε Πληροφορίες βιβλίου (AI)."
 
 msgid "No common parameters are available for handler %1."
-msgstr "Επιλογή Συλλογισμού"
+msgstr "Δεν υπάρχουν διαθέσιμες κοινές παράμετροι για τον χειριστή %1."
+
+msgid "No highlight to annotate"
+msgstr "Δεν υπάρχει επισήμανση για σχολιασμό"
 
 msgid "No models available."
 msgstr "Δεν υπάρχουν διαθέσιμα μοντέλα."
@@ -932,6 +987,9 @@ msgstr "Δεν λήφθηκε καμία απόκριση."
 
 msgid "No text left to annotate"
 msgstr "Δεν απομένει κείμενο για σχολιασμό"
+
+msgid "No text selected"
+msgstr "Δεν έχει επιλεγεί κείμενο"
 
 msgid "No text to annotate"
 msgstr "Δεν υπάρχει κείμενο για σχολιασμό"
@@ -1071,26 +1129,20 @@ msgstr "Εκκαθάριση"
 msgid "Purge Settings"
 msgstr "Εκκαθάριση Ρυθμίσεων"
 
-msgid "Question"
-msgstr "Ερώτηση"
-
 msgid "Quick Note"
 msgstr "Γρήγορη σημείωση"
 
 msgid "Quick note saved successfully"
 msgstr "Η γρήγορη σημείωση αποθηκεύτηκε επιτυχώς"
 
-msgid "RTL Layout"
-msgstr "Διάταξη RTL"
-
-msgid "RTL written Language"
-msgstr "Γλώσσα γραφής RTL"
-
 msgid "Re-immersion"
 msgstr "Επαναβύθιση"
 
 msgid "Reader settings are not available."
 msgstr "Οι ρυθμίσεις αναγνώστη δεν είναι διαθέσιμες."
+
+msgid "Reading progress"
+msgstr "Πρόοδος ανάγνωσης"
 
 msgid "Reasoning Option"
 msgstr "Επιλογή Συλλογισμού"
@@ -1111,6 +1163,9 @@ msgstr "Αφαίρεση"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "Να αφαιρεθεί το [%s] από το Μενού Επισήμανσης;"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Αφαιρέθηκε <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "Η αίτηση ακυρώθηκε από τον χρήστη."
@@ -1139,14 +1194,17 @@ msgstr ""
 "Αυτό επαναφέρει το πρόσθετο στις προεπιλογές εργοστασίου. Οι πάροχοι, τα κλειδιά API και τα διαπιστευτήρια εργαλείου αναζήτησης που προστέθηκαν μέσω της διεπαφής ρυθμίσεων θα καταργηθούν.\n"
 "Το αρχείο configuration.lua θα διατηρηθεί."
 
-msgid "Response"
-msgstr "Απάντηση"
+msgid "Response Font: %1"
+msgstr "Γραμματοσειρά απάντησης: %1"
 
 msgid "Response Settings"
 msgstr "Ρυθμίσεις απόκρισης"
 
 msgid "Response Text Font Size"
 msgstr "Μέγεθος γραμματοσειράς κειμένου απόκρισης"
+
+msgid "Right to Left"
+msgstr "Δεξιά προς αριστερά"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1215,14 +1273,26 @@ msgstr "Επιλογή σημείωσης AI"
 msgid "Select a model:"
 msgstr "Επιλέξτε ένα μοντέλο:"
 
-msgid "Selection copied to clipboard."
-msgstr "Η επιλογή αντιγράφηκε στο πρόχειρο."
+msgid "Set"
+msgstr "Ορισμός"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Ορισμός μεταδεδομένων βιβλίου;\n"
+"Τίτλος: %1\n"
+"Συγγραφέας: %2"
 
 msgid "Settings"
 msgstr "Ρυθμίσεις"
 
 msgid "Show Follow-up Questions"
 msgstr "Εμφάνιση επακόλουθων ερωτήσεων"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Εμφάνιση επισημασμένου κειμένου στην κορυφή"
 
 msgid "Show Reasoning"
 msgstr "Εμφάνιση συλλογισμού"
@@ -1235,6 +1305,12 @@ msgstr "Εμφάνιση της διαδικασίας βαθιάς σκέψης
 
 msgid "Show follow up questions related to the response content."
 msgstr "Εμφάνιση επακόλουθων ερωτήσεων που σχετίζονται με το περιεχόμενο της απόκρισης."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Εμφανίζει μόνο την απάντηση: χωρίς τίτλους Χρήστη/Βοηθού, χωρίς την πρώτη σειρά κουμπιών, χωρίς συλλογισμό και χωρίς επακόλουθες ερωτήσεις. Διατηρεί μόνο τις ενέργειες πάνω στην ίδια την απάντηση (Σχολιασμός, Εμπλουτισμός Λεξιλογίου) δίπλα στο Κλείσιμο. Απενεργοποιεί το Κείμενο Συλλογισμού και τις Επακόλουθες Ερωτήσεις όσο είναι ενεργή."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Εμφανίζει το κείμενο στο οποίο στόχευε μια προτροπή ως ξεχωριστό μπλοκ στην κορυφή του γύρου, πάνω από την ερώτηση, ώστε το πρωτότυπο να μπορεί να συγκριθεί με την απάντηση. Έτσι, η φούσκα της ερώτησης σταματά να το επαναλαμβάνει."
 
 msgid "Similar Books Recommendations"
 msgstr "Προτάσεις Παρόμοιων Βιβλίων"
@@ -1296,7 +1372,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Κρατήστε γρήγορες σημειώσεις που θα αποθηκευτούν στις σημειώσεις AI σας."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "X-Ray Όρου"
 
@@ -1306,6 +1381,12 @@ msgstr "Όροι & Έννοιες"
 msgid "Test"
 msgstr "Δοκιμή"
 
+msgid "Text Appearance"
+msgstr "Εμφάνιση κειμένου"
+
+msgid "Text Direction: %1"
+msgstr "Κατεύθυνση κειμένου: %1"
+
 msgid "Text Size: %1"
 msgstr "Μέγεθος κειμένου: %1"
 
@@ -1314,6 +1395,12 @@ msgstr "Το κείμενο αντιγράφηκε στο πρόχειρο"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "Ο χειριστής για το %1 δεν βρέθηκε. Βεβαιωθείτε ότι ο χειριστής υπάρχει στον κατάλογο api_handlers."
+
+msgid "The model could not identify this book."
+msgstr "Το μοντέλο δεν μπόρεσε να αναγνωρίσει αυτό το βιβλίο."
+
+msgid "Thinking ..."
+msgstr "Σκέφτομαι ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Αυτό το κουμπί δημιουργεί μια γρήγορη σημείωση με το επισημασμένο κείμενο."
@@ -1377,6 +1464,12 @@ msgstr "Αυτό το prompt μεταφράζει το επισημασμένο 
 msgid "Timeline"
 msgstr "Χρονολόγιο"
 
+msgid "Title"
+msgstr "Τίτλος"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Τα μεταδεδομένα τίτλου ή συγγραφέα λείπουν ή είναι ελλιπή, οπότε το αποτέλεσμα της AI μπορεί να μην είναι αξιόπιστο. Χρησιμοποιήστε την Αναγνώριση (AI) για να τα ορίσετε πρώτα."
+
 msgid "To-Do / Action Items"
 msgstr "Εργασίες / Σημεία Δράσης"
 
@@ -1392,6 +1485,13 @@ msgstr "Η κλήση εργαλείου δεν περιλάμβανε λέξε�
 msgid "Translate"
 msgstr "Μετάφραση"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Μετάφραση (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "Μεταφράζει την περιγραφή του βιβλίου με AI."
+
 msgid "Translation"
 msgstr "Μετάφραση"
 
@@ -1403,6 +1503,12 @@ msgstr "Πληκτρολογήστε την ερώτησή σας εδώ..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Άγνωστος συγγραφέας"
+
+msgid "Unknown Title"
+msgstr "Άγνωστος τίτλος"
 
 msgid "Unknown error"
 msgstr "Άγνωστο σφάλμα"
@@ -1472,6 +1578,13 @@ msgstr "Προβολή"
 msgid "Vocabulary"
 msgstr "Λεξιλόγιο"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Εμπλουτισμός Λεξιλογίου"
+
+msgid "Waiting for the model ..."
+msgstr "Αναμονή για το μοντέλο ..."
+
 msgid "Web Search"
 msgstr "Αναζήτηση στο διαδίκτυο"
 
@@ -1503,9 +1616,6 @@ msgstr "Μορφή λέξης & Λήμμα"
 msgid "Word Origin"
 msgstr "Προέλευση Λέξης"
 
-msgid "Word copied to clipboard."
-msgstr "Η λέξη αντιγράφηκε στο πρόχειρο."
-
 msgid "Write quick notes here"
 msgstr "Γράψτε γρήγορες σημειώσεις εδώ"
 
@@ -1532,6 +1642,3 @@ msgstr "π.χ. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: απέτυχε η ανάλυση των επιστρεφόμενων δεδομένων"
-
-msgid "https://..."
-msgstr "https://..."

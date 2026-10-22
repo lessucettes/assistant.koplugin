@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 10:35+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Titel : %1\n"
-" - Autor: %2\n"
-" - Lesefortschritt: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - S. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Keine Antwort)"
 
 msgid "(empty response body)"
 msgstr "(leerer Antworttext)"
+
+msgid "(none)"
+msgstr "(keine)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API hat einen Fehler zurückgegeben</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Hinzugefügt</b> [%1 (AI)] zum Markierungsmenü."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API lieferte keine verwendbare Antwort</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Buchkontext für Term X-Ray wird analysiert...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>Stelle eine Frage zu diesem Buch:</b>\n"
-"%1 von %2"
+"<b>Stellen Sie eine Frage zu diesem Buch:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>Installiere %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Antwort des Modells:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Parameter</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Entfernt</b> [%1 (AI)] aus dem Markierungsmenü."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Reasoning (keine endgültige Antwort)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Reasoning:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>Anfrage</b> – POST %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "Die KI-Zusammenfassung wird aktiviert, wenn das nächste Mal ein lange ungelesenes Buch geöffnet wird."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "KI-Zusammenfassungen"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Fügen Sie Anbieter über das Hauptmenü hinzu:\n"
 "%1 -> KI-Assistent -> Einstellungen -> Anbieter-API"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Hinzugefügt: <b>[%1 (KI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Zum Vokabeltrainer hinzugefügt"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Fügt jedes im Wörterbuch nachgeschlagene Wort dem Vokabeltrainer hinzu, sobald das Ergebnis erscheint."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Analyse Ihrer Markierungen, Notizen und KI-Notizen-Inhalte aus dem Buch."
@@ -369,13 +368,13 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Möchten Sie die Einstellungen des Assistant-Plugins wirklich zurücksetzen? \n"
-"Dadurch wird das Assistant-Plugin auf den Zustand bei der ersten Installation zurückgesetzt.\n"
+"Sind Sie sicher, dass Sie die Einstellungen des Assistenten-Plugins löschen möchten?\n"
+"Dadurch wird das Assistenten-Plugin auf den Zustand bei der ersten Installation zurückgesetzt.\n"
 "\n"
 "configuration.lua bleibt erhalten, nur die Einstellungen werden gelöscht."
 
@@ -404,6 +403,9 @@ msgstr "Frag etwas..."
 msgid "Ask the AI a question"
 msgstr "Stell der KI eine Frage"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "Die KI bitten, Titel und Autor des geöffneten Buchs anhand seines Anfangstextes zu ermitteln."
+
 msgid "Assistant settings are not available."
 msgstr "Die Assistenteneinstellungen sind nicht verfügbar."
 
@@ -412,6 +414,16 @@ msgstr "Vorherigen Text anhängen"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Fügt die Antwort als Buchnotiz an die aktuelle Markierung an"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Auto"
+msgstr "Automatisch"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Wort automatisch zum Vokabeltrainer hinzufügen"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "Bucheinblicke"
 
 msgid "Book Summary & Recs"
 msgstr "Buchzusammenfassung & Empfehlungen"
+
+msgid "Book metadata updated."
+msgstr "Buchmetadaten aktualisiert."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "Branch/Tag „%1“ wurde nicht gefunden."
@@ -530,11 +545,17 @@ msgstr "Kontextnotizen"
 msgid "Contextual Notes / Reflections"
 msgstr "Kontextnotizen / Reflexionen"
 
+msgid "Continue"
+msgstr "Weiter"
+
 msgid "Contradictions / Open Questions"
 msgstr "Widersprüche / Offene Fragen"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "Unterhaltung wird in KI-Notizen gespeichert"
+
+msgid "Copied to clipboard."
+msgstr "In die Zwischenablage kopiert."
 
 msgid "Copy"
 msgstr "Kopieren"
@@ -562,11 +583,17 @@ msgstr "KI-Notiz konnte nicht erstellt werden."
 msgid "Could not create AI note: %1"
 msgstr "KI-Notiz konnte nicht erstellt werden: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Aus diesem Buch konnte kein Text extrahiert werden."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "KI-Notizen-Ordner konnte nicht aufgelistet werden: %1"
 
 msgid "Could not open AI note file."
 msgstr "KI-Notizdatei konnte nicht geöffnet werden."
+
+msgid "Could not parse the identification result."
+msgstr "Das Ergebnis der Identifizierung konnte nicht verarbeitet werden."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Benutzerdefinierter Prompt"
 msgid "Custom Prompts"
 msgstr "Benutzerdefinierte Prompts"
 
-msgid "Deeply Thought"
-msgstr "Tiefgründiger Gedanke"
+msgid "Default"
+msgstr "Standard"
 
 msgid "Delete"
 msgstr "Löschen"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "Anbieter %1 löschen?"
 
+msgid "Description: %1"
+msgstr "Beschreibung: %1"
+
 msgid "Device"
 msgstr "Gerät"
 
@@ -630,8 +660,8 @@ msgstr "Wörterbuch"
 msgid "Dictionary Language"
 msgstr "Wörterbuchsprache"
 
-msgid "Dictionary Popup"
-msgstr "Wörterbuch-Popup"
+msgid "Dictionary Popup Buttons"
+msgstr "Schaltflächen im Wörterbuch-Popup"
 
 msgid "Dictionary Settings"
 msgstr "Wörterbucheinstellungen"
@@ -770,11 +800,11 @@ msgstr "Allgemeine Konversation"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Wählen Sie im Allgemeinen <b>NICHT</b> mehr als eine Option aus – wählen Sie einen Parameter, der zu Ihrem Modell und Ihrer Plattform passt. Ein falscher Parameter kann API-Fehler verursachen. \n"
+"Wählen Sie in der Regel <b>NICHT</b> mehr als einen Parameter aus – nehmen Sie einen Parameter, der zu Ihrem Modell und Ihrer Plattform passt. Ein falscher Parameter kann API-Fehler verursachen. \n"
 "\n"
-"Der ausgewählte Wert überschreibt additional_parameters der Konfiguration."
+"Der ausgewählte Wert überschreibt additional_parameters der Konfiguration. Wenn ausgewählte Optionen denselben Schlüssel haben, wird nur die letzte in der Liste verwendet."
 
 msgid "Genre"
 msgstr "Genre"
@@ -803,12 +833,22 @@ msgstr "Historischer Kontext"
 msgid "Historical and Cultural Context"
 msgstr "Historischer und kultureller Kontext"
 
+msgid "Identify (AI)"
+msgstr "Identifizieren (KI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Dieses Buch identifizieren"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Verbessert die Antwortgenauigkeit durch Echtzeit-Websuchergebnisse. \n"
 "Hinweis: Höherer Token-Verbrauch und zusätzliche API-Gebühren können anfallen."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Titel und Autor des geöffneten Buchs anhand seines Anfangstextes ermitteln und als benutzerdefinierte Metadaten speichern."
 
 msgid "Integrated Summary"
 msgstr "Integrierte Zusammenfassung"
@@ -849,6 +889,9 @@ msgstr "Leer lassen, um zu verwenden: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Lassen Sie diese Felder leer, um die UI-Sprache zu verwenden: %1"
 
+msgid "Left to Right"
+msgstr "Links nach rechts"
+
 msgid "Locations"
 msgstr "Orte"
 
@@ -863,6 +906,12 @@ msgstr "Markdown-Engine"
 
 msgid "Meaning & Usage"
 msgstr "Bedeutung & Verwendung"
+
+msgid "Metadata could not be saved."
+msgstr "Metadaten konnten nicht gespeichert werden."
+
+msgid "Minimalist Mode"
+msgstr "Minimalistischer Modus"
 
 msgid "Model"
 msgstr "Modell"
@@ -912,11 +961,17 @@ msgstr "Kein aktiver Anbieter konfiguriert. Bitte fügen Sie einen in den Einste
 msgid "No base folder is available for AI Notes."
 msgstr "Es ist kein Basisordner für KI-Notizen verfügbar."
 
+msgid "No book is open."
+msgstr "Es ist kein Buch geöffnet."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Kein Buch geöffnet. Halten Sie ein Buch im Dateimanager gedrückt und wählen Sie Buchinfo (KI)."
 
 msgid "No common parameters are available for handler %1."
 msgstr "Für den Handler %1 sind keine allgemeinen Parameter verfügbar."
+
+msgid "No highlight to annotate"
+msgstr "Keine Markierung zum Annotieren"
 
 msgid "No models available."
 msgstr "Keine Modelle verfügbar."
@@ -932,6 +987,9 @@ msgstr "Keine Antwort erhalten."
 
 msgid "No text left to annotate"
 msgstr "Kein Text mehr zum Annotieren"
+
+msgid "No text selected"
+msgstr "Kein Text ausgewählt"
 
 msgid "No text to annotate"
 msgstr "Kein Text zum Annotieren"
@@ -1071,26 +1129,20 @@ msgstr "Zurücksetzen"
 msgid "Purge Settings"
 msgstr "Einstellungen zurücksetzen"
 
-msgid "Question"
-msgstr "Frage"
-
 msgid "Quick Note"
 msgstr "Schnellnotiz"
 
 msgid "Quick note saved successfully"
 msgstr "Schnellnotiz erfolgreich gespeichert"
 
-msgid "RTL Layout"
-msgstr "RTL-Layout"
-
-msgid "RTL written Language"
-msgstr "RTL-geschriebene Sprache"
-
 msgid "Re-immersion"
 msgstr "Wiedereinstieg"
 
 msgid "Reader settings are not available."
 msgstr "Leseeinstellungen sind nicht verfügbar."
+
+msgid "Reading progress"
+msgstr "Lesefortschritt"
 
 msgid "Reasoning Option"
 msgstr "Reasoning-Option"
@@ -1111,6 +1163,9 @@ msgstr "Entfernen"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "[%s] aus dem Markierungsmenü entfernen?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Entfernt: <b>[%1 (KI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "Anfrage vom Benutzer abgebrochen."
@@ -1139,14 +1194,17 @@ msgstr ""
 "Dadurch wird das Plugin auf die Werkseinstellungen zurückgesetzt. Anbieter, API-Schlüssel und Anmeldedaten für Suchwerkzeuge, die über die Einstellungs-Oberfläche hinzugefügt wurden, werden entfernt.\n"
 "Die Datei configuration.lua bleibt erhalten."
 
-msgid "Response"
-msgstr "Antwort"
+msgid "Response Font: %1"
+msgstr "Schriftart der Antwort: %1"
 
 msgid "Response Settings"
 msgstr "Antworteinstellungen"
 
 msgid "Response Text Font Size"
 msgstr "Schriftgröße des Antworttexts"
+
+msgid "Right to Left"
+msgstr "Rechts nach links"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1215,14 +1273,26 @@ msgstr "KI-Notiz auswählen"
 msgid "Select a model:"
 msgstr "Modell auswählen:"
 
-msgid "Selection copied to clipboard."
-msgstr "Auswahl in die Zwischenablage kopiert."
+msgid "Set"
+msgstr "Festlegen"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Buchmetadaten festlegen?\n"
+"Titel: %1\n"
+"Autor: %2"
 
 msgid "Settings"
 msgstr "Einstellungen"
 
 msgid "Show Follow-up Questions"
 msgstr "Folgefragen anzeigen"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Hervorgehobenen Text oben anzeigen"
 
 msgid "Show Reasoning"
 msgstr "Reasoning anzeigen"
@@ -1235,6 +1305,12 @@ msgstr "Zeigt den tiefgehenden Gedankengang (Reasoning) aus der KI-Antwort an, f
 
 msgid "Show follow up questions related to the response content."
 msgstr "Zeigt Folgefragen zum Inhalt der Antwort an."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Zeigt nur die Antwort: keine Titel für Benutzer/Assistent, keine erste Schaltflächenreihe, kein Reasoning und keine Folgefragen. Behält nur die Aktionen an der Antwort selbst (Annotieren, Vokabeltrainer) neben Schließen. Deaktiviert Reasoning-Text und Folgefragen, solange der Modus aktiv ist."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Zeigt den Text, auf den sich ein Prompt bezog, als eigenen Block oben im Durchgang, oberhalb der Frage, sodass das Original mit der Antwort verglichen werden kann. Die Frageblase wiederholt ihn dann nicht mehr."
 
 msgid "Similar Books Recommendations"
 msgstr "Empfehlungen für ähnliche Bücher"
@@ -1296,7 +1372,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Erstellen Sie Schnellnotizen, die in Ihren KI-Notizen gespeichert werden."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Begriff-X-Ray"
 
@@ -1306,6 +1381,12 @@ msgstr "Begriffe & Konzepte"
 msgid "Test"
 msgstr "Test"
 
+msgid "Text Appearance"
+msgstr "Textdarstellung"
+
+msgid "Text Direction: %1"
+msgstr "Textrichtung: %1"
+
 msgid "Text Size: %1"
 msgstr "Schriftgröße: %1"
 
@@ -1314,6 +1395,12 @@ msgstr "Text in die Zwischenablage kopiert"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "Der Handler für %1 wurde nicht gefunden. Bitte stellen Sie sicher, dass der Handler im Verzeichnis api_handlers vorhanden ist."
+
+msgid "The model could not identify this book."
+msgstr "Das Modell konnte dieses Buch nicht identifizieren."
+
+msgid "Thinking ..."
+msgstr "Denkt nach ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Diese Schaltfläche erstellt eine Schnellnotiz mit markiertem Text."
@@ -1377,6 +1464,12 @@ msgstr "Dieser Prompt übersetzt den markierten Text in eine andere Sprache."
 msgid "Timeline"
 msgstr "Zeitleiste"
 
+msgid "Title"
+msgstr "Titel"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Titel- oder Autor-Metadaten fehlen oder sind unvollständig, daher ist das KI-Ergebnis möglicherweise unzuverlässig. Verwenden Sie „Identifizieren (KI)“, um sie zuerst festzulegen."
+
 msgid "To-Do / Action Items"
 msgstr "To-Do / Aktionspunkte"
 
@@ -1392,6 +1485,13 @@ msgstr "Der Tool-Aufruf enthielt keine Suchbegriffe."
 msgid "Translate"
 msgstr "Übersetzen"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Übersetzen (KI)"
+
+msgid "Translates the book description with AI."
+msgstr "Übersetzt die Buchbeschreibung mit KI."
+
 msgid "Translation"
 msgstr "Übersetzung"
 
@@ -1403,6 +1503,12 @@ msgstr "Gib hier deine Frage ein..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Unbekannter Autor"
+
+msgid "Unknown Title"
+msgstr "Unbekannter Titel"
 
 msgid "Unknown error"
 msgstr "Unbekannter Fehler"
@@ -1472,6 +1578,13 @@ msgstr "Anzeigen"
 msgid "Vocabulary"
 msgstr "Wortschatz"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Vokabeltrainer"
+
+msgid "Waiting for the model ..."
+msgstr "Warte auf das Modell ..."
+
 msgid "Web Search"
 msgstr "Websuche"
 
@@ -1503,9 +1616,6 @@ msgstr "Wortform & Lemma"
 msgid "Word Origin"
 msgstr "Wortherkunft"
 
-msgid "Word copied to clipboard."
-msgstr "Wort in die Zwischenablage kopiert."
-
 msgid "Write quick notes here"
 msgstr "Schnellnotizen hier eingeben"
 
@@ -1532,6 +1642,3 @@ msgstr "z. B. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: Fehler beim Parsen der zurückgegebenen Daten"
-
-msgid "https://..."
-msgstr "https://..."

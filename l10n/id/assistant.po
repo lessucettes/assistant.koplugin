@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 03:45+0000\n"
 "Last-Translator: AI (auto)\n"
 "Language-Team: Bahasa Indonesia (AI translation)\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Judul : %1\n"
-" - Penulis: %2\n"
-" - Kemajuan membaca: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - hlm. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Tidak ada respons)"
 
 msgid "(empty response body)"
 msgstr "(isi respons kosong)"
+
+msgid "(none)"
+msgstr "(tidak ada)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API mengembalikan error</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Ditambahkan</b> [%1 (AI)] ke Menu Sorotan."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API tidak mengembalikan jawaban yang dapat digunakan</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Menganalisis konteks buku untuk Term X-Ray...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
 "<b>Ajukan pertanyaan tentang buku ini:</b>\n"
-"%1 oleh %2"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>Menginstal %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Balasan model:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Parameter</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Dihapus</b> [%1 (AI)] dari Menu Sorotan."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Penalaran (tanpa jawaban akhir)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Penalaran:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>Permintaan</b> - POST %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "Rekap AI akan diaktifkan saat buku yang lama tidak dibaca dibuka berikutnya."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "Rekap AI"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Tambahkan penyedia dari menu utama:\n"
 "%1 -> AI Assistant -> Pengaturan -> Penyedia API"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Ditambahkan <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Ditambahkan ke pembuat kosakata"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Menambahkan setiap kata yang Anda cari di kamus ke Vocabulary Builder begitu hasilnya muncul."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Analisis sorotan, catatan, dan konten Catatan AI Anda dari buku ini."
@@ -369,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Yakin ingin membersihkan pengaturan plugin asisten? \n"
-"Ini akan mengembalikan plugin asisten ke status saat pertama kali Anda menginstalnya.\n"
+"Apakah Anda yakin ingin menghapus setelan plugin asisten?\n"
+"Ini mengembalikan plugin asisten ke status saat pertama kali Anda memasangnya.\n"
 "\n"
-"configuration.lua aman, hanya pengaturannya yang dibersihkan."
+"configuration.lua aman, hanya setelannya yang dihapus."
 
 msgid "Ask"
 msgstr "Tanya"
@@ -404,6 +403,9 @@ msgstr "Tanyakan apa saja..."
 msgid "Ask the AI a question"
 msgstr "Ajukan pertanyaan ke AI"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "Minta AI mengidentifikasi judul dan penulis buku yang sedang dibuka dari teks awalnya."
+
 msgid "Assistant settings are not available."
 msgstr "Pengaturan asisten tidak tersedia."
 
@@ -412,6 +414,16 @@ msgstr "Lampirkan Teks Sebelumnya"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Melampirkan jawaban sebagai catatan buku pada sorotan saat ini"
+
+msgid "Author"
+msgstr "Penulis"
+
+msgid "Auto"
+msgstr "Otomatis"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Tambahkan Kata ke Vocabulary Builder Secara Otomatis"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "Wawasan Buku"
 
 msgid "Book Summary & Recs"
 msgstr "Ringkasan Buku & Rekomendasi"
+
+msgid "Book metadata updated."
+msgstr "Metadata buku diperbarui."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "Cabang/Tag \"%1\" tidak ditemukan."
@@ -530,11 +545,17 @@ msgstr "Catatan Kontekstual"
 msgid "Contextual Notes / Reflections"
 msgstr "Catatan Kontekstual / Refleksi"
 
+msgid "Continue"
+msgstr "Lanjutkan"
+
 msgid "Contradictions / Open Questions"
 msgstr "Kontradiksi / Pertanyaan Terbuka"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "Percakapan disimpan ke Catatan AI"
+
+msgid "Copied to clipboard."
+msgstr "Disalin ke papan klip."
 
 msgid "Copy"
 msgstr "Salin"
@@ -562,11 +583,17 @@ msgstr "Tidak dapat membuat catatan AI."
 msgid "Could not create AI note: %1"
 msgstr "Tidak dapat membuat catatan AI: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Tidak dapat mengekstrak teks dari buku ini."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "Tidak dapat menampilkan isi folder Catatan AI: %1"
 
 msgid "Could not open AI note file."
 msgstr "Tidak dapat membuka berkas catatan AI."
+
+msgid "Could not parse the identification result."
+msgstr "Tidak dapat mengurai hasil identifikasi."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Prompt Kustom"
 msgid "Custom Prompts"
 msgstr "Prompt Kustom"
 
-msgid "Deeply Thought"
-msgstr "Berpikir Mendalam"
+msgid "Default"
+msgstr "Bawaan"
 
 msgid "Delete"
 msgstr "Hapus"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "Hapus penyedia %1?"
 
+msgid "Description: %1"
+msgstr "Deskripsi: %1"
+
 msgid "Device"
 msgstr "Perangkat"
 
@@ -630,8 +660,8 @@ msgstr "Kamus"
 msgid "Dictionary Language"
 msgstr "Bahasa Kamus"
 
-msgid "Dictionary Popup"
-msgstr "Pop-up Kamus"
+msgid "Dictionary Popup Buttons"
+msgstr "Tombol Popup Kamus"
 
 msgid "Dictionary Settings"
 msgstr "Pengaturan Kamus"
@@ -770,11 +800,11 @@ msgstr "Percakapan Umum"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Umumnya <b>JANGAN</b> memilih lebih dari satu - pilih parameter yang sesuai dengan model dan platform Anda. Parameter yang salah dapat menyebabkan kesalahan API. \n"
+"Umumnya <b>JANGAN</b> memilih lebih dari satu - pilih parameter yang sesuai dengan model dan platform Anda. Parameter yang salah dapat menyebabkan error API. \n"
 "\n"
-"Nilai yang dipilih menimpa additional_parameters dari konfigurasi."
+"Nilai yang dipilih akan menimpa additional_parameters pada konfigurasi. Jika opsi yang dipilih memiliki kunci yang sama, hanya opsi terakhir dalam daftar yang digunakan."
 
 msgid "Genre"
 msgstr "Genre"
@@ -803,12 +833,22 @@ msgstr "Konteks Sejarah"
 msgid "Historical and Cultural Context"
 msgstr "Konteks Sejarah dan Budaya"
 
+msgid "Identify (AI)"
+msgstr "Identifikasi (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Identifikasi Buku Ini"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Meningkatkan akurasi respons dengan hasil web real-time. \n"
 "Catatan: Penggunaan token lebih tinggi dan biaya API tambahan berlaku."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Simpulkan judul dan penulis buku yang sedang dibuka dari teks awalnya, lalu simpan sebagai metadata khusus."
 
 msgid "Integrated Summary"
 msgstr "Ringkasan Terintegrasi"
@@ -848,6 +888,9 @@ msgstr "Kosongkan untuk menggunakan: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Kosongkan kolom ini untuk menggunakan bahasa antarmuka: %1"
 
+msgid "Left to Right"
+msgstr "Kiri ke Kanan"
+
 msgid "Locations"
 msgstr "Lokasi"
 
@@ -862,6 +905,12 @@ msgstr "Mesin Markdown"
 
 msgid "Meaning & Usage"
 msgstr "Arti & Penggunaan"
+
+msgid "Metadata could not be saved."
+msgstr "Metadata tidak dapat disimpan."
+
+msgid "Minimalist Mode"
+msgstr "Mode Minimalis"
 
 msgid "Model"
 msgstr "Model"
@@ -911,11 +960,17 @@ msgstr "Tidak ada penyedia aktif yang dikonfigurasi. Silakan tambahkan satu di P
 msgid "No base folder is available for AI Notes."
 msgstr "Tidak ada folder dasar yang tersedia untuk Catatan AI."
 
+msgid "No book is open."
+msgstr "Tidak ada buku yang terbuka."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Tidak ada buku yang terbuka. Tekan lama sebuah buku di pengelola berkas lalu pilih Info Buku (AI)."
 
 msgid "No common parameters are available for handler %1."
 msgstr "Tidak ada parameter umum yang tersedia untuk handler %1."
+
+msgid "No highlight to annotate"
+msgstr "Tidak ada sorotan untuk dianotasi"
 
 msgid "No models available."
 msgstr "Tidak ada model yang tersedia."
@@ -931,6 +986,9 @@ msgstr "Tidak ada respons yang diterima."
 
 msgid "No text left to annotate"
 msgstr "Tidak ada teks tersisa untuk dianotasi"
+
+msgid "No text selected"
+msgstr "Tidak ada teks yang dipilih"
 
 msgid "No text to annotate"
 msgstr "Tidak ada teks untuk dianotasi"
@@ -1070,26 +1128,20 @@ msgstr "Bersihkan"
 msgid "Purge Settings"
 msgstr "Bersihkan Pengaturan"
 
-msgid "Question"
-msgstr "Pertanyaan"
-
 msgid "Quick Note"
 msgstr "Catatan Cepat"
 
 msgid "Quick note saved successfully"
 msgstr "Catatan singkat berhasil disimpan"
 
-msgid "RTL Layout"
-msgstr "Tata Letak RTL"
-
-msgid "RTL written Language"
-msgstr "Bahasa Tulisan RTL"
-
 msgid "Re-immersion"
 msgstr "Re-immersi"
 
 msgid "Reader settings are not available."
 msgstr "Pengaturan pembaca tidak tersedia."
+
+msgid "Reading progress"
+msgstr "Progres membaca"
 
 msgid "Reasoning Option"
 msgstr "Opsi Penalaran"
@@ -1110,6 +1162,9 @@ msgstr "Hapus"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "Hapus [%s] dari Menu Sorotan?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Dihapus <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "Permintaan dibatalkan oleh pengguna."
@@ -1139,14 +1194,17 @@ msgstr ""
 "kredensial alat pencarian yang ditambahkan melalui UI Pengaturan akan dihapus.\n"
 "File configuration.lua akan dipertahankan."
 
-msgid "Response"
-msgstr "Respons"
+msgid "Response Font: %1"
+msgstr "Font Respons: %1"
 
 msgid "Response Settings"
 msgstr "Pengaturan Respons"
 
 msgid "Response Text Font Size"
 msgstr "Ukuran Font Teks Respons"
+
+msgid "Right to Left"
+msgstr "Kanan ke Kiri"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1215,14 +1273,26 @@ msgstr "Pilih Catatan AI"
 msgid "Select a model:"
 msgstr "Pilih model:"
 
-msgid "Selection copied to clipboard."
-msgstr "Pilihan disalin ke papan klip."
+msgid "Set"
+msgstr "Setel"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Setel metadata buku?\n"
+"Judul: %1\n"
+"Penulis: %2"
 
 msgid "Settings"
 msgstr "Pengaturan"
 
 msgid "Show Follow-up Questions"
 msgstr "Tampilkan Pertanyaan Lanjutan"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Tampilkan Teks yang Disorot di Atas"
 
 msgid "Show Reasoning"
 msgstr "Tampilkan Penalaran"
@@ -1235,6 +1305,12 @@ msgstr "Tampilkan proses berpikir mendalam (penalaran) dari respons AI jika ada.
 
 msgid "Show follow up questions related to the response content."
 msgstr "Tampilkan pertanyaan lanjutan yang terkait dengan isi respons."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Menampilkan jawaban saja: tanpa judul Pengguna/Asisten, tanpa baris tombol pertama, tanpa penalaran, dan tanpa pertanyaan lanjutan. Hanya menyisakan tindakan pada jawaban itu sendiri (Anotasi, Pembuat Kosakata) di samping Tutup. Menonaktifkan Teks Penalaran dan Pertanyaan Lanjutan selama mode ini aktif."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Menampilkan teks yang dituju oleh prompt sebagai blok tersendiri di bagian atas giliran, di atas pertanyaan, sehingga teks aslinya dapat dibandingkan dengan jawabannya. Gelembung pertanyaan kemudian tidak lagi mengulanginya."
 
 msgid "Similar Books Recommendations"
 msgstr "Rekomendasi Buku Serupa"
@@ -1296,7 +1372,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Buat catatan cepat yang akan disimpan ke Catatan AI Anda."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Term X-Ray"
 
@@ -1306,6 +1381,12 @@ msgstr "Istilah & Konsep"
 msgid "Test"
 msgstr "Uji"
 
+msgid "Text Appearance"
+msgstr "Tampilan Teks"
+
+msgid "Text Direction: %1"
+msgstr "Arah Teks: %1"
+
 msgid "Text Size: %1"
 msgstr "Ukuran Teks: %1"
 
@@ -1314,6 +1395,12 @@ msgstr "Teks disalin ke papan klip"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "Handler untuk %1 tidak ditemukan. Pastikan handler tersebut ada di direktori api_handlers."
+
+msgid "The model could not identify this book."
+msgstr "Model tidak dapat mengidentifikasi buku ini."
+
+msgid "Thinking ..."
+msgstr "Sedang berpikir ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Tombol ini membuat catatan cepat dengan teks yang disorot."
@@ -1377,6 +1464,12 @@ msgstr "Prompt ini menerjemahkan teks yang disorot ke bahasa lain."
 msgid "Timeline"
 msgstr "Linimasa"
 
+msgid "Title"
+msgstr "Judul"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Metadata judul atau penulis tidak ada atau tidak lengkap, sehingga hasil AI mungkin tidak dapat diandalkan. Gunakan Identifikasi (AI) untuk menyetelnya terlebih dahulu."
+
 msgid "To-Do / Action Items"
 msgstr "Tugas / Rencana Aksi"
 
@@ -1392,6 +1485,13 @@ msgstr "Panggilan alat tidak menyertakan kata kunci pencarian."
 msgid "Translate"
 msgstr "Terjemahkan"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Terjemahkan (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "Menerjemahkan deskripsi buku dengan AI."
+
 msgid "Translation"
 msgstr "Terjemahan"
 
@@ -1403,6 +1503,12 @@ msgstr "Ketik pertanyaan Anda di sini..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Penulis Tidak Diketahui"
+
+msgid "Unknown Title"
+msgstr "Judul Tidak Diketahui"
 
 msgid "Unknown error"
 msgstr "Kesalahan tidak diketahui"
@@ -1472,6 +1578,13 @@ msgstr "Lihat"
 msgid "Vocabulary"
 msgstr "Kosakata"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Pembuat Kosakata"
+
+msgid "Waiting for the model ..."
+msgstr "Menunggu model ..."
+
 msgid "Web Search"
 msgstr "Pencarian Web"
 
@@ -1503,9 +1616,6 @@ msgstr "Bentuk Kata & Lema"
 msgid "Word Origin"
 msgstr "Asal Kata"
 
-msgid "Word copied to clipboard."
-msgstr "Kata disalin ke papan klip."
-
 msgid "Write quick notes here"
 msgstr "Tulis catatan singkat di sini"
 
@@ -1532,6 +1642,3 @@ msgstr "mis. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: gagal mengurai data yang dikembalikan"
-
-msgid "https://..."
-msgstr "https://..."

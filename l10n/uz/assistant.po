@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 04:44+0000\n"
 "Last-Translator: AI (auto)\n"
 "Language-Team: Oʻzbekcha (AI translation)\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Sarlavha : %1\n"
-" - Muallif: %2\n"
-" - O'qish jarayoni: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - b. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Javob yo'q)"
 
 msgid "(empty response body)"
 msgstr "(bo‘sh javob tanasi)"
+
+msgid "(none)"
+msgstr "(yoʻq)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API xatolik qaytardi</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Qo'shildi</b> [%1 (AI)] Belgilash menyusiga."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API foydalanish mumkin boʻlgan javob qaytarmadi</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Term X-Ray uchun kitob konteksti tahlil qilinmoqda...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>Ushbu kitob haqida savol so'rang:</b>\n"
-"%1, %2 tomonidan"
+"<b>Bu kitob haqida savol bering:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>%1 oʻrnatilmoqda...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Model javobi:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Parametrlar</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Olib tashlandi</b> [%1 (AI)] Belgilash menyusidan."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Mulohaza (yakuniy javob yoʻq)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Mulohaza:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>So‘rov</b> - POST %1"
@@ -189,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>Javob</b> - HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "Ulanish muvaffaqiyatli."
+msgstr "<b>Ulanish tekshirilmoqda...</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>Noma'lum funksiya turi:</b> %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "AI xulosasi uzoq vaqt oʻqilmagan kitob keyingi safar ochilganda yoqiladi."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AI xulosalari"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Provayderlarni asosiy menyudan qo'shing:\n"
 "%1 -> AI Yordamchi -> Sozlamalar -> Provayder API"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Qoʻshildi <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Lugʻat quruvchiga qoʻshildi"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Lugʻatda izlagan har bir soʻzingizni natija paydo boʻlishi bilanoq Soʻz boyligiga qoʻshadi."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Kitobdagi belgilangan matnlar, eslatmalar va AI eslatmalari mazmunini tahlil qilish."
@@ -369,13 +368,13 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Assistant plagin sozlamalarini tozalashga ishonchingiz komilmi? \n"
-"Bu assistant plaginini birinchi marta o'rnatganingizdagi holatiga qaytaradi.\n"
+"Yordamchi plagin sozlamalarini tozalashga ishonchingiz komilmi?\n"
+"Bu yordamchi plaginni birinchi oʻrnatganingizdagi holatiga qaytaradi.\n"
 "\n"
 "configuration.lua xavfsiz, faqat sozlamalar tozalanadi."
 
@@ -404,6 +403,9 @@ msgstr "Istalgan savolni so'rang..."
 msgid "Ask the AI a question"
 msgstr "AI'dan savol soʻrang"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "AI'dan ochiq kitobning sarlavhasi va muallifini uning boshlangʻich matni asosida aniqlashni soʻrang."
+
 msgid "Assistant settings are not available."
 msgstr "Yordamchi sozlamalari mavjud emas."
 
@@ -412,6 +414,16 @@ msgstr "Oldingi matnni biriktirish"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Javobni kitob izohi sifatida joriy belgilangan matnga biriktiradi"
+
+msgid "Author"
+msgstr "Muallif"
+
+msgid "Auto"
+msgstr "Avto"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Soʻzni Soʻz boyligiga avtomatik qoʻshish"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -436,7 +448,7 @@ msgid "Base URL must start with http:// or https://"
 msgstr "Asosiy URL http:// yoki https:// bilan boshlanishi kerak."
 
 msgid "Base URL, e.g. https://example.com/v1"
-msgstr "Ulanish muvaffaqiyatsiz tugadi: %1"
+msgstr "Asosiy URL, masalan https://example.com/v1"
 
 msgid "Book Analysis"
 msgstr "Kitob tahlili"
@@ -453,6 +465,9 @@ msgstr "Kitob tahlillari"
 
 msgid "Book Summary & Recs"
 msgstr "Kitob xulosasi va tavsiyalar"
+
+msgid "Book metadata updated."
+msgstr "Kitob metamaʼlumotlari yangilandi."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "\"%1\" branch/tag topilmadi."
@@ -530,11 +545,17 @@ msgstr "Kontekstual eslatmalar"
 msgid "Contextual Notes / Reflections"
 msgstr "Kontekstual eslatmalar / Mulohazalar"
 
+msgid "Continue"
+msgstr "Davom etish"
+
 msgid "Contradictions / Open Questions"
 msgstr "Qarama-qarshiliklar / Ochiq savollar"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "Suhbat AI eslatmalariga saqlandi"
+
+msgid "Copied to clipboard."
+msgstr "Vaqtinchalik xotiraga nusxalandi."
 
 msgid "Copy"
 msgstr "Nusxalash"
@@ -562,11 +583,17 @@ msgstr "AI eslatma yaratib boʻlmadi."
 msgid "Could not create AI note: %1"
 msgstr "AI eslatma yaratib boʻlmadi: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Bu kitobdan matn ajratib boʻlmadi."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "AI eslatmalari jildini roʻyxatlab boʻlmadi: %1"
 
 msgid "Could not open AI note file."
 msgstr "AI eslatma faylini ochib boʻlmadi."
+
+msgid "Could not parse the identification result."
+msgstr "Aniqlash natijasini tahlil qilib boʻlmadi."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Maxsus prompt"
 msgid "Custom Prompts"
 msgstr "Maxsus promptlar"
 
-msgid "Deeply Thought"
-msgstr "Chuqur o‘ylangan"
+msgid "Default"
+msgstr "Standart"
 
 msgid "Delete"
 msgstr "Oʻchirish"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "%1 provayderini oʻchirish?"
 
+msgid "Description: %1"
+msgstr "Tavsif: %1"
+
 msgid "Device"
 msgstr "Qurilma"
 
@@ -630,8 +660,8 @@ msgstr "Lug'at"
 msgid "Dictionary Language"
 msgstr "Lugʻat tili"
 
-msgid "Dictionary Popup"
-msgstr "Lugʻat oynasi"
+msgid "Dictionary Popup Buttons"
+msgstr "Lugʻat oynasi tugmalari"
 
 msgid "Dictionary Settings"
 msgstr "Lugʻat sozlamalari"
@@ -770,11 +800,11 @@ msgstr "Umumiy suhbat"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Umuman olganda, <b>birdan ortiq</b> tanlamang - modelingiz va platformangizga mos keladigan parametrni tanlang. Noto'g'ri parametr API xatolariga olib kelishi mumkin. \n"
+"Odatda birdan ortiq parametrni <b>TANLAMANG</b> - modelingiz va platformangizga mos keladigan parametrni tanlang. Notoʻgʻri parametr API xatolariga olib kelishi mumkin. \n"
 "\n"
-"Tanlangan qiymat konfiguratsiyaning qo'shimcha parametrlarini (additional_parameters) bekor qiladi."
+"Tanlangan qiymat konfiguratsiyadagi additional_parameters ni bekor qiladi. Agar tanlangan variantlar bir xil kalitga ega boʻlsa, roʻyxatdagi faqat oxirgisi ishlatiladi."
 
 msgid "Genre"
 msgstr "Janr"
@@ -803,12 +833,22 @@ msgstr "Tarixiy kontekst"
 msgid "Historical and Cultural Context"
 msgstr "Tarixiy va madaniy kontekst"
 
+msgid "Identify (AI)"
+msgstr "Aniqlash (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Bu kitobni aniqlash"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Javob aniqligini real vaqt rejimidagi veb natijalari bilan yaxshilaydi. \n"
 "Eslatma: Koʻproq token sarfi va qoʻshimcha API toʻlovlari qoʻllaniladi."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Ochiq kitobning sarlavhasi va muallifini uning boshlangʻich matni asosida aniqlab, ularni maxsus metamaʼlumot sifatida saqlang."
 
 msgid "Integrated Summary"
 msgstr "Integratsiyalashgan xulosa"
@@ -849,6 +889,9 @@ msgstr "Boʻsh qoldiring, %1 ishlatiladi"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Bu maydonlarni boʻsh qoldiring, interfeys tili ishlatiladi: %1"
 
+msgid "Left to Right"
+msgstr "Chapdan oʻngga"
+
 msgid "Locations"
 msgstr "Joylar"
 
@@ -863,6 +906,12 @@ msgstr "Markdown dvijogi"
 
 msgid "Meaning & Usage"
 msgstr "Maʼno va qoʻllanish"
+
+msgid "Metadata could not be saved."
+msgstr "Metamaʼlumotlarni saqlab boʻlmadi."
+
+msgid "Minimalist Mode"
+msgstr "Minimal rejim"
 
 msgid "Model"
 msgstr "Model"
@@ -912,11 +961,17 @@ msgstr "Faol provayder sozlanmagan. Iltimos, Sozlamalarda bittasini qo'shing."
 msgid "No base folder is available for AI Notes."
 msgstr "AI eslatmalari uchun asosiy jild mavjud emas."
 
+msgid "No book is open."
+msgstr "Hech qanday kitob ochiq emas."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Hech qanday kitob ochilmagan. Fayl menejerida kitobni uzoq bosib, «Kitob maʼlumotlari (AI)» ni tanlang."
 
 msgid "No common parameters are available for handler %1."
 msgstr "%1 ishlovchisi uchun umumiy parametrlar mavjud emas."
+
+msgid "No highlight to annotate"
+msgstr "Izohlash uchun belgilangan matn yoʻq"
 
 msgid "No models available."
 msgstr "Modellar mavjud emas."
@@ -932,6 +987,9 @@ msgstr "Hech qanday javob olinmadi."
 
 msgid "No text left to annotate"
 msgstr "Izoh qoʻshish uchun matn qolmadi"
+
+msgid "No text selected"
+msgstr "Matn tanlanmagan"
 
 msgid "No text to annotate"
 msgstr "Izoh qoʻshish uchun matn yoʻq"
@@ -1071,26 +1129,20 @@ msgstr "Tozalash"
 msgid "Purge Settings"
 msgstr "Sozlamalarni tozalash"
 
-msgid "Question"
-msgstr "Savol"
-
 msgid "Quick Note"
 msgstr "Tezkor eslatma"
 
 msgid "Quick note saved successfully"
 msgstr "Tezkor eslatma muvaffaqiyatli saqlandi"
 
-msgid "RTL Layout"
-msgstr "RTL tartibi"
-
-msgid "RTL written Language"
-msgstr "RTL yoziladigan til"
-
 msgid "Re-immersion"
 msgstr "Qayta shoʻngʻish"
 
 msgid "Reader settings are not available."
 msgstr "Oʻquvchi sozlamalari mavjud emas."
+
+msgid "Reading progress"
+msgstr "Oʻqish jarayoni"
 
 msgid "Reasoning Option"
 msgstr "Fikrlash varianti"
@@ -1111,6 +1163,9 @@ msgstr "Olib tashlash"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "Belgilash menyusidan [%s] ni olib tashlash kerakmi?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Oʻchirildi <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "Soʻrov foydalanuvchi tomonidan bekor qilindi."
@@ -1139,14 +1194,17 @@ msgstr ""
 "Bu plagin zavod sozlamalariga qaytariladi. Sozlamalar interfeysi orqali qoʻshilgan provayderlar, API kalitlari va qidiruv vositasi hisob maʻlumotlari olib tashlanadi.\n"
 "configuration.lua fayli saqlanadi."
 
-msgid "Response"
-msgstr "Javob"
+msgid "Response Font: %1"
+msgstr "Javob shrifti: %1"
 
 msgid "Response Settings"
 msgstr "Javob sozlamalari"
 
 msgid "Response Text Font Size"
 msgstr "Javob matni shrift oʻlchami"
+
+msgid "Right to Left"
+msgstr "Oʻngdan chapga"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1215,14 +1273,26 @@ msgstr "AI eslatmasini tanlash"
 msgid "Select a model:"
 msgstr "Model tanlang:"
 
-msgid "Selection copied to clipboard."
-msgstr "Tanlangan matn almashish buferiga nusxalandi"
+msgid "Set"
+msgstr "Oʻrnatish"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Kitob metamaʼlumotlari oʻrnatilsinmi?\n"
+"Sarlavha: %1\n"
+"Muallif: %2"
 
 msgid "Settings"
 msgstr "Sozlamalar"
 
 msgid "Show Follow-up Questions"
 msgstr "Keyingi savollarni koʻrsatish"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Belgilangan matnni yuqorida koʻrsatish"
 
 msgid "Show Reasoning"
 msgstr "Mulohazani koʻrsatish"
@@ -1235,6 +1305,12 @@ msgstr "Agar mavjud boʻlsa, AI javobidagi chuqur fikrlash jarayonini (mulohazan
 
 msgid "Show follow up questions related to the response content."
 msgstr "Javob mazmuniga bogʻliq keyingi savollarni koʻrsatish."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Javobni faqat oʻzini koʻrsatadi: Foydalanuvchi/Yordamchi sarlavhalari, birinchi tugmalar qatori, mulohaza va qoʻshimcha savollar boʻlmaydi. Yopish yonida faqat javobning oʻziga tegishli amallar (Izohlash, Soʻz boyligi) qoladi. Faol boʻlganda Fikrlash matni va Qoʻshimcha savollarni oʻchiradi."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Koʻrsatma qaratilgan matnni navbatning yuqori qismida, savol ustida alohida blok sifatida koʻrsatadi — shunda asl matnni javob bilan solishtirish mumkin boʻladi. Shundan keyin savol pufakchasi uni takrorlashdan toʻxtaydi."
 
 msgid "Similar Books Recommendations"
 msgstr "Oʻxshash kitoblar tavsiyalari"
@@ -1296,7 +1372,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "AI eslatmalaringizga saqlanadigan tezkor eslatmalar oling."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Term X-Ray"
 
@@ -1306,6 +1381,12 @@ msgstr "Atamalar va tushunchalar"
 msgid "Test"
 msgstr "Sinov"
 
+msgid "Text Appearance"
+msgstr "Matn koʻrinishi"
+
+msgid "Text Direction: %1"
+msgstr "Matn yoʻnalishi: %1"
+
 msgid "Text Size: %1"
 msgstr "Matn oʻlchami: %1"
 
@@ -1314,6 +1395,12 @@ msgstr "Matn almashish buferiga nusxalandi"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "%1 uchun handler topilmadi. Iltimos, handler api_handlers katalogida mavjudligiga ishonch hosil qiling."
+
+msgid "The model could not identify this book."
+msgstr "Model bu kitobni aniqlay olmadi."
+
+msgid "Thinking ..."
+msgstr "Oʻylanmoqda ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Bu tugma ajratilgan matn bilan tezkor eslatma yaratadi."
@@ -1377,6 +1464,12 @@ msgstr "Bu prompt ajratilgan matnni boshqa tilga tarjima qiladi."
 msgid "Timeline"
 msgstr "Vaqt chizigʻi"
 
+msgid "Title"
+msgstr "Sarlavha"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Sarlavha yoki muallif metamaʼlumotlari yoʻq yoki toʻliq emas, shuning uchun AI natijasi ishonchsiz boʻlishi mumkin. Avval ularni oʻrnatish uchun Aniqlash (AI) dan foydalaning."
+
 msgid "To-Do / Action Items"
 msgstr "Vazifalar / Harakatlar"
 
@@ -1392,6 +1485,13 @@ msgstr "Tool chaqiruvida qidiruv kalit soʻzlari mavjud emas."
 msgid "Translate"
 msgstr "Tarjima qilish"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Tarjima (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "Kitob tavsifini AI yordamida tarjima qiladi."
+
 msgid "Translation"
 msgstr "Tarjima"
 
@@ -1403,6 +1503,12 @@ msgstr "Savolingizni shu yerga yozing..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Muallif nomaʼlum"
+
+msgid "Unknown Title"
+msgstr "Sarlavha nomaʼlum"
 
 msgid "Unknown error"
 msgstr "Nomaʼlum xato"
@@ -1472,6 +1578,13 @@ msgstr "Koʻrish"
 msgid "Vocabulary"
 msgstr "Soʻz boyligi"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Soʻz boyligi"
+
+msgid "Waiting for the model ..."
+msgstr "Model kutilmoqda ..."
+
 msgid "Web Search"
 msgstr "Veb-qidiruv"
 
@@ -1503,9 +1616,6 @@ msgstr "So'z shakli va lemma"
 msgid "Word Origin"
 msgstr "Soʻzning kelib chiqishi"
 
-msgid "Word copied to clipboard."
-msgstr "Soʻz almashish buferiga nusxalandi"
-
 msgid "Write quick notes here"
 msgstr "Tezkor eslatmalarni shu yerga yozing"
 
@@ -1532,6 +1642,3 @@ msgstr "Masalan: google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: qaytarilgan maʼlumotlarni tahlil qilib boʻlmadi"
-
-msgid "https://..."
-msgstr "https://..."

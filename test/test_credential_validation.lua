@@ -1,6 +1,6 @@
 -- test_credential_validation.lua
 -- Tests for the shared credential/field normalization helpers in
--- assistant_doc_utils.lua (validate_credential_field / trimDialogFields).
+-- utils/doc.lua (validate_credential_field / trimDialogFields).
 local helper = require("test.helper")
 local assert = helper.assert
 local DocUtils = helper.DocUtils
@@ -68,8 +68,29 @@ local tests = {
         assert.equal(record_ok.base_url, "https://example.com/v1")
     end),
 
-    test("validate_credential_field: non-string value fails with required message", function()
+    test("validate_credential_field: absent value fails with required message", function()
         local record = {}
+        local ok, err = DocUtils.validate_credential_field(record, "api_key", {
+            required = "API key is required.",
+            whitespace = "API key must not contain spaces.",
+        })
+        assert.isFalse(ok)
+        assert.equal(err, "API key is required.")
+    end),
+
+    test("validate_credential_field: non-string value fails with required message", function()
+        -- A number (or any non-string) must not crash the trim/detection path.
+        local record = { api_key = 42 }
+        local ok, err = DocUtils.validate_credential_field(record, "api_key", {
+            required = "API key is required.",
+            whitespace = "API key must not contain spaces.",
+        })
+        assert.isFalse(ok)
+        assert.equal(err, "API key is required.")
+    end),
+
+    test("validate_credential_field: boolean false also fails with required message", function()
+        local record = { api_key = false }
         local ok, err = DocUtils.validate_credential_field(record, "api_key", {
             required = "API key is required.",
             whitespace = "API key must not contain spaces.",

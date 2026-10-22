@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 03:59+0000\n"
 "Last-Translator: AI (auto)\n"
 "Language-Team: ಕನ್ನಡ (AI translation)\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - ಶೀರ್ಷಿಕೆ : %1\n"
-" - ಲೇಖಕ: %2\n"
-" - ಓದುವ ಪ್ರಗತಿ: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - ಪು. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(ಪ್ರತಿಕ್ರಿಯೆ ಇಲ್ಲ)"
 
 msgid "(empty response body)"
 msgstr "(ಖಾಲಿ ಪ್ರತಿಕ್ರಿಯೆ ದೇಹ)"
+
+msgid "(none)"
+msgstr "(ಯಾವುದೂ ಇಲ್ಲ)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API ದೋಷವನ್ನು ಹಿಂತಿರುಗಿಸಿದೆ</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>ಸೇರಿಸಲಾಗಿದೆ</b> [%1 (AI)] ಹೈಲೈಟ್ ಮೆನುವಿಗೆ."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API ಯಾವುದೇ ಉಪಯುಕ್ತ ಉತ್ತರವನ್ನು ನೀಡಿಲ್ಲ</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Term X-Ray ಗಾಗಿ ಪುಸ್ತಕದ ಸಂದರ್ಭವನ್ನು ವಿಶ್ಲೇಷಿಸಲಾಗುತ್ತಿದೆ...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
 "<b>ಈ ಪುಸ್ತಕದ ಬಗ್ಗೆ ಪ್ರಶ್ನೆ ಕೇಳಿ:</b>\n"
-"%1 ರಿಂದ %2"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>%1 ಅನ್ನು ಸ್ಥಾಪಿಸಲಾಗುತ್ತಿದೆ...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>ಮಾದರಿ ಪ್ರತಿಕ್ರಿಯೆ:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>ಪ್ಯಾರಾಮೀಟರ್ಗಳು</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>ತೆಗೆದುಹಾಕಲಾಗಿದೆ</b> [%1 (AI)] ಹೈಲೈಟ್ ಮೆನುವಿನಿಂದ."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>ತರ್ಕ (ಅಂತಿಮ ಉತ್ತರವಿಲ್ಲ)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>ತಾರ್ಕಿಕ ವಿಶ್ಲೇಷಣೆ:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>ವಿನಂತಿ</b> - POST %1"
@@ -189,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>ಪ್ರತಿಕ್ರಿಯೆ</b> - HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "ಸಂಪರ್ಕವನ್ನು ಪರೀಕ್ಷಿಸಲಾಗುತ್ತಿದೆ..."
+msgstr "<b>ಸಂಪರ್ಕವನ್ನು ಪರೀಕ್ಷಿಸಲಾಗುತ್ತಿದೆ...</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>ಅಜ್ಞಾತ ವೈಶಿಷ್ಟ್ಯ ಪ್ರಕಾರ:</b> %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "ದೀರ್ಘಕಾಲ ಓದದ ಪುಸ್ತಕವನ್ನು ಮುಂದಿನ ಬಾರಿ ತೆರೆದಾಗ AI ಮರುಸಾರಾಂಶ ಸಕ್ರಿಯಗೊಳ್ಳುತ್ತದೆ."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AI ಮರುಸಾರಾಂಶಗಳು"
 
@@ -353,8 +346,14 @@ msgstr ""
 "ಮುಖ್ಯ ಮೆನುವಿನಿಂದ ಪ್ರೊವೈಡರ್ಗಳನ್ನು ಸೇರಿಸಿ:\n"
 "%1 -> AI ಸಹಾಯಕ -> ಸೆಟ್ಟಿಂಗ್ಗಳು -> ಪ್ರೊವೈಡರ್ API"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "ಸೇರಿಸಲಾಗಿದೆ <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "ಪದಸಂಗ್ರಹಕ್ಕೆ ಸೇರಿಸಲಾಗಿದೆ"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "ನೀವು ನಿಘಂಟಿನಲ್ಲಿ ಹುಡುಕುವ ಪ್ರತಿಯೊಂದು ಪದವನ್ನೂ ಫಲಿತಾಂಶ ಕಾಣಿಸಿಕೊಳ್ಳುತ್ತಿದ್ದಂತೆಯೇ ಪದಸಂಪತ್ತು ನಿರ್ಮಾಣಕ್ಕೆ ಸೇರಿಸುತ್ತದೆ."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "ಪುಸ್ತಕದಿಂದ ನಿಮ್ಮ ಹೈಲೈಟ್ಗಳು, ಟಿಪ್ಪಣಿಗಳು ಮತ್ತು AI ಟಿಪ್ಪಣಿಗಳ ವಿಷಯದ ವಿಶ್ಲೇಷಣೆ."
@@ -369,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"ನೀವು ಸಹಾಯಕ ಪ್ಲಗಿನ್ ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ತೆರವುಗೊಳಿಸಲು ಖಚಿತವಾಗಿದ್ದೀರಾ? \n"
-"ಇದು ಸಹಾಯಕ ಪ್ಲಗಿನ್ ಅನ್ನು ನೀವು ಮೊದಲ ಬಾರಿ ಸ್ಥಾಪಿಸಿದ ಸ್ಥಿತಿಗೆ ಮರುಹೊಂದಿಸುತ್ತದೆ.\n"
+"ಸಹಾಯಕ ಪ್ಲಗಿನ್ ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ಅಳಿಸಿಹಾಕುವುದು ಖಚಿತವೇ?\n"
+"ಇದು ಸಹಾಯಕ ಪ್ಲಗಿನ್ ಅನ್ನು ನೀವು ಮೊದಲ ಬಾರಿಗೆ ಸ್ಥಾಪಿಸಿದ ಸ್ಥಿತಿಗೆ ಮರುಹೊಂದಿಸುತ್ತದೆ.\n"
 "\n"
-"configuration.lua ಸುರಕ್ಷಿತವಾಗಿದೆ, ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ಮಾತ್ರ ತೆರವುಗೊಳಿಸಲಾಗುತ್ತದೆ."
+"configuration.lua ಸುರಕ್ಷಿತವಾಗಿದೆ, ಕೇವಲ ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ಮಾತ್ರ ಅಳಿಸಲಾಗುತ್ತದೆ."
 
 msgid "Ask"
 msgstr "ಕೇಳಿ"
@@ -404,6 +403,9 @@ msgstr "ಏನಾದರೂ ಕೇಳಿ..."
 msgid "Ask the AI a question"
 msgstr "AI ಗೆ ಪ್ರಶ್ನೆ ಕೇಳಿ"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "ತೆರೆದ ಪುಸ್ತಕದ ಶೀರ್ಷಿಕೆ ಮತ್ತು ಲೇಖಕರನ್ನು ಅದರ ಆರಂಭಿಕ ಪಠ್ಯದಿಂದ ಗುರುತಿಸಲು AI ಗೆ ಕೇಳಿ."
+
 msgid "Assistant settings are not available."
 msgstr "ಸಹಾಯಕ ಸೆಟ್ಟಿಂಗ್ಗಳು ಲಭ್ಯವಿಲ್ಲ."
 
@@ -412,6 +414,16 @@ msgstr "ಹಿಂದಿನ ಪಠ್ಯವನ್ನು ಲಗತ್ತಿಸಿ"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "ಪ್ರಸ್ತುತ ಹೈಲೈಟ್‌ಗೆ ಉತ್ತರವನ್ನು ಪುಸ್ತಕ ಟಿಪ್ಪಣಿಯಾಗಿ ಲಗತ್ತಿಸುತ್ತದೆ"
+
+msgid "Author"
+msgstr "ಲೇಖಕ"
+
+msgid "Auto"
+msgstr "ಸ್ವಯಂ"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "ಪದವನ್ನು ಪದಸಂಪತ್ತು ನಿರ್ಮಾಣಕ್ಕೆ ಸ್ವಯಂ ಸೇರಿಸಿ"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "ಪುಸ್ತಕದ ಒಳನೋಟಗಳು"
 
 msgid "Book Summary & Recs"
 msgstr "ಪುಸ್ತಕ ಸಾರಾಂಶ ಮತ್ತು ಶಿಫಾರಸುಗಳು"
+
+msgid "Book metadata updated."
+msgstr "ಪುಸ್ತಕದ ಮೆಟಾಡೇಟಾ ನವೀಕರಿಸಲಾಗಿದೆ."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "ಬ್ರಾಂಚ್/ಟ್ಯಾಗ್ \"%1\" ಕಂಡುಬಂದಿಲ್ಲ."
@@ -530,11 +545,17 @@ msgstr "ಸಂದರ್ಭೋಚಿತ ಟಿಪ್ಪಣಿಗಳು"
 msgid "Contextual Notes / Reflections"
 msgstr "ಸಂದರ್ಭೋಚಿತ ಟಿಪ್ಪಣಿಗಳು / ಚಿಂತನೆಗಳು"
 
+msgid "Continue"
+msgstr "ಮುಂದುವರಿಸಿ"
+
 msgid "Contradictions / Open Questions"
 msgstr "ವಿರೋಧಾಭಾಸಗಳು / ಬಗೆಹರಿಯದ ಪ್ರಶ್ನೆಗಳು"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "ಸಂಭಾಷಣೆಯನ್ನು AI ಟಿಪ್ಪಣಿಗಳಿಗೆ ಉಳಿಸಲಾಗಿದೆ"
+
+msgid "Copied to clipboard."
+msgstr "ಕ್ಲಿಪ್ಬೋರ್ಡ್ಗೆ ನಕಲಿಸಲಾಗಿದೆ."
 
 msgid "Copy"
 msgstr "ನಕಲಿಸಿ"
@@ -562,11 +583,17 @@ msgstr "AI ಟಿಪ್ಪಣಿ ರಚಿಸಲಾಗಲಿಲ್ಲ."
 msgid "Could not create AI note: %1"
 msgstr "AI ಟಿಪ್ಪಣಿ ರಚಿಸಲಾಗಲಿಲ್ಲ: %1"
 
+msgid "Could not extract text from this book."
+msgstr "ಈ ಪುಸ್ತಕದಿಂದ ಪಠ್ಯವನ್ನು ಹೊರತೆಗೆಯಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "AI ಟಿಪ್ಪಣಿಗಳ ಫೋಲ್ಡರ್ ಪಟ್ಟಿ ಮಾಡಲಾಗಲಿಲ್ಲ: %1"
 
 msgid "Could not open AI note file."
 msgstr "AI ಟಿಪ್ಪಣಿ ಫೈಲ್ ತೆರೆಯಲಾಗಲಿಲ್ಲ."
+
+msgid "Could not parse the identification result."
+msgstr "ಗುರುತಿಸುವಿಕೆಯ ಫಲಿತಾಂಶವನ್ನು ವಿಶ್ಲೇಷಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "ಕಸ್ಟಮ್ ಪ್ರಾಂಪ್ಟ್"
 msgid "Custom Prompts"
 msgstr "ಕಸ್ಟಮ್ ಪ್ರಾಂಪ್ಟ್ಗಳು"
 
-msgid "Deeply Thought"
-msgstr "ಆಳವಾದ ಚಿಂತನೆ"
+msgid "Default"
+msgstr "ಡೀಫಾಲ್ಟ್"
 
 msgid "Delete"
 msgstr "ಅಳಿಸಿ"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "ಪ್ರೊವೈಡರ್ %1 ಅನ್ನು ಅಳಿಸುವುದೇ?"
 
+msgid "Description: %1"
+msgstr "ವಿವರಣೆ: %1"
+
 msgid "Device"
 msgstr "ಸಾಧನ"
 
@@ -630,8 +660,8 @@ msgstr "ನಿಘಂಟು"
 msgid "Dictionary Language"
 msgstr "ನಿಘಂಟು ಭಾಷೆ"
 
-msgid "Dictionary Popup"
-msgstr "ನಿಘಂಟು ಪಾಪ್ಅಪ್"
+msgid "Dictionary Popup Buttons"
+msgstr "ನಿಘಂಟು ಪಾಪ್ಅಪ್ ಬಟನ್ಗಳು"
 
 msgid "Dictionary Settings"
 msgstr "ನಿಘಂಟು ಸೆಟ್ಟಿಂಗ್ಗಳು"
@@ -770,11 +800,11 @@ msgstr "ಸಾಮಾನ್ಯ ಸಂಭಾಷಣೆ"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"ಸಾಮಾನ್ಯವಾಗಿ ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚು ಆಯ್ಕೆ <b>ಮಾಡಬೇಡಿ</b> - ನಿಮ್ಮ ಮಾದರಿ ಮತ್ತು ವೇದಿಕೆಗೆ ಹೊಂದಿಕೆಯಾಗುವ ಪ್ಯಾರಾಮೀಟರ್ ಅನ್ನು ಆರಿಸಿ. ತಪ್ಪಾದ ಪ್ಯಾರಾಮೀಟರ್ API ದೋಷಗಳಿಗೆ ಕಾರಣವಾಗಬಹುದು. \n"
+"ಸಾಮಾನ್ಯವಾಗಿ ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚು ಆಯ್ಕೆಗಳನ್ನು <b>ಆಯ್ಕೆ ಮಾಡಬೇಡಿ</b> - ನಿಮ್ಮ ಮಾದರಿ ಮತ್ತು ವೇದಿಕೆಗೆ ಹೊಂದುವ ಒಂದು ಪ್ಯಾರಾಮೀಟರ್ ಆರಿಸಿ. ತಪ್ಪು ಪ್ಯಾರಾಮೀಟರ್ API ದೋಷಗಳಿಗೆ ಕಾರಣವಾಗಬಹುದು. \n"
 "\n"
-"ಆಯ್ಕೆಮಾಡಿದ ಮೌಲ್ಯವು ಸಂರಚನೆಯ additional_parameters ಅನ್ನು ಅತಿಕ್ರಮಿಸುತ್ತದೆ."
+"ಆಯ್ಕೆ ಮಾಡಿದ ಮೌಲ್ಯವು ಕಾನ್ಫಿಗರೇಶನ್ನ additional_parameters ಅನ್ನು ಅತಿಕ್ರಮಿಸುತ್ತದೆ. ಆಯ್ಕೆ ಮಾಡಿದ ಆಯ್ಕೆಗಳು ಒಂದೇ ಕೀ ಹಂಚಿಕೊಂಡರೆ, ಪಟ್ಟಿಯಲ್ಲಿ ಕೊನೆಯದನ್ನು ಮಾತ್ರ ಬಳಸಲಾಗುತ್ತದೆ."
 
 msgid "Genre"
 msgstr "ಪ್ರಕಾರ"
@@ -803,12 +833,22 @@ msgstr "ಐತಿಹಾಸಿಕ ಸಂದರ್ಭ"
 msgid "Historical and Cultural Context"
 msgstr "ಐತಿಹಾಸಿಕ ಮತ್ತು ಸಾಂಸ್ಕೃತಿಕ ಸಂದರ್ಭ"
 
+msgid "Identify (AI)"
+msgstr "ಗುರುತಿಸಿ (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "ಈ ಪುಸ್ತಕವನ್ನು ಗುರುತಿಸಿ"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "ನೈಜ-ಸಮಯದ ವೆಬ್ ಫಲಿತಾಂಶಗಳೊಂದಿಗೆ ಪ್ರತಿಕ್ರಿಯೆಯ ನಿಖರತೆಯನ್ನು ಸುಧಾರಿಸುತ್ತದೆ. \n"
 "ಗಮನಿಸಿ: ಹೆಚ್ಚಿನ ಟೋಕನ್ ಬಳಕೆ ಮತ್ತು ಹೆಚ್ಚುವರಿ API ಶುಲ್ಕಗಳು ಅನ್ವಯಿಸುತ್ತವೆ."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "ತೆರೆದ ಪುಸ್ತಕದ ಶೀರ್ಷಿಕೆ ಮತ್ತು ಲೇಖಕರನ್ನು ಅದರ ಆರಂಭಿಕ ಪಠ್ಯದಿಂದ ಅನುಮಾನಿಸಿ, ಅವುಗಳನ್ನು ಕಸ್ಟಮ್ ಮೆಟಾಡೇಟಾ ಆಗಿ ಉಳಿಸಿ."
 
 msgid "Integrated Summary"
 msgstr "ಸಮಗ್ರ ಸಾರಾಂಶ"
@@ -849,6 +889,9 @@ msgstr "ಬಳಸಲು ಖಾಲಿ ಬಿಡಿ: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "UI ಭಾಷೆಯನ್ನು ಬಳಸಲು ಈ ಕ್ಷೇತ್ರಗಳನ್ನು ಖಾಲಿ ಬಿಡಿ: %1"
 
+msgid "Left to Right"
+msgstr "ಎಡದಿಂದ ಬಲಕ್ಕೆ"
+
 msgid "Locations"
 msgstr "ಸ್ಥಳಗಳು"
 
@@ -863,6 +906,12 @@ msgstr "ಮಾರ್ಕ್ಡೌನ್ ಎಂಜಿನ್"
 
 msgid "Meaning & Usage"
 msgstr "ಅರ್ಥ ಮತ್ತು ಬಳಕೆ"
+
+msgid "Metadata could not be saved."
+msgstr "ಮೆಟಾಡೇಟಾವನ್ನು ಉಳಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
+
+msgid "Minimalist Mode"
+msgstr "ಮಿನಿಮಲಿಸ್ಟ್ ಮೋಡ್"
 
 msgid "Model"
 msgstr "ಮಾದರಿ"
@@ -912,11 +961,17 @@ msgstr "ಯಾವುದೇ ಸಕ್ರಿಯ ಪೂರೈಕೆದಾರ ಕಾ
 msgid "No base folder is available for AI Notes."
 msgstr "AI ಟಿಪ್ಪಣಿಗಳಿಗೆ ಯಾವುದೇ ಮೂಲ ಫೋಲ್ಡರ್ ಲಭ್ಯವಿಲ್ಲ."
 
+msgid "No book is open."
+msgstr "ಯಾವುದೇ ಪುಸ್ತಕ ತೆರೆದಿಲ್ಲ."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "ಯಾವುದೇ ಪುಸ್ತಕ ತೆರೆದಿಲ್ಲ. ಫೈಲ್ ಮ್ಯಾನೇಜರ್‌ನಲ್ಲಿ ಪುಸ್ತಕವನ್ನು ದೀರ್ಘವಾಗಿ ಒತ್ತಿ ನಂತರ ಪುಸ್ತಕ ಮಾಹಿತಿ (AI) ಆಯ್ಕೆಮಾಡಿ."
 
 msgid "No common parameters are available for handler %1."
 msgstr "ಪೂರೈಕೆದಾರ"
+
+msgid "No highlight to annotate"
+msgstr "ಟಿಪ್ಪಣಿ ಮಾಡಲು ಯಾವುದೇ ಹೈಲೈಟ್ ಇಲ್ಲ"
 
 msgid "No models available."
 msgstr "ಯಾವುದೇ ಮಾದರಿಗಳು ಲಭ್ಯವಿಲ್ಲ."
@@ -932,6 +987,9 @@ msgstr "ಯಾವುದೇ ಪ್ರತಿಕ್ರಿಯೆ ಸ್ವೀಕರ�
 
 msgid "No text left to annotate"
 msgstr "ಟಿಪ್ಪಣಿ ಮಾಡಲು ಪಠ್ಯ ಉಳಿದಿಲ್ಲ"
+
+msgid "No text selected"
+msgstr "ಯಾವುದೇ ಪಠ್ಯ ಆಯ್ಕೆಯಾಗಿಲ್ಲ"
 
 msgid "No text to annotate"
 msgstr "ಟಿಪ್ಪಣಿ ಮಾಡಲು ಯಾವುದೇ ಪಠ್ಯವಿಲ್ಲ"
@@ -1071,26 +1129,20 @@ msgstr "ಶುದ್ಧೀಕರಿಸಿ"
 msgid "Purge Settings"
 msgstr "ಸೆಟ್ಟಿಂಗ್ಗಳನ್ನು ತೆರವುಗೊಳಿಸಿ"
 
-msgid "Question"
-msgstr "ಪ್ರಶ್ನೆ"
-
 msgid "Quick Note"
 msgstr "ತ್ವರಿತ ಟಿಪ್ಪಣಿ"
 
 msgid "Quick note saved successfully"
 msgstr "ತ್ವರಿತ ಟಿಪ್ಪಣಿ ಯಶಸ್ವಿಯಾಗಿ ಉಳಿಸಲಾಗಿದೆ"
 
-msgid "RTL Layout"
-msgstr "RTL ವಿನ್ಯಾಸ"
-
-msgid "RTL written Language"
-msgstr "RTL ಬರೆಯಲಾದ ಭಾಷೆ"
-
 msgid "Re-immersion"
 msgstr "ಮರು-ನಿಮಗ್ನತೆ"
 
 msgid "Reader settings are not available."
 msgstr "ಓದುಗ ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲ."
+
+msgid "Reading progress"
+msgstr "ಓದುವ ಪ್ರಗತಿ"
 
 msgid "Reasoning Option"
 msgstr "ತಾರ್ಕಿಕ ಆಯ್ಕೆ"
@@ -1111,6 +1163,9 @@ msgstr "ತೆಗೆದುಹಾಕಿ"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "ಹೈಲೈಟ್ ಮೆನುವಿನಿಂದ [%s] ತೆಗೆದುಹಾಕುವುದೇ?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "ತೆಗೆದುಹಾಕಲಾಗಿದೆ <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "ಬಳಕೆದಾರರಿಂದ ವಿನಂತಿ ರದ್ದುಗೊಳಿಸಲಾಗಿದೆ."
@@ -1140,14 +1195,17 @@ msgstr ""
 "ಹುಡುಕಾಟ ಉಪಕರಣದ ರುಜುವಾತುಗಳನ್ನು ತೆಗೆದುಹಾಕಲಾಗುತ್ತದೆ.\n"
 "configuration.lua ಫೈಲ್ ಅನ್ನು ಸಂರಕ್ಷಿಸಲಾಗುತ್ತದೆ."
 
-msgid "Response"
-msgstr "ಪ್ರತಿಕ್ರಿಯೆ"
+msgid "Response Font: %1"
+msgstr "ಪ್ರತಿಕ್ರಿಯೆ ಫಾಂಟ್: %1"
 
 msgid "Response Settings"
 msgstr "ಪ್ರತಿಕ್ರಿಯೆ ಸೆಟ್ಟಿಂಗ್ಗಳು"
 
 msgid "Response Text Font Size"
 msgstr "ಪ್ರತಿಕ್ರಿಯೆ ಪಠ್ಯ ಫಾಂಟ್ ಗಾತ್ರ"
+
+msgid "Right to Left"
+msgstr "ಬಲದಿಂದ ಎಡಕ್ಕೆ"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1216,14 +1274,26 @@ msgstr "AI ಟಿಪ್ಪಣಿ ಆಯ್ಕೆಮಾಡಿ"
 msgid "Select a model:"
 msgstr "ಮಾದರಿಯನ್ನು ಆಯ್ಕೆಮಾಡಿ:"
 
-msgid "Selection copied to clipboard."
-msgstr "ಆಯ್ಕೆಯನ್ನು ಕ್ಲಿಪ್ಬೋರ್ಡ್ಗೆ ನಕಲಿಸಲಾಗಿದೆ."
+msgid "Set"
+msgstr "ಹೊಂದಿಸಿ"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"ಪುಸ್ತಕದ ಮೆಟಾಡೇಟಾ ಹೊಂದಿಸುವುದೇ?\n"
+"ಶೀರ್ಷಿಕೆ: %1\n"
+"ಲೇಖಕ: %2"
 
 msgid "Settings"
 msgstr "ಸೆಟ್ಟಿಂಗ್ಗಳು"
 
 msgid "Show Follow-up Questions"
 msgstr "ಅನುಸರಣಾ ಪ್ರಶ್ನೆಗಳನ್ನು ತೋರಿಸಿ"
+
+msgid "Show Highlighted Text at Top"
+msgstr "ಮೇಲ್ಭಾಗದಲ್ಲಿ ಹೈಲೈಟ್ ಮಾಡಿದ ಪಠ್ಯವನ್ನು ತೋರಿಸಿ"
 
 msgid "Show Reasoning"
 msgstr "ತಾರ್ಕಿಕತೆ ತೋರಿಸು"
@@ -1236,6 +1306,12 @@ msgstr "AI ಪ್ರತಿಕ್ರಿಯೆಯಲ್ಲಿ ಆಳವಾದ ಚ�
 
 msgid "Show follow up questions related to the response content."
 msgstr "ಪ್ರತಿಕ್ರಿಯೆಯ ವಿಷಯಕ್ಕೆ ಸಂಬಂಧಿಸಿದ ಅನುಸರಣಾ ಪ್ರಶ್ನೆಗಳನ್ನು ತೋರಿಸಿ."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "ಉತ್ತರವನ್ನು ಮಾತ್ರ ತೋರಿಸುತ್ತದೆ: ಬಳಕೆದಾರ/ಸಹಾಯಕ ಶೀರ್ಷಿಕೆಗಳಿಲ್ಲ, ಮೊದಲ ಬಟನ್ ಸಾಲಿಲ್ಲ, ತಾರ್ಕಿಕ ವಿವರಣೆಯಿಲ್ಲ ಮತ್ತು ಅನುಸರಣ ಪ್ರಶ್ನೆಗಳಿಲ್ಲ. ಉತ್ತರದ ಮೇಲಿನ ಕ್ರಿಯೆಗಳನ್ನು ಮಾತ್ರ (ಟಿಪ್ಪಣಿ ಮಾಡಿ, ಶಬ್ದಕೋಶ ನಿರ್ಮಾಣ) ಮುಚ್ಚು ಬಟನ್ ಪಕ್ಕದಲ್ಲಿ ಉಳಿಸಿಕೊಳ್ಳುತ್ತದೆ. ಸಕ್ರಿಯವಾಗಿರುವಾಗ ತಾರ್ಕಿಕ ಪಠ್ಯ ಮತ್ತು ಅನುಸರಣ ಪ್ರಶ್ನೆಗಳನ್ನು ಆಫ್ ಮಾಡುತ್ತದೆ."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "ಪ್ರಾಂಪ್ಟ್ ಗುರಿಯಾಗಿಸಿದ ಪಠ್ಯವನ್ನು ಆ ಸರದಿಯ ಮೇಲ್ಭಾಗದಲ್ಲಿ, ಪ್ರಶ್ನೆಯ ಮೇಲೆ, ತನ್ನದೇ ಆದ ಬ್ಲಾಕ್ ಆಗಿ ತೋರಿಸುತ್ತದೆ; ಇದರಿಂದ ಮೂಲವನ್ನು ಉತ್ತರದೊಂದಿಗೆ ಹೋಲಿಸಬಹುದು. ಆಗ ಪ್ರಶ್ನೆಯ ಬಬಲ್ ಅದನ್ನು ಪುನರಾವರ್ತಿಸುವುದನ್ನು ನಿಲ್ಲಿಸುತ್ತದೆ."
 
 msgid "Similar Books Recommendations"
 msgstr "ಇದೇ ರೀತಿಯ ಪುಸ್ತಕಗಳ ಶಿಫಾರಸುಗಳು"
@@ -1297,7 +1373,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "ನಿಮ್ಮ AI ಟಿಪ್ಪಣಿಗಳಿಗೆ ಉಳಿಸಲಾಗುವ ತ್ವರಿತ ಟಿಪ್ಪಣಿಗಳನ್ನು ಬರೆಯಿರಿ."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "ಪದ X-Ray"
 
@@ -1307,6 +1382,12 @@ msgstr "ಪದಗಳು ಮತ್ತು ಪರಿಕಲ್ಪನೆಗಳು"
 msgid "Test"
 msgstr "ಪರೀಕ್ಷಿಸಿ"
 
+msgid "Text Appearance"
+msgstr "ಪಠ್ಯದ ಗೋಚರತೆ"
+
+msgid "Text Direction: %1"
+msgstr "ಪಠ್ಯ ದಿಕ್ಕು: %1"
+
 msgid "Text Size: %1"
 msgstr "ಪಠ್ಯ ಗಾತ್ರ: %1"
 
@@ -1315,6 +1396,12 @@ msgstr "ಪಠ್ಯವನ್ನು ಕ್ಲಿಪ್ಬೋರ್ಡ್ಗೆ �
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "%1 ಗಾಗಿ ಹ್ಯಾಂಡ್ಲರ್ ಕಂಡುಬಂದಿಲ್ಲ. ದಯವಿಟ್ಟು api_handlers ಡೈರೆಕ್ಟರಿಯಲ್ಲಿ ಹ್ಯಾಂಡ್ಲರ್ ಇದೆಯೇ ಎಂದು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಿ."
+
+msgid "The model could not identify this book."
+msgstr "ಮಾದರಿಯು ಈ ಪುಸ್ತಕವನ್ನು ಗುರುತಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ."
+
+msgid "Thinking ..."
+msgstr "ಯೋಚಿಸುತ್ತಿದೆ ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "ಈ ಗುಂಡಿಯು ಹೈಲೈಟ್ ಮಾಡಿದ ಪಠ್ಯದೊಂದಿಗೆ ತ್ವರಿತ ಟಿಪ್ಪಣಿಯನ್ನು ರಚಿಸುತ್ತದೆ."
@@ -1378,6 +1465,12 @@ msgstr "ಈ ಪ್ರಾಂಪ್ಟ್ ಹೈಲೈಟ್ ಮಾಡಿದ ಪ�
 msgid "Timeline"
 msgstr "ಕಾಲರೇಖೆ"
 
+msgid "Title"
+msgstr "ಶೀರ್ಷಿಕೆ"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "ಶೀರ್ಷಿಕೆ ಅಥವಾ ಲೇಖಕರ ಮೆಟಾಡೇಟಾ ಕಾಣೆಯಾಗಿದೆ ಅಥವಾ ಅಪೂರ್ಣವಾಗಿದೆ, ಆದ್ದರಿಂದ AI ಫಲಿತಾಂಶವು ವಿಶ್ವಾಸಾರ್ಹವಾಗಿರದೇ ಇರಬಹುದು. ಮೊದಲು ಅದನ್ನು ಹೊಂದಿಸಲು ಗುರುತಿಸಿ (AI) ಬಳಸಿ."
+
 msgid "To-Do / Action Items"
 msgstr "ಮಾಡಬೇಕಾದ ಕಾರ್ಯಗಳು / ಕ್ರಿಯಾ ಐಟಂಗಳು"
 
@@ -1393,6 +1486,13 @@ msgstr "ಟೂಲ್ ಕರೆಯಲ್ಲಿ ಹುಡುಕಾಟ ಕೀವರ
 msgid "Translate"
 msgstr "ಅನುವಾದಿಸು"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "ಅನುವಾದಿಸಿ (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "AI ಬಳಸಿ ಪುಸ್ತಕದ ವಿವರಣೆಯನ್ನು ಅನುವಾದಿಸುತ್ತದೆ."
+
 msgid "Translation"
 msgstr "ಅನುವಾದ"
 
@@ -1404,6 +1504,12 @@ msgstr "ನಿಮ್ಮ ಪ್ರಶ್ನೆಯನ್ನು ಇಲ್ಲಿ ಟ
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "ಅಜ್ಞಾತ ಲೇಖಕ"
+
+msgid "Unknown Title"
+msgstr "ಅಜ್ಞಾತ ಶೀರ್ಷಿಕೆ"
 
 msgid "Unknown error"
 msgstr "ಅಜ್ಞಾತ ದೋಷ"
@@ -1473,6 +1579,13 @@ msgstr "ವೀಕ್ಷಿಸಿ"
 msgid "Vocabulary"
 msgstr "ಶಬ್ದಕೋಶ"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "ಶಬ್ದಕೋಶ ನಿರ್ಮಾಣ"
+
+msgid "Waiting for the model ..."
+msgstr "ಮಾದರಿಗಾಗಿ ಕಾಯುತ್ತಿದೆ ..."
+
 msgid "Web Search"
 msgstr "ವೆಬ್ ಹುಡುಕಾಟ"
 
@@ -1504,9 +1617,6 @@ msgstr "ಪದ ರೂಪ ಮತ್ತು ಲೆಮ್ಮ"
 msgid "Word Origin"
 msgstr "ಪದದ ಮೂಲ"
 
-msgid "Word copied to clipboard."
-msgstr "ಪದವನ್ನು ಕ್ಲಿಪ್ಬೋರ್ಡ್ಗೆ ನಕಲಿಸಲಾಗಿದೆ."
-
 msgid "Write quick notes here"
 msgstr "ಇಲ್ಲಿ ತ್ವರಿತ ಟಿಪ್ಪಣಿಗಳನ್ನು ಬರೆಯಿರಿ"
 
@@ -1533,6 +1643,3 @@ msgstr "ಉದಾ. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: ಹಿಂದಿರುಗಿದ ಡೇಟಾವನ್ನು ಪಾರ್ಸ್ ಮಾಡಲು ವಿಫಲವಾಗಿದೆ"
-
-msgid "https://..."
-msgstr "https://..."

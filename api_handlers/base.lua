@@ -13,18 +13,19 @@ local ffiutil = require("ffi/util")
 local koutil = require("util")
 local strbuf = require("string.buffer")
 local T = ffiutil.template
-local _ = require("assistant_gettext")
+local _ = require("core/gettext")
 
-local ToolExecutor = require("assistant_tool_executor")
-local ASUtils = require("assistant_utils")
-local NetUtils = require("assistant_net_utils")
-local TextUtils = require("assistant_text_utils")
+local ToolExecutor = require("core/tool_executor")
+local ASUtils = require("utils/base")
+local NetUtils = require("utils/net")
+local TextUtils = require("utils/text")
 local datetime = require("datetime")
 local json_default = ASUtils.json_default
 
 --- Local time to UTC epoch.
 local function _localToUtcEpoch(time)
     local utc = os.date("!*t", time)
+    ---@cast utc osdate
     local diff = os.difftime(time, os.time(utc))
     return time + diff
 end
@@ -358,8 +359,12 @@ function BaseHandler:resetTrapWidget()
     return w
 end
 
--- Sync provider and model options from the querier.
-function BaseHandler:SyncOptions(querier)
+--- Sync provider and model options from the querier. The reasoning overlay is
+--- read from settings unless the caller passes one explicitly (the Reasoning
+--- Options dialog probes a not-yet-saved selection that way).
+--- @param querier table provider state (provider_name, provider_setting, settings)
+--- @param overlay table|nil reasoning overlay to apply instead of the stored one
+function BaseHandler:SyncOptions(querier, overlay)
     self.provider_name = querier.provider_name
     self.handler_name = querier.handler_name
     koutil.tableMerge(self, querier.provider_setting)
@@ -386,12 +391,9 @@ function BaseHandler:SyncOptions(querier)
 
     -- Merge the runtime reasoning overlay over same-name top-level keys.
     local provider_id = querier.provider_name or self.provider_name or ""
-    local Registry = require("assistant_provider_registry")
-    local overlay_key = Registry.getReasoningKey(provider_id)
-    local overlay
-    if querier.settings and querier.settings.readSetting then
-        local ok, val = pcall(function() return querier.settings:readSetting(overlay_key) end)
-        if ok then overlay = val end
+    local Registry = require("core/provider_registry")
+    if overlay == nil then
+        overlay = Registry.getReasoningOverlay(querier.settings, provider_id)
     end
     if type(overlay) == "table" then
         local ps = querier.provider_setting
@@ -428,6 +430,22 @@ end
 --- Sent to the API as-is.
 BaseHandler.TEST_PROMPT = "Reply with exactly one word: OK"
 
+--- Fold the handler's whitelisted additional_parameters into a request body
+--- (in place). Shared by the query builders and the connection-test requests,
+--- so a test sends exactly the options a real query would send.
+--- @param body table request body extended in place
+function BaseHandler:mergeSupportedOptions(body)
+    if type(self.additional_parameters) ~= "table" then return end
+    local supported = self.SupportedOptions or {}
+    for o, v in pairs(self.additional_parameters) do
+        if supported[o] then body[o] = v end
+    end
+end
+
+--- Token budget for the connection-test request. High enough to leave room for
+--- a reasoning chain, so a thinking model still emits the final answer.
+BaseHandler.TEST_MAX_OUTPUT_TOKENS = 2048
+
 --- Check whether the connection-test echo contains a standalone OK.
 --- @param content string|nil extracted assistant text from the report
 --- @return boolean true when the echo proves endpoint, key and model at once
@@ -445,8 +463,8 @@ end
 --- @param url string full endpoint URL
 --- @param headers table auth/content headers
 --- @param body table Lua request body
---- @param extract function decoded response table -> assistant text, or nil
---- @return table|nil report { url, body, status, raw, content } 
+--- @param extract function decoded response table -> assistant text and reasoning, or nil
+--- @return table|nil report { url, body, status, raw, content, reasoning }
 --- @return string|nil err
 function BaseHandler:testRequest(url, headers, body, extract)
     local json_body = json.encode(body)
@@ -480,7 +498,7 @@ function BaseHandler:testRequest(url, headers, body, extract)
     }
     local ok, decoded = pcall(json.decode, report.raw)
     if ok and type(decoded) == "table" then
-        report.content = extract(decoded)
+        report.content, report.reasoning = extract(decoded)
     end
     return report
 end
@@ -489,7 +507,8 @@ end
 ---
 --- @param message_history  table   conversation history
 --- @param query_option     table   { use_stream_mode=boolean, use_websearch=string }
---- @return string|function|table result, string|nil error
+--- @return string|function|table result
+--- @return string|nil error
 function BaseHandler:query(message_history, query_option)
     error("query method must be implemented")
 end
@@ -616,7 +635,8 @@ end
 --- Parse a non-streaming LLM response into text, a tool call, or an error.
 --- @param responseData  table   decoded JSON from the LLM (non-stream response)
 --- @param format        string  "openai" | "anthropic" | "gemini" | "responses"
---- @return string|table|nil result, string|nil error
+--- @return string|table|nil result
+--- @return string|nil error
 function BaseHandler:parseToolCalls(responseData, format)
     local parsed, parse_err = ToolExecutor.parseToolCallsResponse(responseData, format)
 

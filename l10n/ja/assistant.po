@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 10:35+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - タイトル : %1\n"
-" - 著者: %2\n"
-" - 読書進捗: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - %1/%2ページ"
@@ -52,6 +37,9 @@ msgstr "（応答なし）"
 
 msgid "(empty response body)"
 msgstr "（空のレスポンス本文）"
+
+msgid "(none)"
+msgstr "（なし）"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>APIがエラーを返しました</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>追加しました</b> [%1 (AI)] をハイライトメニューに。"
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>APIから有効な回答が返されませんでした</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Term X-Rayのため、書籍のコンテキストを分析中...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
 "<b>この本について質問する:</b>\n"
-"%1（著者: %2）"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>%1 をインストール中...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>モデルの回答:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>パラメータ</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>削除しました</b> [%1 (AI)] をハイライトメニューから。"
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>推論（最終回答なし）</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>推論:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>リクエスト</b> - POST %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "長期間読んでいない本を次に開いたときに、AIあらすじが有効になります。"
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AIあらすじ"
 
@@ -353,8 +346,14 @@ msgstr ""
 "メインメニューからプロバイダーを追加します:\n"
 "%1 -> AIアシスタント -> 設定 -> プロバイダーAPI"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "<b>[%1 (AI)]</b> を追加しました"
+
 msgid "Added to vocabulary builder"
 msgstr "単語帳に追加しました"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "辞書で調べたすべての単語を、結果が表示され次第すぐに語彙ビルダーに追加します。"
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "本のハイライト、ノート、AIノートの内容を分析します。"
@@ -369,13 +368,13 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
 "アシスタントプラグインの設定を消去してもよろしいですか？\n"
-"これにより、アシスタントプラグインは初回インストール時の状態にリセットされます。\n"
+"これにより、アシスタントプラグインは最初にインストールしたときの状態にリセットされます。\n"
 "\n"
 "configuration.lua は安全です。消去されるのは設定のみです。"
 
@@ -404,6 +403,9 @@ msgstr "何でも質問してください..."
 msgid "Ask the AI a question"
 msgstr "AIに質問する"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "開いている本の冒頭テキストからタイトルと著者をAIに特定させます。"
+
 msgid "Assistant settings are not available."
 msgstr "アシスタント設定を利用できません。"
 
@@ -412,6 +414,16 @@ msgstr "前のテキストを添付"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "回答を現在のハイライトにブックノートとして添付します"
+
+msgid "Author"
+msgstr "著者"
+
+msgid "Auto"
+msgstr "自動"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "単語を語彙ビルダーに自動追加"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "ブックインサイト"
 
 msgid "Book Summary & Recs"
 msgstr "書籍の要約とおすすめ"
+
+msgid "Book metadata updated."
+msgstr "本のメタデータを更新しました。"
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "ブランチ/タグ \"%1\" が見つかりませんでした。"
@@ -530,11 +545,17 @@ msgstr "文脈ノート"
 msgid "Contextual Notes / Reflections"
 msgstr "文脈ノート / 考察"
 
+msgid "Continue"
+msgstr "続行"
+
 msgid "Contradictions / Open Questions"
 msgstr "矛盾 / 未解決の疑問"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "会話をAIノートに保存しました"
+
+msgid "Copied to clipboard."
+msgstr "クリップボードにコピーしました。"
 
 msgid "Copy"
 msgstr "コピー"
@@ -562,11 +583,17 @@ msgstr "AIノートを作成できませんでした。"
 msgid "Could not create AI note: %1"
 msgstr "AIノートを作成できませんでした: %1"
 
+msgid "Could not extract text from this book."
+msgstr "この本からテキストを抽出できませんでした。"
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "AIノートフォルダの一覧を取得できませんでした: %1"
 
 msgid "Could not open AI note file."
 msgstr "AIノートファイルを開けませんでした。"
+
+msgid "Could not parse the identification result."
+msgstr "特定結果を解析できませんでした。"
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "カスタムプロンプト"
 msgid "Custom Prompts"
 msgstr "カスタムプロンプト"
 
-msgid "Deeply Thought"
-msgstr "深く思考"
+msgid "Default"
+msgstr "デフォルト"
 
 msgid "Delete"
 msgstr "削除"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "プロバイダー%1を削除しますか？"
 
+msgid "Description: %1"
+msgstr "説明: %1"
+
 msgid "Device"
 msgstr "デバイス"
 
@@ -630,8 +660,8 @@ msgstr "辞書"
 msgid "Dictionary Language"
 msgstr "辞書の言語"
 
-msgid "Dictionary Popup"
-msgstr "辞書ポップアップ"
+msgid "Dictionary Popup Buttons"
+msgstr "辞書ポップアップのボタン"
 
 msgid "Dictionary Settings"
 msgstr "辞書設定"
@@ -770,11 +800,11 @@ msgstr "一般的な会話"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"一般的には<b>複数</b>選択しないでください - モデルとプラットフォームに一致するパラメータを選択してください。誤ったパラメータはAPIエラーを引き起こす可能性があります。\n"
+"一般的に、複数を選択することは<b>避けて</b>ください。お使いのモデルとプラットフォームに合ったパラメータを1つ選んでください。誤ったパラメータはAPIエラーを引き起こす可能性があります。 \n"
 "\n"
-"選択された値は、設定のadditional_parametersを上書きします。"
+"選択した値は設定の additional_parameters を上書きします。選択したオプションが同じキーを共有している場合、リスト内の最後のものだけが使用されます。"
 
 msgid "Genre"
 msgstr "ジャンル"
@@ -803,12 +833,22 @@ msgstr "歴史的背景"
 msgid "Historical and Cultural Context"
 msgstr "歴史的・文化的背景"
 
+msgid "Identify (AI)"
+msgstr "特定 (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "この本を特定"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "リアルタイムのウェブ検索結果で応答精度が向上します。\n"
 "注: トークン使用量が増え、追加のAPI費用がかかります。"
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "開いている本の冒頭テキストからタイトルと著者を推定し、カスタムメタデータとして保存します。"
 
 msgid "Integrated Summary"
 msgstr "統合サマリー"
@@ -848,6 +888,9 @@ msgstr "空欄の場合は%1を使用します"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "これらのフィールドを空欄にすると、UI言語（%1）を使用します"
 
+msgid "Left to Right"
+msgstr "左から右"
+
 msgid "Locations"
 msgstr "場所"
 
@@ -862,6 +905,12 @@ msgstr "Markdownエンジン"
 
 msgid "Meaning & Usage"
 msgstr "意味と用法"
+
+msgid "Metadata could not be saved."
+msgstr "メタデータを保存できませんでした。"
+
+msgid "Minimalist Mode"
+msgstr "ミニマリストモード"
 
 msgid "Model"
 msgstr "モデル"
@@ -911,11 +960,17 @@ msgstr "アクティブなプロバイダーが設定されていません。設
 msgid "No base folder is available for AI Notes."
 msgstr "AIノートに使用できるベースフォルダがありません。"
 
+msgid "No book is open."
+msgstr "本が開かれていません。"
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "本が開かれていません。ファイルマネージャーで本を長押しし、「ブック情報 (AI)」を選択してください。"
 
 msgid "No common parameters are available for handler %1."
 msgstr "ハンドラ %1 に利用可能な共通パラメータはありません。"
+
+msgid "No highlight to annotate"
+msgstr "注釈を付けるハイライトがありません"
 
 msgid "No models available."
 msgstr "利用可能なモデルがありません。"
@@ -931,6 +986,9 @@ msgstr "応答がありませんでした。"
 
 msgid "No text left to annotate"
 msgstr "注記するテキストが残っていません"
+
+msgid "No text selected"
+msgstr "テキストが選択されていません"
 
 msgid "No text to annotate"
 msgstr "注記するテキストがありません"
@@ -1070,26 +1128,20 @@ msgstr "消去"
 msgid "Purge Settings"
 msgstr "設定を消去"
 
-msgid "Question"
-msgstr "質問"
-
 msgid "Quick Note"
 msgstr "クイックノート"
 
 msgid "Quick note saved successfully"
 msgstr "クイックノートを保存しました。"
 
-msgid "RTL Layout"
-msgstr "RTLレイアウト"
-
-msgid "RTL written Language"
-msgstr "RTL表記の言語"
-
 msgid "Re-immersion"
 msgstr "再没入"
 
 msgid "Reader settings are not available."
 msgstr "リーダー設定は利用できません。"
+
+msgid "Reading progress"
+msgstr "読書の進捗"
 
 msgid "Reasoning Option"
 msgstr "推論オプション"
@@ -1110,6 +1162,9 @@ msgstr "削除"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "ハイライトメニューから [%s] を削除しますか？"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "<b>[%1 (AI)]</b> を削除しました"
 
 msgid "Request Cancelled by user."
 msgstr "ユーザーによってリクエストがキャンセルされました。"
@@ -1138,14 +1193,17 @@ msgstr ""
 "プラグインを工場出荷時の既定値に戻します。設定 UI で追加したプロバイダー、API キー、検索ツールの認証情報は削除されます。\n"
 "configuration.lua ファイルは保持されます。"
 
-msgid "Response"
-msgstr "応答"
+msgid "Response Font: %1"
+msgstr "応答フォント: %1"
 
 msgid "Response Settings"
 msgstr "応答設定"
 
 msgid "Response Text Font Size"
 msgstr "応答テキストのフォントサイズ"
+
+msgid "Right to Left"
+msgstr "右から左"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1214,14 +1272,26 @@ msgstr "AIノートを選択"
 msgid "Select a model:"
 msgstr "モデルを選択:"
 
-msgid "Selection copied to clipboard."
-msgstr "選択範囲をクリップボードにコピーしました。"
+msgid "Set"
+msgstr "設定"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"本のメタデータを設定しますか？\n"
+"タイトル: %1\n"
+"著者: %2"
 
 msgid "Settings"
 msgstr "設定"
 
 msgid "Show Follow-up Questions"
 msgstr "フォローアップ質問を表示"
+
+msgid "Show Highlighted Text at Top"
+msgstr "ハイライトしたテキストを上部に表示"
 
 msgid "Show Reasoning"
 msgstr "推論を表示"
@@ -1234,6 +1304,12 @@ msgstr "AI応答に含まれる場合、深く考えた過程（推論）を表�
 
 msgid "Show follow up questions related to the response content."
 msgstr "応答内容に関連するフォローアップ質問を表示します。"
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "回答のみを表示します。ユーザー／アシスタントの見出し、最初のボタン行、推論、追加の質問は表示されません。「閉じる」の隣に、回答自体に対する操作（注釈、ボキャブラリービルダー）だけを残します。有効な間は「推論テキスト」と「追加の質問」をオフにします。"
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "プロンプトが参照したテキストを、そのターンの上部に質問の上に独立したブロックとして表示します。これにより、原文と回答を比較できます。質問バブル内ではこのテキストが繰り返されなくなります。"
 
 msgid "Similar Books Recommendations"
 msgstr "類似書籍のおすすめ"
@@ -1295,7 +1371,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "クイックノートを作成すると、AIノートに保存されます。"
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "用語X-Ray"
 
@@ -1305,6 +1380,12 @@ msgstr "用語と概念"
 msgid "Test"
 msgstr "テスト"
 
+msgid "Text Appearance"
+msgstr "テキストの外観"
+
+msgid "Text Direction: %1"
+msgstr "テキストの方向: %1"
+
 msgid "Text Size: %1"
 msgstr "テキストサイズ: %1"
 
@@ -1313,6 +1394,12 @@ msgstr "テキストをクリップボードにコピーしました"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "%1 のハンドラーが見つかりませんでした。api_handlers ディレクトリにハンドラーが存在することを確認してください。"
+
+msgid "The model could not identify this book."
+msgstr "モデルはこの本を特定できませんでした。"
+
+msgid "Thinking ..."
+msgstr "思考中..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "このボタンは、選択したテキストを含むクイックノートを作成します。"
@@ -1376,6 +1463,12 @@ msgstr "このプロンプトは、選択したテキストを別の言語に翻
 msgid "Timeline"
 msgstr "タイムライン"
 
+msgid "Title"
+msgstr "タイトル"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "タイトルまたは著者のメタデータが欠落しているか不完全なため、AIの結果は信頼できない可能性があります。先に「特定 (AI)」で設定してください。"
+
 msgid "To-Do / Action Items"
 msgstr "やること / アクション項目"
 
@@ -1391,6 +1484,13 @@ msgstr "ツール呼び出しに検索キーワードが含まれていません
 msgid "Translate"
 msgstr "翻訳"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "翻訳 (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "AI で書籍の説明を翻訳します。"
+
 msgid "Translation"
 msgstr "翻訳"
 
@@ -1402,6 +1502,12 @@ msgstr "ここに質問を入力してください..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "著者不明"
+
+msgid "Unknown Title"
+msgstr "タイトル不明"
 
 msgid "Unknown error"
 msgstr "不明なエラー"
@@ -1471,6 +1577,13 @@ msgstr "表示"
 msgid "Vocabulary"
 msgstr "語彙"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "ボキャブラリービルダー"
+
+msgid "Waiting for the model ..."
+msgstr "モデルを待機中..."
+
 msgid "Web Search"
 msgstr "Web検索"
 
@@ -1502,9 +1615,6 @@ msgstr "語形と見出し語"
 msgid "Word Origin"
 msgstr "語源"
 
-msgid "Word copied to clipboard."
-msgstr "単語をクリップボードにコピーしました。"
-
 msgid "Write quick notes here"
 msgstr "ここにクイックノートを入力してください"
 
@@ -1531,6 +1641,3 @@ msgstr "例: google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: 返されたデータの解析に失敗しました"
-
-msgid "https://..."
-msgstr "https://..."

@@ -1,6 +1,6 @@
 local helper = require("test.helper")
 local assert = helper.assert
-local ToolExecutor = require("assistant_tool_executor")
+local ToolExecutor = require("core/tool_executor")
 local json = require("rapidjson")
 local ExtTools = helper.extools
 local OpenAIHandler = require("api_handlers.openai")
@@ -57,27 +57,73 @@ local tests = {
         assert.equal(ToolExecutor.SEARCH_API_NAMES[#ToolExecutor.SEARCH_API_NAMES], "parallelapi")
     end),
 
-    test("Querier captures one search snapshot for both tool-call paths", function()
-        local project_root = debug.getinfo(1).source:match("@(.*/)test/")
-        local file = io.open(project_root .. "assistant_querier.lua", "r")
-        assert.notNil(file, "assistant_querier.lua must be readable")
-        local source = file:read("*a")
-        file:close()
-
-        local snapshot = "local search_config = ToolExecutor.getSearchConfig(self.assistant)"
-        local closure = "local function executeSearch("
-        local snapshot_pos = source:find(snapshot, 1, true)
-        local closure_pos = source:find(closure, 1, true)
-        assert.notNil(snapshot_pos, "query must capture the search config")
-        assert.notNil(closure_pos, "shared search executor must exist")
-        assert.isTrue(snapshot_pos < closure_pos, "snapshot must be captured before the tool-round closure")
-
-        local _, snapshot_count = source:gsub("ToolExecutor%.getSearchConfig%(self%.assistant%)", "")
-        local _, call_count = source:gsub("= executeSearch%(", "")
-        assert.equal(snapshot_count, 1, "one snapshot must be reused for the query")
-        assert.equal(call_count, 2, "stream and non-stream loops must share the closure")
-        assert.matches(source, "tool_rounds%+i, search_config, objective%)",
-            "the frozen snapshot and objective must reach the external executor")
+    test("Querier preserves frozen Parallel settings and Go session through both tool loops", function()
+        local Querier = require("core/querier")
+        local OpenCode = require("api_handlers.opencode")
+        for i, streamed in ipairs({ false, true }) do
+            local provider = { api_key = "frozen-key", mode = "fast" }
+            local reads, searches, requests = 0, 0, 0
+            local sessions = {}
+            local call = { id = "search-id", name = "assistant_web_search",
+                arguments = json.encode({ keywords = "energy policy", objective = "Find current policies" }) }
+            local settings = { readSetting = function(self, key, default)
+                if key == "use_stream_mode" then return streamed end
+                if key == "use_websearch" then return "parallelapi" end
+                return default
+            end }
+            local handler = OpenCode:new({})
+            local function recordRequest(headers)
+                requests = requests + 1
+                sessions[requests] = headers["x-opencode-session"]
+                provider.api_key, provider.mode = "changed-key", "advanced"
+            end
+            handler.makeRequest = function(self, url, headers)
+                recordRequest(headers)
+                local message = requests == 1 and { tool_calls = {
+                    { id = call.id, type = "function", ["function"] = { name = call.name, arguments = call.arguments } },
+                } } or { content = "done" }
+                return true, 200, json.encode({ choices = { { message = message } } })
+            end
+            handler.backgroundRequest = function(self, url, headers)
+                recordRequest(headers)
+                local first = requests == 1
+                return function()
+                    if first then return true, {}, { call } end
+                    return true, "done"
+                end
+            end
+            local querier = setmetatable({
+                handler = handler, handler_name = "opencode", provider_name = "opencode_go",
+                provider_setting = { api_key = "model-key", model = "glm-5.3-flash",
+                    base_url = "https://opencode.ai/zen/go/v1" },
+                settings = settings,
+                assistant = { config = { getProvider = function(self, key)
+                    if key == "parallelapi" then reads = reads + 1; return provider end
+                end } },
+                getRequestIdentity = function() return { label = "OpenCode Go", model = "glm-5.3-flash" } end,
+                showStremDialog = function(self, background) return background() end,
+            }, { __index = Querier })
+            local history = { { role = "user", content = "Find energy policy" } }
+            withSearchMethod("parallelapi", function(self, keywords, trap, config, objective)
+                searches = searches + 1
+                assert.equal(config.api_key, "frozen-key")
+                assert.equal(config.mode, "fast")
+                assert.equal(objective, "Find current policies")
+                return true, "URL: https://example.com/policy"
+            end, function()
+                local answer, err = querier:query(history)
+                assert.equal(err, nil)
+                assert.equal(answer, "done")
+                assert.equal(reads, 1)
+                assert.equal(searches, 1)
+                assert.equal(requests, 2)
+                assert.notNil(sessions[1])
+                assert.equal(sessions[1], sessions[2])
+                history[#history + 1] = { role = "user", content = "Explain further" }
+                assert.equal(querier:query(history), "done")
+                assert.equal(sessions[1], sessions[3])
+            end)
+        end
     end),
 
     test("search snapshots copy configured Parallel settings and honor credential requirements", function()

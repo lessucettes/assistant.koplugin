@@ -24,6 +24,39 @@ local function modelIds(models)
 end
 
 return helper.runTests("opencode", {
+    test("Go keeps one session across transactional history views", function()
+        local h = handler(GO)
+        local canonical = { { role = "user", content = "current policy" } }
+        local sessions = {}
+        h.parseToolCalls = function() return "ok" end
+        h.makeRequest = function(self, url, headers)
+            sessions[#sessions + 1] = headers["x-opencode-session"]
+            return true, 200, "{}"
+        end
+        for round = 1, 2 do
+            local view = { canonical[1], { role = "tool", content = "round " .. round } }
+            assert.equal(h:query(view, {
+                use_stream_mode = false,
+                conversation_history = canonical,
+            }), "ok")
+        end
+        assert.notNil(sessions[1])
+        assert.equal(sessions[1], sessions[2])
+    end),
+    test("OpenCode applies the shared Chat Completions reasoning overlay", function()
+        local h = handler(GO)
+        h:SyncOptions({
+            provider_name = "opencode_go",
+            handler_name = "opencode",
+            provider_setting = { api_key = "test-key", base_url = GO, model = "glm-5.3-flash" },
+            settings = { readSetting = function() return nil end },
+        }, { reasoning_effort = "low" })
+        assert.equal(h.additional_parameters.reasoning_effort, "low")
+        local body
+        h.testRequest = function(self, url, headers, payload) body = payload; return true end
+        assert.isTrue(h:Test())
+        assert.equal(body.reasoning_effort, "low")
+    end),
     test("Go uses the Chat Completions URL, honest agent and stable conversation session", function()
         local h = handler(GO)
         local first_message = { role = "user", content = "hello" }

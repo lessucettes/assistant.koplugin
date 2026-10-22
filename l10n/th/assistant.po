@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 04:38+0000\n"
 "Last-Translator: AI (auto)\n"
 "Language-Team: ภาษาไทย (AI translation)\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - ชื่อเรื่อง : %1\n"
-" - ผู้แต่ง: %2\n"
-" - ความคืบหน้าการอ่าน: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - น. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(ไม่มีคำตอบ)"
 
 msgid "(empty response body)"
 msgstr "(เนื้อหาการตอบกลับว่างเปล่า)"
+
+msgid "(none)"
+msgstr "(ไม่มี)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API ส่งคืนข้อผิดพลาด</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>เพิ่มแล้ว</b> [%1 (AI)] ลงในเมนูไฮไลต์"
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API ไม่ส่งคำตอบที่ใช้งานได้กลับมา</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>กำลังวิเคราะห์บริบทของหนังสือสำหรับ Term X-Ray...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
 "<b>ถามคำถามเกี่ยวกับหนังสือเล่มนี้:</b>\n"
-"%1 โดย %2"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>กำลังติดตั้ง %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>คำตอบจากโมเดล:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>พารามิเตอร์</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>ลบแล้ว</b> [%1 (AI)] ออกจากเมนูไฮไลต์"
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>การคิดวิเคราะห์ (ไม่มีคำตอบสุดท้าย)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>การใช้เหตุผล:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>คำขอ</b> - POST %1"
@@ -189,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>การตอบกลับ</b> - HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "กำลังทดสอบการเชื่อมต่อ..."
+msgstr "<b>กำลังทดสอบการเชื่อมต่อ...</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>ประเภทฟีเจอร์ไม่รู้จัก:</b> %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "สรุปย้อนหลังด้วย AI จะเปิดใช้งานในครั้งถัดไปที่เปิดหนังสือที่ยังไม่ได้อ่านมาเป็นเวลานาน"
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "สรุปย้อนหลังด้วย AI"
 
@@ -353,8 +346,14 @@ msgstr ""
 "เพิ่มผู้ให้บริการจากเมนูหลัก:\n"
 "%1 -> AI Assistant -> การตั้งค่า -> Provider API"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "เพิ่ม <b>[%1 (AI)]</b> แล้ว"
+
 msgid "Added to vocabulary builder"
 msgstr "เพิ่มลงในตัวสร้างคำศัพท์แล้ว"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "เพิ่มทุกคำที่คุณค้นในพจนานุกรมเข้า Vocabulary Builder ทันทีที่ผลลัพธ์ปรากฏขึ้น"
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "การวิเคราะห์ไฮไลต์ โน้ต และเนื้อหาโน้ต AI ของคุณจากหนังสือเล่มนี้"
@@ -369,13 +368,13 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"คุณแน่ใจหรือไม่ที่จะล้างการตั้งค่าของปลั๊กอินผู้ช่วย? \n"
-"การดำเนินการนี้จะรีเซ็ตปลั๊กอินผู้ช่วยกลับสู่สถานะเมื่อคุณติดตั้งครั้งแรก\n"
+"คุณแน่ใจหรือไม่ว่าต้องการล้างการตั้งค่าของปลั๊กอินผู้ช่วย?\n"
+"การดำเนินการนี้จะรีเซ็ตปลั๊กอินผู้ช่วยกลับไปสู่สถานะเมื่อคุณติดตั้งครั้งแรก\n"
 "\n"
 "configuration.lua ปลอดภัย มีเพียงการตั้งค่าเท่านั้นที่ถูกล้าง"
 
@@ -404,6 +403,9 @@ msgstr "ถามอะไรก็ได้..."
 msgid "Ask the AI a question"
 msgstr "ถามคำถามกับ AI"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "ให้ AI ระบุชื่อเรื่องและผู้แต่งของหนังสือที่เปิดอยู่จากข้อความช่วงต้น"
+
 msgid "Assistant settings are not available."
 msgstr "ไม่มีการตั้งค่าผู้ช่วย"
 
@@ -412,6 +414,16 @@ msgstr "แนบข้อความก่อนหน้า"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "แนบคำตอบเป็นหมายเหตุหนังสือไว้กับไฮไลต์ปัจจุบัน"
+
+msgid "Author"
+msgstr "ผู้เขียน"
+
+msgid "Auto"
+msgstr "อัตโนมัติ"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "เพิ่มคำเข้า Vocabulary Builder อัตโนมัติ"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "ข้อมูลเชิงลึกของหนังสือ"
 
 msgid "Book Summary & Recs"
 msgstr "สรุปหนังสือและคำแนะนำ"
+
+msgid "Book metadata updated."
+msgstr "อัปเดตข้อมูลเมตาของหนังสือแล้ว"
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "ไม่พบ Branch/Tag \"%1\""
@@ -530,11 +545,17 @@ msgstr "บันทึกตามบริบท"
 msgid "Contextual Notes / Reflections"
 msgstr "บันทึกตามบริบท / ข้อสะท้อนคิด"
 
+msgid "Continue"
+msgstr "ดำเนินการต่อ"
+
 msgid "Contradictions / Open Questions"
 msgstr "ข้อขัดแย้ง / คำถามที่ยังค้าง"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "บันทึกบทสนทนาลงโน้ต AI แล้ว"
+
+msgid "Copied to clipboard."
+msgstr "คัดลอกไปยังคลิปบอร์ดแล้ว"
 
 msgid "Copy"
 msgstr "คัดลอก"
@@ -562,11 +583,17 @@ msgstr "ไม่สามารถสร้างโน้ต AI"
 msgid "Could not create AI note: %1"
 msgstr "ไม่สามารถสร้างโน้ต AI: %1"
 
+msgid "Could not extract text from this book."
+msgstr "ไม่สามารถดึงข้อความจากหนังสือเล่มนี้ได้"
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "ไม่สามารถแสดงรายการในโฟลเดอร์โน้ต AI: %1"
 
 msgid "Could not open AI note file."
 msgstr "ไม่สามารถเปิดไฟล์โน้ต AI"
+
+msgid "Could not parse the identification result."
+msgstr "ไม่สามารถแยกวิเคราะห์ผลลัพธ์การระบุได้"
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "พรอมป์ต์ที่กำหนดเอง"
 msgid "Custom Prompts"
 msgstr "พรอมต์ที่กำหนดเอง"
 
-msgid "Deeply Thought"
-msgstr "คิดเชิงลึก"
+msgid "Default"
+msgstr "ค่าเริ่มต้น"
 
 msgid "Delete"
 msgstr "ลบ"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "ลบผู้ให้บริการ %1 หรือไม่?"
 
+msgid "Description: %1"
+msgstr "คำอธิบาย: %1"
+
 msgid "Device"
 msgstr "อุปกรณ์"
 
@@ -630,8 +660,8 @@ msgstr "พจนานุกรม"
 msgid "Dictionary Language"
 msgstr "ภาษาพจนานุกรม"
 
-msgid "Dictionary Popup"
-msgstr "ป๊อปอัปพจนานุกรม"
+msgid "Dictionary Popup Buttons"
+msgstr "ปุ่มในป๊อปอัปพจนานุกรม"
 
 msgid "Dictionary Settings"
 msgstr "การตั้งค่าพจนานุกรม"
@@ -770,11 +800,11 @@ msgstr "สนทนาทั่วไป"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"โดยทั่วไปแล้ว <b>ไม่</b>ควรเลือกมากกว่าหนึ่ง - เลือกพารามิเตอร์ที่ตรงกับโมเดลและแพลตฟอร์มของคุณ พารามิเตอร์ที่ไม่ถูกต้องอาจทำให้เกิดข้อผิดพลาดของ API \n"
+"โดยทั่วไป <b>ไม่ควร</b>เลือกมากกว่าหนึ่งรายการ - ให้เลือกพารามิเตอร์ที่ตรงกับโมเดลและแพลตฟอร์มของคุณ พารามิเตอร์ที่ไม่ถูกต้องอาจทำให้เกิดข้อผิดพลาดของ API \n"
 "\n"
-"ค่าที่เลือกจะแทนที่ additional_parameters ของการกำหนดค่า"
+"ค่าที่เลือกจะแทนที่ additional_parameters ของการตั้งค่า หากตัวเลือกที่เลือกมีคีย์เดียวกัน จะใช้เฉพาะตัวเลือกสุดท้ายในรายการเท่านั้น"
 
 msgid "Genre"
 msgstr "แนว"
@@ -803,12 +833,22 @@ msgstr "บริบททางประวัติศาสตร์"
 msgid "Historical and Cultural Context"
 msgstr "บริบททางประวัติศาสตร์และวัฒนธรรม"
 
+msgid "Identify (AI)"
+msgstr "ระบุ (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "ระบุหนังสือเล่มนี้"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "ช่วยเพิ่มความแม่นยำของคำตอบด้วยผลการค้นหาเว็บแบบเรียลไทม์ \n"
 "หมายเหตุ: มีการใช้ token มากขึ้นและมีค่าใช้จ่าย API เพิ่มเติม"
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "อนุมานชื่อเรื่องและผู้แต่งของหนังสือที่เปิดอยู่จากข้อความช่วงต้น แล้วบันทึกเป็นข้อมูลเมตากำหนดเอง"
 
 msgid "Integrated Summary"
 msgstr "สรุปแบบบูรณาการ"
@@ -848,6 +888,9 @@ msgstr "ปล่อยว่างไว้เพื่อใช้: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "ปล่อยช่องเหล่านี้ว่างไว้เพื่อใช้ภาษาของอินเทอร์เฟซ: %1"
 
+msgid "Left to Right"
+msgstr "ซ้ายไปขวา"
+
 msgid "Locations"
 msgstr "สถานที่"
 
@@ -862,6 +905,12 @@ msgstr "เอนจิน Markdown"
 
 msgid "Meaning & Usage"
 msgstr "ความหมายและการใช้งาน"
+
+msgid "Metadata could not be saved."
+msgstr "ไม่สามารถบันทึกข้อมูลเมตาได้"
+
+msgid "Minimalist Mode"
+msgstr "โหมดมินิมัล"
 
 msgid "Model"
 msgstr "โมเดล"
@@ -911,11 +960,17 @@ msgstr "ยังไม่ได้กำหนดค่าผู้ให้บ
 msgid "No base folder is available for AI Notes."
 msgstr "ไม่มีโฟลเดอร์หลักที่ใช้ได้สำหรับโน้ต AI"
 
+msgid "No book is open."
+msgstr "ไม่มีหนังสือที่เปิดอยู่"
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "ไม่มีหนังสือที่เปิดอยู่ กดค้างที่หนังสือในตัวจัดการไฟล์ แล้วเลือก ข้อมูลหนังสือ (AI)"
 
 msgid "No common parameters are available for handler %1."
 msgstr "ตัวเลือกการให้เหตุผล - %1"
+
+msgid "No highlight to annotate"
+msgstr "ไม่มีไฮไลต์ให้บันทึกหมายเหตุ"
 
 msgid "No models available."
 msgstr "ไม่มีโมเดลที่พร้อมใช้งาน"
@@ -931,6 +986,9 @@ msgstr "ไม่ได้รับการตอบกลับ"
 
 msgid "No text left to annotate"
 msgstr "ไม่มีข้อความเหลือให้เพิ่มหมายเหตุ"
+
+msgid "No text selected"
+msgstr "ไม่ได้เลือกข้อความ"
 
 msgid "No text to annotate"
 msgstr "ไม่มีข้อความให้เพิ่มหมายเหตุ"
@@ -1070,26 +1128,20 @@ msgstr "ล้าง"
 msgid "Purge Settings"
 msgstr "ล้างการตั้งค่า"
 
-msgid "Question"
-msgstr "คำถาม"
-
 msgid "Quick Note"
 msgstr "โน้ตด่วน"
 
 msgid "Quick note saved successfully"
 msgstr "บันทึกย่อถูกบันทึกเรียบร้อยแล้ว"
 
-msgid "RTL Layout"
-msgstr "เลย์เอาต์ RTL"
-
-msgid "RTL written Language"
-msgstr "ภาษาเขียนแบบ RTL"
-
 msgid "Re-immersion"
 msgstr "การกลับเข้าสู่เรื่องราว"
 
 msgid "Reader settings are not available."
 msgstr "การตั้งค่าโปรแกรมอ่านไม่พร้อมใช้งาน"
+
+msgid "Reading progress"
+msgstr "ความคืบหน้าการอ่าน"
 
 msgid "Reasoning Option"
 msgstr "ตัวเลือกการให้เหตุผล"
@@ -1110,6 +1162,9 @@ msgstr "ลบ"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "ลบ [%s] ออกจากเมนูไฮไลต์?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "ลบ <b>[%1 (AI)]</b> แล้ว"
 
 msgid "Request Cancelled by user."
 msgstr "คำขอถูกยกเลิกโดยผู้ใช้"
@@ -1139,14 +1194,17 @@ msgstr ""
 "ข้อมูลประจำตัวของเครื่องมือค้นหาที่เพิ่มผ่าน UI การตั้งค่าจะถูกลบ\n"
 "ไฟล์ configuration.lua จะถูกเก็บรักษาไว้"
 
-msgid "Response"
-msgstr "คำตอบ"
+msgid "Response Font: %1"
+msgstr "ฟอนต์คำตอบ: %1"
 
 msgid "Response Settings"
 msgstr "การตั้งค่าการตอบกลับ"
 
 msgid "Response Text Font Size"
 msgstr "ขนาดตัวอักษรข้อความตอบกลับ"
+
+msgid "Right to Left"
+msgstr "ขวาไปซ้าย"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1215,14 +1273,26 @@ msgstr "เลือกโน้ต AI"
 msgid "Select a model:"
 msgstr "เลือกโมเดล:"
 
-msgid "Selection copied to clipboard."
-msgstr "คัดลอกข้อความที่เลือกไปยังคลิปบอร์ดแล้ว"
+msgid "Set"
+msgstr "ตั้งค่า"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"ตั้งค่าข้อมูลเมตาของหนังสือหรือไม่\n"
+"ชื่อเรื่อง: %1\n"
+"ผู้แต่ง: %2"
 
 msgid "Settings"
 msgstr "การตั้งค่า"
 
 msgid "Show Follow-up Questions"
 msgstr "แสดงคำถามติดตาม"
+
+msgid "Show Highlighted Text at Top"
+msgstr "แสดงข้อความที่ไฮไลต์ไว้ที่ด้านบน"
 
 msgid "Show Reasoning"
 msgstr "แสดงการให้เหตุผล"
@@ -1235,6 +1305,12 @@ msgstr "แสดงกระบวนการคิดอย่างลึก
 
 msgid "Show follow up questions related to the response content."
 msgstr "แสดงคำถามติดตามที่เกี่ยวข้องกับเนื้อหาการตอบกลับ"
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "แสดงเฉพาะคำตอบ: ไม่มีป้ายชื่อผู้ใช้/ผู้ช่วย ไม่มีแถวปุ่มแรก ไม่มีข้อความเหตุผล และไม่มีคำถามติดตามผล คงไว้เฉพาะการดำเนินการบนคำตอบเอง (บันทึกหมายเหตุ, คลังคำศัพท์) ข้างปุ่มปิด โดยจะปิดข้อความเหตุผลและคำถามติดตามผลขณะที่เปิดใช้งานอยู่"
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "แสดงข้อความที่พรอมป์ต์ชี้ไปถึงเป็นบล็อกของตัวเองที่ด้านบนของรอบสนทนา เหนือคำถาม เพื่อให้เปรียบเทียบต้นฉบับกับคำตอบได้ จากนั้นบับเบิลคำถามจะหยุดแสดงข้อความนั้นซ้ำอีก"
 
 msgid "Similar Books Recommendations"
 msgstr "คำแนะนำหนังสือที่คล้ายกัน"
@@ -1296,7 +1372,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "จดบันทึกด่วนที่จะบันทึกไปยังโน้ต AI ของคุณ"
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Term X-Ray"
 
@@ -1306,6 +1381,12 @@ msgstr "คำศัพท์และแนวคิด"
 msgid "Test"
 msgstr "ทดสอบ"
 
+msgid "Text Appearance"
+msgstr "ลักษณะข้อความ"
+
+msgid "Text Direction: %1"
+msgstr "ทิศทางข้อความ: %1"
+
 msgid "Text Size: %1"
 msgstr "ขนาดตัวอักษร: %1"
 
@@ -1314,6 +1395,12 @@ msgstr "คัดลอกข้อความไปยังคลิปบอ
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "ไม่พบ Handler สำหรับ %1 กรุณาตรวจสอบให้แน่ใจว่า Handler มีอยู่ในไดเรกทอรี api_handlers"
+
+msgid "The model could not identify this book."
+msgstr "โมเดลไม่สามารถระบุหนังสือเล่มนี้ได้"
+
+msgid "Thinking ..."
+msgstr "กำลังคิด ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "ปุ่มนี้สร้างโน้ตด่วนพร้อมข้อความที่ไฮไลต์"
@@ -1377,6 +1464,12 @@ msgstr "พรอมต์นี้แปลข้อความที่ไฮ
 msgid "Timeline"
 msgstr "ไทม์ไลน์"
 
+msgid "Title"
+msgstr "ชื่อเรื่อง"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "ข้อมูลเมตาของชื่อเรื่องหรือผู้แต่งขาดหายหรือไม่สมบูรณ์ ผลลัพธ์จาก AI อาจไม่น่าเชื่อถือ ใช้ ระบุ (AI) เพื่อตั้งค่าก่อน"
+
 msgid "To-Do / Action Items"
 msgstr "สิ่งที่ต้องทำ / รายการปฏิบัติ"
 
@@ -1392,6 +1485,13 @@ msgstr "การเรียกใช้เครื่องมือ (tool ca
 msgid "Translate"
 msgstr "แปล"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "แปล (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "แปลคำอธิบายหนังสือด้วย AI"
+
 msgid "Translation"
 msgstr "คำแปล"
 
@@ -1403,6 +1503,12 @@ msgstr "พิมพ์คำถามของคุณที่นี่..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "ไม่ทราบผู้แต่ง"
+
+msgid "Unknown Title"
+msgstr "ไม่ทราบชื่อเรื่อง"
 
 msgid "Unknown error"
 msgstr "ข้อผิดพลาดที่ไม่ทราบสาเหตุ"
@@ -1472,6 +1578,13 @@ msgstr "ดู"
 msgid "Vocabulary"
 msgstr "คำศัพท์"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "คลังคำศัพท์"
+
+msgid "Waiting for the model ..."
+msgstr "กำลังรอโมเดล ..."
+
 msgid "Web Search"
 msgstr "การค้นหาเว็บ"
 
@@ -1503,9 +1616,6 @@ msgstr "รูปคำและคำตั้งต้น"
 msgid "Word Origin"
 msgstr "ที่มาของคำ"
 
-msgid "Word copied to clipboard."
-msgstr "คัดลอกคำไปยังคลิปบอร์ดแล้ว"
-
 msgid "Write quick notes here"
 msgstr "เขียนบันทึกย่อที่นี่"
 
@@ -1532,6 +1642,3 @@ msgstr "เช่น google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: ไม่สามารถแยกวิเคราะห์ข้อมูลที่ส่งกลับมา"
-
-msgid "https://..."
-msgstr "https://..."

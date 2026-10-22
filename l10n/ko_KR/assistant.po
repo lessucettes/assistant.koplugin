@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 10:35+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - 제목 : %1\n"
-" - 저자: %2\n"
-" - 읽기 진행률: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - %1/%2쪽"
@@ -52,6 +37,9 @@ msgstr "(응답 없음)"
 
 msgid "(empty response body)"
 msgstr "(빈 응답 본문)"
+
+msgid "(none)"
+msgstr "(없음)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API에서 오류가 반환되었습니다</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>추가됨</b>: [%1 (AI)]을(를) 하이라이트 메뉴에 추가했습니다."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API가 사용 가능한 답변을 반환하지 않았습니다</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Term X-Ray를 위해 책 컨텍스트를 분석하는 중...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>이 책에 대해 질문하기:</b>\n"
-"%1 (지은이: %2)"
+"<b>이 책에 대해 질문하세요:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>%1 설치 중...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>모델 응답:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>매개변수</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>제거됨</b>: [%1 (AI)]을(를) 하이라이트 메뉴에서 제거했습니다."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>추론 (최종 답변 없음)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>추론:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>요청</b> - POST %1"
@@ -189,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>응답</b> - HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "연결 테스트 중..."
+msgstr "<b>연결 테스트 중...</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>알 수 없는 기능 유형:</b> %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "AI 요약은 다음번에 오랫동안 읽지 않은 책을 열 때 활성화됩니다."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AI 요약"
 
@@ -353,8 +346,14 @@ msgstr ""
 "메인 메뉴에서 공급자 추가:\n"
 "%1 -> AI 어시스턴트 -> 설정 -> 공급자 API"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "추가됨 <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "단어장에 추가됨"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "사전에서 찾아본 모든 단어를 결과가 표시되는 즉시 단어장에 추가합니다."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "책의 하이라이트, 메모 및 AI 노트 콘텐츠를 분석합니다."
@@ -369,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"어시스턴트 플러그인 설정을 초기화하시겠습니까?\n"
-"이 작업은 어시스턴트 플러그인을 처음 설치했을 때의 상태로 되돌립니다.\n"
+"어시스턴트 플러그인 설정을 삭제하시겠습니까?\n"
+"이 작업은 어시스턴트 플러그인을 처음 설치했을 때의 상태로 초기화합니다.\n"
 "\n"
-"configuration.lua는 안전하며 설정만 초기화됩니다."
+"configuration.lua는 안전하며, 설정만 삭제됩니다."
 
 msgid "Ask"
 msgstr "질문하기"
@@ -404,6 +403,9 @@ msgstr "무엇이든 물어보세요..."
 msgid "Ask the AI a question"
 msgstr "AI에게 질문하기"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "AI에게 열린 책의 첫 부분 텍스트를 바탕으로 책 제목과 저자를 식별하도록 요청합니다."
+
 msgid "Assistant settings are not available."
 msgstr "어시스턴트 설정을 사용할 수 없습니다."
 
@@ -412,6 +414,16 @@ msgstr "이전 텍스트 포함"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "답변을 현재 하이라이트에 책 노트로 첨부합니다"
+
+msgid "Author"
+msgstr "저자"
+
+msgid "Auto"
+msgstr "자동"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "단어를 단어장에 자동 추가"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "책 인사이트"
 
 msgid "Book Summary & Recs"
 msgstr "책 요약 및 추천"
+
+msgid "Book metadata updated."
+msgstr "책 메타데이터가 업데이트되었습니다."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "브랜치/태그 \"%1\"을(를) 찾을 수 없습니다."
@@ -530,11 +545,17 @@ msgstr "맥락 메모"
 msgid "Contextual Notes / Reflections"
 msgstr "맥락 메모 / 성찰"
 
+msgid "Continue"
+msgstr "계속"
+
 msgid "Contradictions / Open Questions"
 msgstr "모순 / 미해결 질문"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "대화가 AI 노트에 저장되었습니다"
+
+msgid "Copied to clipboard."
+msgstr "클립보드에 복사되었습니다."
 
 msgid "Copy"
 msgstr "복사"
@@ -562,11 +583,17 @@ msgstr "AI 노트를 만들 수 없습니다."
 msgid "Could not create AI note: %1"
 msgstr "AI 노트를 만들 수 없습니다: %1"
 
+msgid "Could not extract text from this book."
+msgstr "이 책에서 텍스트를 추출할 수 없습니다."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "AI 노트 폴더의 목록을 나열할 수 없습니다: %1"
 
 msgid "Could not open AI note file."
 msgstr "AI 노트 파일을 열 수 없습니다."
+
+msgid "Could not parse the identification result."
+msgstr "식별 결과를 분석할 수 없습니다."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "사용자 지정 프롬프트"
 msgid "Custom Prompts"
 msgstr "사용자 정의 프롬프트"
 
-msgid "Deeply Thought"
-msgstr "심층 사고"
+msgid "Default"
+msgstr "기본값"
 
 msgid "Delete"
 msgstr "삭제"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "공급자 %1을(를) 삭제하시겠습니까?"
 
+msgid "Description: %1"
+msgstr "설명: %1"
+
 msgid "Device"
 msgstr "기기"
 
@@ -630,8 +660,8 @@ msgstr "사전"
 msgid "Dictionary Language"
 msgstr "사전 언어"
 
-msgid "Dictionary Popup"
-msgstr "사전 팝업"
+msgid "Dictionary Popup Buttons"
+msgstr "사전 팝업 버튼"
 
 msgid "Dictionary Settings"
 msgstr "사전 설정"
@@ -770,11 +800,11 @@ msgstr "일반 대화"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"일반적으로 <b>둘 이상을 선택하지 마십시오</b> - 모델 및 플랫폼에 맞는 매개변수를 선택하십시오. 잘못된 매개변수는 API 오류를 일으킬 수 있습니다.\n"
+"일반적으로 하나 이상 선택하지 <b>마세요</b> - 모델과 플랫폼에 맞는 매개변수를 하나 선택하세요. 잘못된 매개변수는 API 오류를 일으킬 수 있습니다. \n"
 "\n"
-"선택한 값은 설정의 additional_parameters를 재정의합니다."
+"선택한 값은 구성의 additional_parameters를 덮어씁니다. 선택한 옵션의 키가 같으면 목록에서 마지막 것만 사용됩니다."
 
 msgid "Genre"
 msgstr "장르"
@@ -803,12 +833,22 @@ msgstr "역사적 맥락"
 msgid "Historical and Cultural Context"
 msgstr "역사적·문화적 배경"
 
+msgid "Identify (AI)"
+msgstr "식별 (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "이 책 식별하기"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "실시간 웹 검색 결과로 응답 정확도를 향상시킵니다. \n"
 "참고: 더 많은 토큰 사용량과 추가 API 비용이 발생합니다."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "열린 책의 첫 부분 텍스트에서 제목과 저자를 추론하여 사용자 지정 메타데이터로 저장합니다."
 
 msgid "Integrated Summary"
 msgstr "통합 요약"
@@ -848,6 +888,9 @@ msgstr "비워 두면 사용: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "이 필드를 비워 두면 UI 언어를 사용합니다: %1"
 
+msgid "Left to Right"
+msgstr "왼쪽에서 오른쪽"
+
 msgid "Locations"
 msgstr "장소"
 
@@ -862,6 +905,12 @@ msgstr "마크다운 엔진"
 
 msgid "Meaning & Usage"
 msgstr "의미 및 용법"
+
+msgid "Metadata could not be saved."
+msgstr "메타데이터를 저장할 수 없습니다."
+
+msgid "Minimalist Mode"
+msgstr "미니멀 모드"
 
 msgid "Model"
 msgstr "모델"
@@ -911,11 +960,17 @@ msgstr "활성 공급자가 구성되어 있지 않습니다. 설정에서 추�
 msgid "No base folder is available for AI Notes."
 msgstr "AI 노트에 사용할 기본 폴더가 없습니다."
 
+msgid "No book is open."
+msgstr "열려 있는 책이 없습니다."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "열려 있는 책이 없습니다. 파일 관리자에서 책을 길게 눌러 책 정보 (AI)를 선택하세요."
 
 msgid "No common parameters are available for handler %1."
 msgstr "모델"
+
+msgid "No highlight to annotate"
+msgstr "주석을 달 하이라이트가 없습니다"
 
 msgid "No models available."
 msgstr "사용 가능한 모델이 없습니다."
@@ -931,6 +986,9 @@ msgstr "응답을 받지 못했습니다."
 
 msgid "No text left to annotate"
 msgstr "주석을 달 텍스트가 남아 있지 않습니다"
+
+msgid "No text selected"
+msgstr "선택된 텍스트 없음"
 
 msgid "No text to annotate"
 msgstr "주석을 달 텍스트가 없습니다"
@@ -1070,26 +1128,20 @@ msgstr "초기화"
 msgid "Purge Settings"
 msgstr "설정 초기화"
 
-msgid "Question"
-msgstr "질문"
-
 msgid "Quick Note"
 msgstr "빠른 메모"
 
 msgid "Quick note saved successfully"
 msgstr "빠른 메모가 성공적으로 저장되었습니다"
 
-msgid "RTL Layout"
-msgstr "RTL 레이아웃"
-
-msgid "RTL written Language"
-msgstr "RTL 작성 언어"
-
 msgid "Re-immersion"
 msgstr "재몰입"
 
 msgid "Reader settings are not available."
 msgstr "리더 설정을 사용할 수 없습니다."
+
+msgid "Reading progress"
+msgstr "읽기 진행률"
 
 msgid "Reasoning Option"
 msgstr "추론 옵션"
@@ -1110,6 +1162,9 @@ msgstr "제거"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "하이라이트 메뉴에서 [%s]을(를) 제거하시겠습니까?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "제거됨 <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "사용자가 요청을 취소했습니다."
@@ -1138,14 +1193,17 @@ msgstr ""
 "이 작업은 플러그인을 공장 기본값으로 복원합니다. 설정 UI를 통해 추가된 공급자, API 키 및 검색 도구 자격 증명이 제거됩니다.\n"
 "configuration.lua 파일은 보존됩니다."
 
-msgid "Response"
-msgstr "응답"
+msgid "Response Font: %1"
+msgstr "응답 글꼴: %1"
 
 msgid "Response Settings"
 msgstr "응답 설정"
 
 msgid "Response Text Font Size"
 msgstr "응답 텍스트 글꼴 크기"
+
+msgid "Right to Left"
+msgstr "오른쪽에서 왼쪽"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1214,14 +1272,26 @@ msgstr "AI 노트 선택"
 msgid "Select a model:"
 msgstr "모델 선택:"
 
-msgid "Selection copied to clipboard."
-msgstr "선택 영역이 클립보드에 복사되었습니다."
+msgid "Set"
+msgstr "설정"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"책 메타데이터를 설정할까요?\n"
+"제목: %1\n"
+"저자: %2"
 
 msgid "Settings"
 msgstr "설정"
 
 msgid "Show Follow-up Questions"
 msgstr "후속 질문 표시"
+
+msgid "Show Highlighted Text at Top"
+msgstr "상단에 강조 표시 텍스트 표시"
 
 msgid "Show Reasoning"
 msgstr "추론 과정 표시"
@@ -1234,6 +1304,12 @@ msgstr "AI 응답에 추론(깊은 사고 과정)이 포함된 경우 표시합�
 
 msgid "Show follow up questions related to the response content."
 msgstr "응답 내용과 관련된 후속 질문을 표시합니다."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "답변만 표시합니다. 사용자/어시스턴트 제목, 첫 번째 버튼 행, 추론, 후속 질문이 모두 표시되지 않습니다. 닫기 옆에 답변 자체에 대한 작업(주석 달기, 단어장)만 유지합니다. 활성화하면 추론 텍스트와 후속 질문이 꺼집니다."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "프롬프트가 가리킨 텍스트를 질문 위, 해당 턴의 맨 위에 별도의 블록으로 표시하여 원문과 답변을 비교할 수 있게 합니다. 그러면 질문 말풍선에서는 해당 텍스트를 더 이상 반복하지 않습니다."
 
 msgid "Similar Books Recommendations"
 msgstr "비슷한 책 추천"
@@ -1295,7 +1371,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "AI 노트에 저장할 빠른 메모를 작성하세요."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "용어 X-Ray"
 
@@ -1305,6 +1380,12 @@ msgstr "용어 및 개념"
 msgid "Test"
 msgstr "테스트"
 
+msgid "Text Appearance"
+msgstr "텍스트 모양"
+
+msgid "Text Direction: %1"
+msgstr "텍스트 방향: %1"
+
 msgid "Text Size: %1"
 msgstr "글꼴 크기: %1"
 
@@ -1313,6 +1394,12 @@ msgstr "텍스트가 클립보드에 복사되었습니다."
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "%1에 대한 핸들러를 찾을 수 없습니다. api_handlers 디렉터리에 핸들러가 있는지 확인하세요."
+
+msgid "The model could not identify this book."
+msgstr "모델이 이 책을 식별할 수 없습니다."
+
+msgid "Thinking ..."
+msgstr "생각 중 ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "이 버튼은 강조 표시된 텍스트로 빠른 메모를 만듭니다."
@@ -1376,6 +1463,12 @@ msgstr "이 프롬프트는 강조 표시된 텍스트를 다른 언어로 번�
 msgid "Timeline"
 msgstr "타임라인"
 
+msgid "Title"
+msgstr "제목"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "제목 또는 저자 메타데이터가 없거나 불완전하여 AI 결과가 부정확할 수 있습니다. 먼저 식별 (AI)을 사용하여 설정하세요."
+
 msgid "To-Do / Action Items"
 msgstr "할 일 / 실행 항목"
 
@@ -1391,6 +1484,13 @@ msgstr "도구 호출에 검색 키워드가 포함되지 않았습니다."
 msgid "Translate"
 msgstr "번역"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "번역 (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "AI로 책 설명을 번역합니다."
+
 msgid "Translation"
 msgstr "번역"
 
@@ -1402,6 +1502,12 @@ msgstr "여기에 질문을 입력하세요..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "알 수 없는 저자"
+
+msgid "Unknown Title"
+msgstr "알 수 없는 제목"
 
 msgid "Unknown error"
 msgstr "알 수 없는 오류"
@@ -1471,6 +1577,13 @@ msgstr "보기"
 msgid "Vocabulary"
 msgstr "어휘"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "단어장"
+
+msgid "Waiting for the model ..."
+msgstr "모델 대기 중 ..."
+
 msgid "Web Search"
 msgstr "웹 검색"
 
@@ -1502,9 +1615,6 @@ msgstr "단어 형태 및 표제어"
 msgid "Word Origin"
 msgstr "어원"
 
-msgid "Word copied to clipboard."
-msgstr "단어가 클립보드에 복사되었습니다."
-
 msgid "Write quick notes here"
 msgstr "여기에 빠른 메모를 작성하세요"
 
@@ -1531,6 +1641,3 @@ msgstr "예: google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: 반환된 데이터를 파싱하지 못했습니다."
-
-msgid "https://..."
-msgstr "https://..."

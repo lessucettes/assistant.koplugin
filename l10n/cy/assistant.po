@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 03:45+0000\n"
 "Last-Translator: AI (auto)\n"
 "Language-Team: Cymraeg (AI translation)\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=6; plural=(n==0) ? 0 : (n==1) ? 1 : (n==2) ? 2 : (n==3) ? 3 :(n==6) ? 4 : 5;\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Teitl : %1\n"
-" - Awdur: %2\n"
-" - Cynnydd darllen: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - t. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Dim ymateb)"
 
 msgid "(empty response body)"
 msgstr "(corff ymateb gwag)"
+
+msgid "(none)"
+msgstr "(dim)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>Dychwelodd yr API wall</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Ychwanegwyd</b> [%1 (AI)] i'r Ddewislen Amlygu."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>Ni ddychwelodd yr API unrhyw ateb defnyddiadwy</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Yn dadansoddi cyd-destun y llyfr ar gyfer Term X-Ray...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>Gofyn cwestiwn am y llyfr hwn:</b>\n"
-"%1 gan %2"
+"<b>Gofynnwch gwestiwn am y llyfr hwn:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>Yn gosod %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Ateb y model:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Paramedrau</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Dilewyd</b> [%1 (AI)] o'r Ddewislen Amlygu."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Rhesymu (dim ateb terfynol)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Rhesymu:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>Cais</b> - POST %1"
@@ -189,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>Ymateb</b> - HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "Cysylltiad"
+msgstr "<b>Wrthi'n profi'r cysylltiad...</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>Math o nodwedd anhysbys:</b> %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "Bydd Crynodeb AI yn cael ei alluogi'r tro nesaf y bydd llyfr sydd heb ei ddarllen ers tro yn cael ei agor."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "Crynodebau AI"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Ychwanegwch ddarparwyr o'r brif ddewislen:\n"
 "%1 -> Cynorthwyydd AI -> Gosodiadau -> API Darparwr"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Ychwanegwyd <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Ychwanegwyd at Adeiladwr Geirfa"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Yn ychwanegu pob gair y chwiliwch amdano yn y geiriadur i'r Adeiladwr Geirfa cyn gynted ag y daw'r canlyniad i'r golwg."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Dadansoddiad o'ch amlygiadau, eich nodiadau, a chynnwys Nodiadau AI o'r llyfr."
@@ -369,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Ydych chi'n siŵr eich bod am glirio gosodiadau'r ategyn cynorthwyydd? \n"
-"Mae hyn yn ailosod yr ategyn cynorthwyydd i'r cyflwr pan osodoch chi ef y tro cyntaf.\n"
+"A ydych yn siŵr eich bod am gael gwared â gosodiadau'r ategyn cynorthwyydd?\n"
+"Mae hyn yn ailosod yr ategyn cynorthwyydd i'w gyflwr pan osodwyd ef gyntaf.\n"
 "\n"
-"Mae configuration.lua yn ddiogel, dim ond y gosodiadau sy'n cael eu clirio."
+"Mae configuration.lua yn ddiogel; dim ond y gosodiadau sy'n cael eu clirio."
 
 msgid "Ask"
 msgstr "Gofyn"
@@ -404,6 +403,9 @@ msgstr "Gofyn unrhyw beth..."
 msgid "Ask the AI a question"
 msgstr "Gofynnwch gwestiwn i'r AI"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "Gofyn i'r AI adnabod teitl ac awdur y llyfr agored o'i destun agoriadol."
+
 msgid "Assistant settings are not available."
 msgstr "Nid yw gosodiadau'r cynorthwyydd ar gael."
 
@@ -412,6 +414,16 @@ msgstr "Atodi Testun Blaenorol"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Yn atodi'r ateb fel nod llyfr i'r amlygiad cyfredol"
+
+msgid "Author"
+msgstr "Awdur"
+
+msgid "Auto"
+msgstr "Awtomatig"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Ychwanegu Gair yn Awtomatig at yr Adeiladwr Geirfa"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "Mewnwelediadau Llyfr"
 
 msgid "Book Summary & Recs"
 msgstr "Crynodeb o'r Llyfr ac Argymhellion"
+
+msgid "Book metadata updated."
+msgstr "Diweddarwyd metadata'r llyfr."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "Ni ddaethpwyd o hyd i'r gangen/tag \"%1\"."
@@ -530,11 +545,17 @@ msgstr "Nodiadau Cyd-destunol"
 msgid "Contextual Notes / Reflections"
 msgstr "Nodiadau Cyd-destunol / Myfyrdodau"
 
+msgid "Continue"
+msgstr "Parhau"
+
 msgid "Contradictions / Open Questions"
 msgstr "Gwrthddywediadau / Cwestiynau Agored"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "Mae'r sgwrs wedi'i chadw i Nodiadau AI"
+
+msgid "Copied to clipboard."
+msgstr "Wedi copïo i'r clipfwrdd."
 
 msgid "Copy"
 msgstr "Copïo"
@@ -562,11 +583,17 @@ msgstr "Methwyd creu nodyn AI."
 msgid "Could not create AI note: %1"
 msgstr "Methwyd creu nodyn AI: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Methwyd echdynnu testun o'r llyfr hwn."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "Methwyd rhestru plygell Nodiadau AI: %1"
 
 msgid "Could not open AI note file."
 msgstr "Methwyd agor ffeil nodyn AI."
+
+msgid "Could not parse the identification result."
+msgstr "Methwyd dosrannu canlyniad yr adnabyddiaeth."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Prompt Personol"
 msgid "Custom Prompts"
 msgstr "Prompts Personol"
 
-msgid "Deeply Thought"
-msgstr "Meddwl Dwys"
+msgid "Default"
+msgstr "Rhagosodedig"
 
 msgid "Delete"
 msgstr "Dileu"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "Dileu darparwr %1?"
 
+msgid "Description: %1"
+msgstr "Disgrifiad: %1"
+
 msgid "Device"
 msgstr "Dyfais"
 
@@ -630,8 +660,8 @@ msgstr "Geiriadur"
 msgid "Dictionary Language"
 msgstr "Iaith y Geiriadur"
 
-msgid "Dictionary Popup"
-msgstr "Pop-up Geiriadur"
+msgid "Dictionary Popup Buttons"
+msgstr "Botymau Naidlen y Geiriadur"
 
 msgid "Dictionary Settings"
 msgstr "Gosodiadau Geiriadur"
@@ -770,11 +800,11 @@ msgstr "Sgwrs Gyffredinol"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Yn gyffredinol, <b>PEIDIWCH</b> â dewis mwy nag un - dewiswch baramedr sy'n cyfateb i'ch model a'ch platfform. Gall paramedr anghywir achosi gwallau API. \n"
+"Yn gyffredinol, <b>PEIDIWCH</b> â dewis mwy nag un - dewiswch baramedr sy'n cyd-fynd â'ch model a'ch platfform. Gall paramedr anghywir achosi gwallau API. \n"
 "\n"
-"Mae'r gwerth a ddewiswyd yn diystyru additional_parameters y cyfluniad."
+"Mae'r gwerth a ddewiswyd yn diystyru additional_parameters y ffurfweddiad. Os yw'r opsiynau a ddewiswyd yn rhannu'r un allwedd, dim ond yr olaf yn y rhestr a ddefnyddir."
 
 msgid "Genre"
 msgstr "Genre"
@@ -803,12 +833,22 @@ msgstr "Cyd-destun Hanesyddol"
 msgid "Historical and Cultural Context"
 msgstr "Cyd-destun Hanesyddol a Diwylliannol"
 
+msgid "Identify (AI)"
+msgstr "Adnabod (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Adnabod y Llyfr Hwn"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Yn gwella cywirdeb ymatebion gyda chanlyniadau gwe amser real. \n"
 "Nodyn: Bydd defnydd uwch o tokenau a chostau API ychwanegol yn berthnasol."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Casglu teitl ac awdur y llyfr agored o'i destun agoriadol a'u cadw fel metadata cyfaddasedig."
 
 msgid "Integrated Summary"
 msgstr "Crynodeb Integredig"
@@ -853,6 +893,9 @@ msgstr "Gadewch yn wag i ddefnyddio: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Gadewch y meysydd hyn yn wag i ddefnyddio iaith y rhyngwyneb: %1"
 
+msgid "Left to Right"
+msgstr "Chwith i'r Dde"
+
 msgid "Locations"
 msgstr "Lleoliadau"
 
@@ -867,6 +910,12 @@ msgstr "Peiriant Markdown"
 
 msgid "Meaning & Usage"
 msgstr "Ystyr a Defnydd"
+
+msgid "Metadata could not be saved."
+msgstr "Methwyd cadw'r metadata."
+
+msgid "Minimalist Mode"
+msgstr "Modd Minimalaidd"
 
 msgid "Model"
 msgstr "Model"
@@ -916,11 +965,17 @@ msgstr "Nid oes darparwr gweithredol wedi'i ffurfweddu. Ychwanegwch un yn y Goso
 msgid "No base folder is available for AI Notes."
 msgstr "Nid oes ffolder sylfaen ar gael ar gyfer Nodiadau AI."
 
+msgid "No book is open."
+msgstr "Nid oes llyfr ar agor."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Nid oes llyfr ar agor. Gwasgwch yn hir ar lyfr yn y rheolwr ffeiliau a dewiswch 'Gwybodaeth am y Llyfr (AI)'."
 
 msgid "No common parameters are available for handler %1."
 msgstr "Model"
+
+msgid "No highlight to annotate"
+msgstr "Dim testun wedi'i amlygu i'w anodi"
 
 msgid "No models available."
 msgstr "Dim modelau ar gael."
@@ -936,6 +991,9 @@ msgstr "Ni dderbyniwyd unrhyw ymateb."
 
 msgid "No text left to annotate"
 msgstr "Dim testun ar ôl i'w anodi"
+
+msgid "No text selected"
+msgstr "Dim testun wedi'i ddewis"
 
 msgid "No text to annotate"
 msgstr "Dim testun i'w anodi"
@@ -1075,26 +1133,20 @@ msgstr "Clirio"
 msgid "Purge Settings"
 msgstr "Clirio Gosodiadau"
 
-msgid "Question"
-msgstr "Cwestiwn"
-
 msgid "Quick Note"
 msgstr "Nodyn Cyflym"
 
 msgid "Quick note saved successfully"
 msgstr "Cafodd y nodyn cyflym ei gadw'n llwyddiannus"
 
-msgid "RTL Layout"
-msgstr "Cynllun RTL"
-
-msgid "RTL written Language"
-msgstr "Iaith ysgrifenedig RTL"
-
 msgid "Re-immersion"
 msgstr "Ail-ymgolli"
 
 msgid "Reader settings are not available."
 msgstr "Nid yw gosodiadau'r darllenydd ar gael."
+
+msgid "Reading progress"
+msgstr "Cynnydd darllen"
 
 msgid "Reasoning Option"
 msgstr "Opsiwn Rhesymu"
@@ -1115,6 +1167,9 @@ msgstr "Dileu"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "Dileu [%s] o'r Ddewislen Amlygu?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Dilewyd <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "Cafodd y cais ei ganslo gan y defnyddiwr."
@@ -1144,14 +1199,17 @@ msgstr ""
 "credentials offer chwilio a ychwanegwyd drwy'r UI Gosodiadau yn cael eu tynnu.\n"
 "Bydd y ffeil configuration.lua yn cael ei chadw."
 
-msgid "Response"
-msgstr "Ymateb"
+msgid "Response Font: %1"
+msgstr "Ffont yr Ateb: %1"
 
 msgid "Response Settings"
 msgstr "Gosodiadau Ymateb"
 
 msgid "Response Text Font Size"
 msgstr "Maint Ffont Testun Ateb"
+
+msgid "Right to Left"
+msgstr "Dde i'r Chwith"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1220,14 +1278,26 @@ msgstr "Dewis nodyn AI"
 msgid "Select a model:"
 msgstr "Dewiswch fodel:"
 
-msgid "Selection copied to clipboard."
-msgstr "Copïwyd y dewisiad i'r clipfwrdd."
+msgid "Set"
+msgstr "Gosod"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Gosod metadata'r llyfr?\n"
+"Teitl: %1\n"
+"Awdur: %2"
 
 msgid "Settings"
 msgstr "Gosodiadau"
 
 msgid "Show Follow-up Questions"
 msgstr "Dangos Cwestiynau Dilynol"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Dangos Testun a Amlygwyd ar y Brig"
 
 msgid "Show Reasoning"
 msgstr "Dangos Rhesymu"
@@ -1240,6 +1310,12 @@ msgstr "Dangos proses feddwl ddofn (rhesymu) o ymateb yr AI, os oes un."
 
 msgid "Show follow up questions related to the response content."
 msgstr "Dangos cwestiynau dilynol sy'n gysylltiedig â chynnwys yr ymateb."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Yn dangos yr ateb ar ei ben ei hun: dim teitlau Defnyddiwr/Cynorthwyydd, dim rhes gyntaf o fotymau, dim rhesymu a dim cwestiynau dilynol. Yn cadw dim ond y gweithredoedd ar yr ateb ei hun (Anodi, Adeiladwr Geirfa) wrth ymyl Cau. Yn troi Testun Rhesymu a Chwestiynau Dilynol i ffwrdd tra'n weithredol."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Yn dangos y testun y cyfeiriwyd prompt ato fel bloc ar wahân ar frig y tro, uwchben y cwestiwn, fel y gellir cymharu'r gwreiddiol â'r ateb. Yna bydd swigen y cwestiwn yn peidio â'i ailadrodd."
 
 msgid "Similar Books Recommendations"
 msgstr "Argymhellion Llyfrau Tebyg"
@@ -1301,7 +1377,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Tynnwch nodiadau cyflym a gaiff eu cadw yn eich Nodiadau AI."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "X-Ray Term"
 
@@ -1311,6 +1386,12 @@ msgstr "Termau a Chysyniadau"
 msgid "Test"
 msgstr "Profi"
 
+msgid "Text Appearance"
+msgstr "Ymddangosiad y Testun"
+
+msgid "Text Direction: %1"
+msgstr "Cyfeiriad Testun: %1"
+
 msgid "Text Size: %1"
 msgstr "Maint Testun: %1"
 
@@ -1319,6 +1400,12 @@ msgstr "Copïwyd y testun i'r clipfwrdd"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "Ni chafwyd hyd i'r handler ar gyfer %1. Sicrhewch fod y handler yn bodoli yn y cyfeiriadur api_handlers."
+
+msgid "The model could not identify this book."
+msgstr "Ni allai'r model adnabod y llyfr hwn."
+
+msgid "Thinking ..."
+msgstr "Yn meddwl ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Mae'r botwm hwn yn creu nodyn cyflym gyda'r testun sydd wedi'i amlygu."
@@ -1382,6 +1469,12 @@ msgstr "Mae'r cyfarwyddiad hwn yn cyfieithu'r testun sydd wedi'i amlygu i iaith 
 msgid "Timeline"
 msgstr "Llinell Amser"
 
+msgid "Title"
+msgstr "Teitl"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Mae metadata'r teitl neu'r awdur ar goll neu'n anghyflawn, felly gallai canlyniad yr AI fod yn annibynadwy. Defnyddiwch Adnabod (AI) i'w osod yn gyntaf."
+
 msgid "To-Do / Action Items"
 msgstr "Tasgau / Eitemau Gweithredu"
 
@@ -1397,6 +1490,13 @@ msgstr "Nid oedd y galwad offeryn yn cynnwys geiriau allweddol chwilio."
 msgid "Translate"
 msgstr "Cyfieithu"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Cyfieithu (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "Yn cyfieithu disgrifiad y llyfr gyda AI."
+
 msgid "Translation"
 msgstr "Cyfieithiad"
 
@@ -1408,6 +1508,12 @@ msgstr "Teipiwch eich cwestiwn yma..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Awdur Anhysbys"
+
+msgid "Unknown Title"
+msgstr "Teitl Anhysbys"
 
 msgid "Unknown error"
 msgstr "Gwall anhysbys"
@@ -1477,6 +1583,13 @@ msgstr "Gweld"
 msgid "Vocabulary"
 msgstr "Geirfa"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Adeiladwr Geirfa"
+
+msgid "Waiting for the model ..."
+msgstr "Yn aros am y model ..."
+
 msgid "Web Search"
 msgstr "Chwiliad Gwe"
 
@@ -1508,9 +1621,6 @@ msgstr "Ffurf Gair a Lemma"
 msgid "Word Origin"
 msgstr "Tarddiad y Gair"
 
-msgid "Word copied to clipboard."
-msgstr "Copïwyd y gair i'r clipfwrdd."
-
 msgid "Write quick notes here"
 msgstr "Ysgrifennwch nodiadau cyflym yma"
 
@@ -1537,6 +1647,3 @@ msgstr "e.e. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: methodd â pharsio'r data a ddychwelwyd"
-
-msgid "https://..."
-msgstr "https://..."

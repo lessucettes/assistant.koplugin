@@ -1,0 +1,893 @@
+local logger = require("logger")
+local HorizontalGroup = require("ui/widget/horizontalgroup")
+local HorizontalSpan = require("ui/widget/horizontalspan")
+local VerticalSpan = require("ui/widget/verticalspan")
+local CenterContainer = require("ui/widget/container/centercontainer")
+local LineWidget = require("ui/widget/linewidget")
+local Geom = require("ui/geometry")
+local Blitbuffer = require("ffi/blitbuffer")
+local Size = require("ui/size")
+local InputDialog = require("ui/widget/inputdialog")
+local ResultViewer = require("dialogs/viewer")
+local SettingsMenu = require("dialogs/settings_menu")local UIManager = require("ui/uimanager")
+local InfoMessage = require("ui/widget/infomessage")
+local ConfirmBox = require("ui/widget/confirmbox")
+local Event = require("ui/event")
+local Font = require("ui/font")
+local _ = require("core/gettext")
+local T = require("ffi/util").template
+local Trapper = require("ui/trapper")
+local Prompts = require("core/prompts")
+local koutil = require("util")
+local strbuf = require("string.buffer")
+local Device = require("device")
+local Screen = Device.screen
+local CheckButton = require("ui/widget/checkbutton")
+local ASUtils = require("utils/base")
+local TextUtils = require("utils/text")
+local DocUtils = require("utils/doc")
+local NetUtils = require("utils/net")
+local Notebook = require("feature/notebook")
+local Conversation = require("core/conversation")
+
+--[[
+  Extract the context text selected by the Ask dialog checkboxes.
+  When `use_chapter` is set, narrow the context to the chapter containing
+  the current position (see DocUtils.extractCurrentChapterText); otherwise
+  fall back to the full "book text up to current position" extraction.
+--]]
+local function extractContextText(assistant, use_chapter)
+  if use_chapter then
+    return DocUtils.extractCurrentChapterText(assistant)
+  end
+  return DocUtils.extractBookTextForAnalysis(assistant)
+end
+
+--[[
+  Format the "[! IMPORTANT !] Here is ..." fragment appended to the user
+  question when the "Include Text Read So Far" checkbox is checked.
+
+  Returns "" when there is no book text to include. Single source of truth
+  for both Ask paths (regular Ask button and highlight prompt buttons) so
+  the LLM instruction stays identical everywhere.
+
+  NOTE: Intentionally NOT wrapped in _() — this fragment is an instruction
+  to the LLM (English-only models), not user-facing UI text.
+--]]
+local function buildBookTextPrompt(use_chapter, book_text)
+  if not book_text or book_text == "" then
+    return ""
+  end
+  local context_source = use_chapter
+      and "the text of the current chapter I am reading"
+      or "the book text up to my current position"
+  return string.format(
+    "\n\n [! IMPORTANT !] Here is %s, only consider this text for your response, and answer in language of previous part of the question:\n [BOOK TEXT BEGIN]\n%s\n[BOOK TEXT END]",
+    context_source, book_text)
+end
+
+-- main dialog class
+---@class AssistantDialog
+---@field assistant any
+local AssistantDialog = {
+  assistant = nil,
+  querier = nil,
+  input_dialog = nil,
+}
+AssistantDialog.__index = AssistantDialog
+
+function AssistantDialog:new(assistant)
+  local self = setmetatable({}, AssistantDialog)
+  self.assistant = assistant
+  self.querier = assistant.querier
+  return self
+end
+
+function AssistantDialog:_close()
+  if self.input_dialog then
+    UIManager:close(self.input_dialog)
+    self.input_dialog = nil
+  end
+end
+
+function AssistantDialog:_formatUserPrompt(user_prompt, highlightedText, user_input)
+  local book = self:_getBookContext()
+  
+  -- Handle case where no text is highlighted (gesture-triggered)
+  local text_to_use = highlightedText and highlightedText ~= "" and highlightedText or ""
+  local language = self.assistant.settings:readSetting("response_language") or self.assistant.ui_language
+  
+  -- Resolve live page number / total pages (mirrors DocUtils.getPageInfo internals)
+  local function resolve_page()
+    local ui = self.assistant.ui
+    if not ui or not ui.highlight or not ui.highlight.selected_text
+        or not ui.highlight.selected_text.pos0 then
+      return nil, nil
+    end
+    local pos0 = ui.highlight.selected_text.pos0
+    local page_number
+    if ui.paging then
+      page_number = pos0.page
+    else
+      page_number = ui.document:getPageFromXPointer(pos0)
+    end
+    local total_pages = ui.document.info.number_of_pages
+    return page_number, total_pages
+  end
+
+  -- Calculate progress if placeholder is present
+  local formatted_progress = nil
+  if user_prompt:find("{progress}", 1, true) then
+    local page_number, total_pages = resolve_page()
+    if page_number and total_pages and total_pages ~= 0 then
+      local pct = math.floor(page_number / total_pages * 100 + 0.5)
+      formatted_progress = string.format("%.2f", pct)
+    else
+      local success, doc_settings = pcall(function()
+        return require("docsettings"):open(self.assistant.ui.document.file)
+      end)
+      if success and doc_settings then
+        local percent_finished = doc_settings:readSetting("percent_finished") or 0
+        formatted_progress = string.format("%.2f", percent_finished * 100)
+      end
+    end
+  end
+
+  -- Calculate chapter if placeholder is present
+  local formatted_chapter = nil
+  if user_prompt:find("{chapter}", 1, true) then
+    local chapter_title = ""
+    local page_number = resolve_page()
+    local ui = self.assistant.ui
+    if page_number and ui and ui.toc then
+      chapter_title = ui.toc:getTocTitleByPage(page_number) or ""
+    end
+    formatted_chapter = chapter_title
+  end
+
+  -- Add user input if placeholder is not present
+  if user_input and user_input ~= "" and not user_prompt:find("{user_input}", 1, true) then
+    user_prompt = user_prompt.."\n\n[Additional user input]: \n"..user_input
+  end
+
+  -- replace placeholders in the user prompt
+  return user_prompt:gsub("{([%w%_]+)}", {
+    title = book.title or "title unavailable",
+    author = book.author or "author unavailable",
+    language = language,
+    highlight = text_to_use,
+    user_input = user_input,
+    progress = formatted_progress,
+    chapter = formatted_chapter,
+    koreader_version = Prompts.getKoreaderVersion(),
+  })
+
+end
+
+function AssistantDialog:_createResultText(message_history, previous_text, title)
+  local opts = {
+    title = title,
+    settings = self.assistant.settings,
+    default_config = Prompts.assistant_prompts.default,
+  }
+
+  if not previous_text then
+    return Conversation.Renderer.render(message_history, opts)
+  end
+
+  return previous_text .. Conversation.Renderer.render_increment(message_history, opts)
+end
+
+-- Helper function to create and show ResultViewer
+---@param highlightedText string|nil Text selected when the viewer was opened
+---@param message_history table[] Conversation history passed to the viewer
+---@param title string|nil Display title for the viewer
+---@param include_book_context_for_followup boolean|nil Whether free follow-ups need a fresh book context
+function AssistantDialog:_showResultViewer(highlightedText, message_history, title, include_book_context_for_followup)
+  include_book_context_for_followup = include_book_context_for_followup ~= false
+  local result_text = self:_createResultText(message_history, nil, title)
+  
+  local result_viewer
+  result_viewer = ResultViewer:new {
+    title = title,
+    text = result_text,
+    assistant = self.assistant,
+    ui = self.assistant.ui,
+    -- Show Add Note button only when invoked with highlighted text
+    is_show_addnote = (highlightedText ~= nil and highlightedText ~= ""),
+    onSubmit = function(viewer, user_question, use_websearch) -- callback for user follow-up
+        -- Use viewer's own highlighted_text value
+        local current_highlight = viewer.highlighted_text or highlightedText
+        local viewer_title = ""
+        local pending_show_suggestions = false
+
+        if type(user_question) == "string" then
+          -- inherit show_suggestions from last user message for free follow-up
+          local inherited_suggestions = nil
+          for i = #message_history, 1, -1 do
+            if message_history[i].role == "user" then
+              local v = ASUtils.get_attr(message_history[i], "show_suggestions")
+              if v ~= nil then inherited_suggestions = v; break end
+            end
+          end
+          self:_prepareMessageHistoryForUserQuery(message_history, current_highlight, user_question, use_websearch,
+            include_book_context_for_followup)
+          if inherited_suggestions ~= nil then
+            pending_show_suggestions = inherited_suggestions
+            -- _prepare already set inherited value, but ensure the last user reflects it
+            for i = #message_history, 1, -1 do
+              if message_history[i].role == "user" then
+                ASUtils.set_attr(message_history[i], "show_suggestions", inherited_suggestions)
+                break
+              end
+            end
+          else
+            pending_show_suggestions = Prompts.isSuggestionsEnabled(self.assistant.settings, Prompts.assistant_prompts.default)
+          end
+        elseif type(user_question) == "table" then
+          -- Use custom prompt from configuration
+          viewer_title = Prompts.getDisplayText(user_question.text or "Custom Prompt",
+            user_question.use_websearch or false,
+            Prompts.isWebSearchEnabled(self.assistant.settings))
+          if include_book_context_for_followup
+              and user_question.use_book_context == true
+              and self.assistant.settings:readSetting("prepend_book_metadata", true) then
+            table.insert(message_history, self:_buildBookContextMessage(current_highlight))
+          end
+
+          local _user = {
+            role = "user",
+            content = self:_formatUserPrompt(user_question.user_prompt, current_highlight, user_question.user_input or ""),
+          }
+          -- set these attributes in metatable (won't be encoded to API calls)
+          ASUtils.set_attr(_user, "user_input", user_question.user_input)
+          ASUtils.set_attr(_user, "prompt_title", viewer_title)
+          -- The bubble caption names what this turn was pointed at.
+          ASUtils.set_attr(_user, "highlight_text", current_highlight)
+          ASUtils.set_attr(_user, "use_websearch", user_question.use_websearch)
+          pending_show_suggestions = Prompts.isSuggestionsEnabled(self.assistant.settings, user_question)
+          ASUtils.set_attr(_user, "show_suggestions", pending_show_suggestions)
+          table.insert(message_history, _user)
+        end
+
+        -- Name the request in the streaming dialog: prompt name when the user
+        -- picked one, otherwise the typed question.
+        local request_title = viewer_title
+        if request_title == "" and type(user_question) == "string" then
+          request_title = user_question
+        end
+
+        NetUtils.runWhenOnlineFast(function()
+          Trapper:wrap(function()
+            local answer, err = self.querier:query(message_history, request_title, {
+              use_websearch = use_websearch and self.assistant.settings:readSetting("use_websearch", "none") or "none",
+            })
+            
+            -- Check if we got a valid response
+            if err then
+              self.querier:showError(err, message_history)
+              return
+            end
+            
+            Conversation.append_answer(message_history, answer, pending_show_suggestions)
+            viewer:update(self:_createResultText(message_history, viewer.text, viewer_title))
+            
+            if viewer.scroll_text_w then
+              viewer.scroll_text_w:resetScroll()
+            end
+          end)
+        end)
+      end,
+    highlighted_text = highlightedText,
+    -- Re-assemble the whole transcript from the (in-place grown) history so a
+    -- display switch in the viewer's menu can hide what it just turned off.
+    rebuild_text = function()
+      return self:_createResultText(message_history, nil, title)
+    end,
+    default_hold_callback = function () result_viewer:HoldClose() end
+  }
+  
+  UIManager:show(result_viewer)
+end
+
+
+function AssistantDialog:_buildBookContextMessage(highlighted_text)
+  local book = self:_getBookContext()
+  local head
+  if highlighted_text and highlighted_text ~= "" then
+    head = string.format([[I'm reading something %s.
+I have a question about the following highlighted text: ```%s```.
+If the question is not clear enough, analyze the highlighted text.]],
+      DocUtils.describeBook(book), highlighted_text)
+  elseif book.title or book.author or book.display_title then
+    head = string.format([[I'm reading something %s.
+I have a question about this book.]], DocUtils.describeBook(book))
+  else
+    head = "You are the built-in AI assistant in KOReader. No book context is available for this question."
+  end
+
+  -- Append segments into a string buffer: avoids repeated `content = content ..`
+  -- intermediate string objects.
+  local buf = strbuf.new()
+  buf:put(head)
+
+  local page_info = DocUtils.getPageInfo(self.assistant.ui)
+  if page_info and page_info ~= "" then
+    buf:put("\n\n", string.format("My current reading position is:%s.", page_info))
+  end
+
+  local include_page_text = self.assistant.settings:readSetting("include_page_text", false)
+  local metadata_missing = not book.title and not book.author
+  if metadata_missing and not self.assistant.settings:has("include_page_text") then
+    include_page_text = true
+  end
+  if highlighted_text and highlighted_text ~= ""
+      and include_page_text then
+    local max_chars = self.assistant.config:getFeature("max_page_context_chars", 6000)
+    local page_text = DocUtils.getPageRangeText(self.assistant.ui, 1, 1, max_chars)
+    if page_text ~= "" then
+      buf:put("\n\n", string.format(
+        "Surrounding text from the book (for reference only - the task applies ONLY to the highlighted passage):\n```\n%s\n```",
+        page_text))
+    end
+  end
+
+  local msg = {
+    role = "user",
+    content = buf:get(),
+  }
+  ASUtils.set_attr(msg, "is_context", true)
+  return msg
+end
+
+---@param message_history table[] Conversation history to extend
+---@param highlightedText string|nil Current selected text
+---@param user_question string User-entered question
+---@param use_websearch boolean|nil Whether this follow-up requests web search
+---@param include_book_context boolean|nil Whether to prepend fresh book context
+function AssistantDialog:_prepareMessageHistoryForUserQuery(message_history, highlightedText, user_question,
+    use_websearch, include_book_context)
+  if include_book_context ~= false then
+    local context = self:_buildBookContextMessage(highlightedText)
+    table.insert(message_history, context)
+  end
+
+  -- inherit show_suggestions from last user message, fallback to default
+  local inherited = nil
+  for i = #message_history, 1, -1 do
+    if message_history[i].role == "user" then
+      local v = ASUtils.get_attr(message_history[i], "show_suggestions")
+      if v ~= nil then inherited = v; break end
+    end
+  end
+  local show_suggestions
+  if inherited ~= nil then
+    show_suggestions = inherited
+  else
+    show_suggestions = Prompts.isSuggestionsEnabled(self.assistant.settings, Prompts.assistant_prompts.default)
+  end
+  local question_message = {
+    role = "user",
+    content = user_question
+  }
+  ASUtils.set_attr(question_message, "use_websearch", use_websearch or false)
+  ASUtils.set_attr(question_message, "show_suggestions", show_suggestions)
+  table.insert(message_history, question_message)
+end
+
+function AssistantDialog:_getBookContext()
+  local ui = self.assistant and self.assistant.ui
+  local DocUtils = require("utils/doc")
+  local meta = DocUtils.getBookMeta(ui, ui and ui.document and ui.document.file)
+  return { title = meta.title, author = meta.authors, display_title = meta.display_title }
+end
+
+-- When clicked [Assistant] button in main select popup,
+-- Or when activated from guesture (no text highlighted)
+function AssistantDialog:showAskDialog(highlightedText)
+
+  local is_highlighted = highlightedText and highlightedText ~= ""
+  
+  -- close any existing input dialog
+  self:_close()
+
+  -- Handle regular dialog (user input prompt, other buttons)
+  local book = self:_getBookContext()
+  local use_multi_general_notebooks =
+      not self.assistant.ui.doc_settings and Notebook.isEnabled(self.assistant)
+  local language = self.assistant.settings:readSetting("response_language") or self.assistant.ui_language
+  local system_prompt = self.assistant.config:getFeature("system_prompt") or koutil.tableGetValue(Prompts, "assistant_prompts", "default", "system_prompt")
+  if Prompts.isSuggestionsEnabled(self.assistant.settings, Prompts.assistant_prompts.default) then
+    system_prompt = system_prompt .. Prompts.assistant_prompts.suggestions_prompt
+  end
+  system_prompt = Prompts.withResponseLanguage(system_prompt, language)
+
+  local message_history = {{
+    role = "system",
+    content = system_prompt
+  }}
+
+  -- Create button rows (3 buttons per row)
+  local button_rows = {}
+  local prompt_buttons = {}
+  local use_book_text_checkbox -- ref to the CheckButton widget
+  local use_chapter_checkbox -- ref to the chapter-limit CheckButton widget
+  local use_web_search_checkbox -- ref to the web search CheckButton widget
+  local function getNotebookButtonText()
+    local notebooks = Notebook.list(self.assistant)
+    if not notebooks or #notebooks == 0 then
+      return _("AI Notes")
+    end
+    return T(_("AI Notes: %1"), Notebook.getActiveDisplayName(self.assistant, 18))
+  end
+  local sorted_prompts = {}
+  if is_highlighted then
+    sorted_prompts = Prompts.getSortedPrompts(function (prompt)
+      if prompt.visible == false then
+        return false
+      end
+      return true
+    end, Prompts.isWebSearchEnabled(self.assistant.settings)) or {}
+  end
+  local first_row = {
+    {
+      text = _("Cancel"),
+      id = "close",
+      callback = function()
+        self:_close()
+      end
+    },
+  }
+
+  local quick_note_tab
+  if is_highlighted then
+    for _, tab in ipairs(sorted_prompts) do
+      if tab.idx == "quick_note" then
+        quick_note_tab = tab
+        break
+      end
+    end
+  end
+  if quick_note_tab then
+    table.insert(first_row, {
+      text = quick_note_tab.text,
+      callback = function()
+        local user_question = self.input_dialog and self.input_dialog:getInputText() or ""
+        if user_question ~= "" and self.assistant.settings:readSetting("auto_copy_asked_question", true) and Device:hasClipboard() then
+          Device.input.setClipboardText(user_question)
+        end
+        self:_close()
+        Trapper:wrap(function()
+          -- Special case for quick note prompt
+          if not self.assistant.quicknote then
+            local QuickNote = require("dialogs/quicknote")
+            self.assistant.quicknote = QuickNote:new(self.assistant)
+          end
+          -- Save note with highlighted text
+          self.assistant.quicknote:saveNote(user_question, highlightedText)
+        end)
+      end,
+      hold_callback = function()
+        local menukey = string.format("assistant_%02d_%s", quick_note_tab.order, quick_note_tab.idx)
+        local settingkey = "showOnMain_" .. menukey
+        UIManager:show(ConfirmBox:new{
+          text = TextUtils.bold_format(
+            T(_("<b>%1:</b> %2\n\nAdd this button to the Highlight Menu?"), quick_note_tab.text, quick_note_tab.desc)
+          ),
+          ok_text = _("Add"),
+          ok_callback = function()
+            self.assistant:handleEvent(Event:new("AssistantSetButton", {order=quick_note_tab.order, idx=quick_note_tab.idx}, "add"))
+            -- Close the stale menu, keeping the selection.
+            self.assistant.ui.highlight:onClose(true)
+          end,
+        })
+      end,
+    })
+  end
+
+  if use_multi_general_notebooks then
+    table.insert(first_row, {
+      id = "general_notebook",
+      text = getNotebookButtonText(),
+      callback = function()
+        -- Hide the keyboard while the picker is open, but keep the current
+        -- question text in the existing InputDialog.
+        if self.input_dialog then
+          self.input_dialog:onCloseKeyboard()
+        end
+
+        Notebook.showPicker(self.assistant, {
+          title = _("Select AI Note"),
+          on_select = function()
+            if not self.input_dialog then
+              return
+            end
+
+            local button = self.input_dialog.button_table
+                and self.input_dialog.button_table:getButtonById("general_notebook")
+            if button then
+              button:setText(
+                getNotebookButtonText(),
+                button.width
+              )
+              button:refresh()
+            end
+
+            UIManager:nextTick(function()
+              if self.input_dialog then
+                self.input_dialog:onShowKeyboard()
+              end
+            end)
+          end,
+        })
+      end,
+    })
+  end
+
+  table.insert(first_row, {
+      text = _("Ask"),
+      is_enter_default = true,
+      callback = function()
+        local user_question = self.input_dialog and self.input_dialog:getInputText() or ""
+        local book_text_prompt = ""
+        if use_book_text_checkbox and use_book_text_checkbox.checked then
+          local use_chapter = use_chapter_checkbox and use_chapter_checkbox.checked
+          book_text_prompt = buildBookTextPrompt(use_chapter,
+              extractContextText(self.assistant, use_chapter))
+        end
+        if not user_question or user_question == "" then
+          UIManager:show(InfoMessage:new{
+            text = _("Enter a question before proceeding."),
+            timeout = 3
+          })
+          return
+        end
+        if self.assistant.settings:readSetting("auto_copy_asked_question", true) and Device:hasClipboard() then
+          Device.input.setClipboardText(user_question)
+        end
+        self:_close()
+        local request_title = user_question
+        user_question = user_question .. book_text_prompt
+        self:_prepareMessageHistoryForUserQuery(message_history, highlightedText, user_question, use_web_search_checkbox.checked)
+        Trapper:wrap(function()
+          local answer, err = self.querier:query(message_history, request_title, {
+            use_websearch = use_web_search_checkbox.checked and self.assistant.settings:readSetting("use_websearch", "none") or "none",
+          })
+
+          -- Check if we got a valid response
+          if err then
+            self.querier:showError(err, message_history)
+            return
+          end
+
+          local assistant_msg = {
+            role = "assistant",
+            content = answer,
+          }
+          ASUtils.set_attr(assistant_msg, "show_suggestions", Prompts.isSuggestionsEnabled(self.assistant.settings, Prompts.assistant_prompts.default))
+          table.insert(message_history, assistant_msg)
+
+          -- do not have a title to display user prompt
+          local viewer_title = nil
+          -- Free questions can start a new context, so keep the book prefix.
+          self:_showResultViewer(highlightedText, message_history, viewer_title, true)
+        end)
+      end
+    })
+
+  -- Only add additional buttons if there's highlighted text
+  if is_highlighted then
+    -- logger.warn("Sorted prompts: ", sorted_prompts)
+    -- Add buttons in sorted order
+    for i, tab in ipairs(sorted_prompts) do
+      if tab.idx == "quick_note" then
+        -- Quick Note lives in first_row; do not duplicate it in the grid.
+      else
+        table.insert(prompt_buttons, {
+          text = tab.text,
+          callback = function()
+            local user_question = self.input_dialog and self.input_dialog:getInputText() or ""
+            if user_question ~= "" and self.assistant.settings:readSetting("auto_copy_asked_question", true) and Device:hasClipboard() then
+              Device.input.setClipboardText(user_question)
+            end
+            self:_close()
+            Trapper:wrap(function()
+              if tab.order == -10 and tab.idx == "dictionary" then
+                -- Special case for dictionary prompt
+                local showDictionaryDialog = require("dialogs/dict")
+                showDictionaryDialog(self.assistant, highlightedText)
+              elseif tab.idx == "term_xray" then
+                -- Special case for term_xray prompt - use dictionary dialog with enhanced context
+                local showDictionaryDialog = require("dialogs/dict")
+                showDictionaryDialog(self.assistant, highlightedText, nil, "term_xray")
+              else
+                local book_text_prompt = ""
+                if use_book_text_checkbox and use_book_text_checkbox.checked then
+                  local use_chapter = use_chapter_checkbox and use_chapter_checkbox.checked
+                  book_text_prompt = buildBookTextPrompt(use_chapter,
+                      extractContextText(self.assistant, use_chapter))
+                end
+                user_question = user_question .. book_text_prompt
+                self:runPrompt(highlightedText, tab.idx, user_question)
+              end
+            end)
+          end,
+          hold_callback = function()
+            local menukey = string.format("assistant_%02d_%s", tab.order, tab.idx)
+            local settingkey = "showOnMain_" .. menukey
+            UIManager:show(ConfirmBox:new{
+              text = TextUtils.bold_format(
+                T(_("<b>%1:</b> %2\n\nAdd this button to the Highlight Menu?"), tab.text, tab.desc)
+              ),
+              ok_text = _("Add"),
+              ok_callback = function()
+                self.assistant:handleEvent(Event:new("AssistantSetButton", {order=tab.order, idx=tab.idx}, "add"))
+                -- Close the stale menu, keeping the selection.
+                self.assistant.ui.highlight:onClose(true)
+              end,
+            })
+          end
+        })
+      end
+    end
+  end
+  
+  table.insert(button_rows, first_row)
+  if #prompt_buttons > 0 then
+    -- Empty row as a visual separator between first_row and the prompt grid.
+    -- ButtonTable skips zero-column rows in the focus manager.
+    table.insert(button_rows, {})
+  end
+  -- Organize buttons into rows of three
+  local current_row = {}
+  for _, button in ipairs(prompt_buttons) do
+    table.insert(current_row, button)
+    if #current_row == 3 then
+      table.insert(button_rows, current_row)
+      current_row = {}
+    end
+  end
+  
+  if #current_row > 0 then
+    table.insert(button_rows, current_row)
+  end
+
+  -- Show the dialog with the button rows
+  local dialog_hint
+  local text_height
+  local has_book_context = self.assistant.ui and self.assistant.ui.document
+  text_height = math.floor( 5 * Screen:scaleBySize(20) ) -- about 5 lines of text
+  if is_highlighted then
+      dialog_hint = _("Ask a question about the highlighted text")
+      text_height = math.floor( 3 * Screen:scaleBySize(20) ) -- highlighted dialog is complicated
+  else
+      if has_book_context then
+          dialog_hint = TextUtils.bold_format(
+              T(_("<b>Ask a question about this book:</b>\n%1"), book.title or book.author or book.display_title or "")
+          )
+      else
+          dialog_hint = _("Ask a general question")
+      end
+  end
+  local input_hint = is_highlighted and
+      _("Type your question here...") or
+      has_book_context and _("Ask anything about this book...")
+      or _("Ask anything...")  
+  
+  self.input_dialog = InputDialog:new{
+    title = _("AI Assistant"),
+    description = dialog_hint,
+    input_hint = input_hint,
+    input_height = 6,
+    allow_newline = true,
+    input_multiline = true,
+    text_height = text_height,
+    buttons = button_rows,
+    title_bar_left_icon = "appbar.settings",
+    title_bar_left_icon_tap_callback = function ()
+        self.input_dialog:onCloseKeyboard()
+        SettingsMenu.showProviderDialog(self.assistant)
+    end,
+    close_callback = function () self:_close() end,
+    dismiss_callback = function () self:_close() end
+  }
+
+  -- Add checkboxes below the input field
+  local vgroup = self.input_dialog.dialog_frame[1]
+  local checkbox_pos = 2 -- insert after the input text area
+  -- Separator line between Ask text/input and checkbox group
+  do
+    local available_w = self.input_dialog:getAddedWidgetAvailableWidth()
+    local line = LineWidget:new{
+      dimen = Geom:new{ w = available_w, h = Size.line.thin },
+      background = Blitbuffer.COLOR_DARK_GRAY,
+    }
+    local line_container = CenterContainer:new{
+      dimen = Geom:new{ w = self.input_dialog.width, h = line:getSize().h },
+      line,
+    }
+    table.insert(vgroup, checkbox_pos, VerticalSpan:new{ width = Size.padding.default })
+    checkbox_pos = checkbox_pos + 1
+    table.insert(vgroup, checkbox_pos, line_container)
+    checkbox_pos = checkbox_pos + 1
+    table.insert(vgroup, checkbox_pos, VerticalSpan:new{ width = Size.padding.default })
+    checkbox_pos = checkbox_pos + 1
+  end
+  local web_search_available = self.assistant.settings:readSetting("use_websearch", "none") ~= "none"
+  local saved_web_search = self.assistant.settings:readSetting("ask_use_websearch", false)
+  -- CheckButton must have explicit width or HorizontalGroup overflows (checkbutton.lua:77).
+  local available_w = self.input_dialog:getAddedWidgetAvailableWidth()
+  local gap = Size.padding.large
+  -- Align left edge with InputText visible border (see AGENTS.md).
+  local input_extra = 2 * (Size.border.inputtext + Size.padding.small + Size.margin.default)
+  local left_gap = math.floor((self.input_dialog.width - available_w - input_extra) / 2)
+  local half_w = math.floor((available_w - left_gap - gap * 2) / 2)
+  if half_w < 50 then half_w = math.floor((available_w - left_gap - gap) / 2) end
+  use_web_search_checkbox = CheckButton:new{
+    face = Font:getFace("xx_smallinfofont"),
+    text = "🌐 " .. _("Web Search"),
+    parent = self.input_dialog,
+    width = half_w,
+    checked = web_search_available and saved_web_search,
+    enabled = web_search_available,
+    callback = function()
+      self.assistant.settings:saveSetting("ask_use_websearch", use_web_search_checkbox.checked)
+      -- flush() only runs on reader exit when this flag is set; without it the
+      -- checkbox state lives in memory and is lost after a restart.
+      self.assistant.updated = true
+    end,
+  }
+  local use_copy_clipboard_checkbox
+  use_copy_clipboard_checkbox = CheckButton:new{
+    face = Font:getFace("smallffont"),
+    text = "⌨ " .. _("Copy to Clipboard"),
+    parent = self.input_dialog,
+    width = half_w,
+    checked = self.assistant.settings:readSetting("auto_copy_asked_question", true),
+    callback = function()
+      self.assistant.settings:saveSetting("auto_copy_asked_question", use_copy_clipboard_checkbox.checked)
+      self.assistant.updated = true
+    end,
+  }
+  table.insert(vgroup, checkbox_pos, HorizontalGroup:new{
+    HorizontalSpan:new{ width = left_gap },
+    use_web_search_checkbox,
+    HorizontalSpan:new{ width = gap },
+    use_copy_clipboard_checkbox,
+  })
+  checkbox_pos = checkbox_pos + 1
+
+  -- Attach Prior Text stays available whenever a document is open, even
+  -- without metadata (txt books need it most).
+  local ui = self.assistant.ui
+  if ui and ui.document then
+    -- Chapter limit is only offered when a TOC chapter covers the current
+    -- position (no TOC / outside the TOC -> no option).
+    local chapter_range = DocUtils.getCurrentChapterRange(self.assistant.ui)
+    use_book_text_checkbox = CheckButton:new{
+      face = Font:getFace("smallffont"),
+      text = "✉ " .. _("Attach Prior Text"),
+      parent = self.input_dialog,
+      width = half_w,
+      callback = function()
+        -- The chapter-limit option only takes effect when book text is
+        -- enabled; mirror that state (greyed out / unchecked otherwise).
+        if use_chapter_checkbox then
+          if use_book_text_checkbox.checked then
+            use_chapter_checkbox:enable()
+          else
+            use_chapter_checkbox:disable()
+          end
+        end
+      end,
+    }
+    if chapter_range then
+      use_chapter_checkbox = CheckButton:new{
+        face = Font:getFace("smallffont"),
+        text = "✎ " .. _("Current Chapter Only"),
+        parent = self.input_dialog,
+        width = half_w,
+        -- No effect unless "Include Text Read So Far" is checked too;
+        -- starts disabled and follows that checkbox via its callback.
+        enabled = use_book_text_checkbox.checked,
+      }
+      table.insert(vgroup, checkbox_pos, HorizontalGroup:new{
+        HorizontalSpan:new{ width = left_gap },
+        use_book_text_checkbox,
+        HorizontalSpan:new{ width = gap },
+        use_chapter_checkbox,
+      })
+    else
+      table.insert(vgroup, checkbox_pos, HorizontalGroup:new{
+        HorizontalSpan:new{ width = left_gap },
+        use_book_text_checkbox,
+      })
+    end
+    checkbox_pos = checkbox_pos + 1
+  end
+
+
+  
+  --  adds a close button to the top right
+  self.input_dialog.title_bar.close_callback = function() self:_close() end
+  self.input_dialog.title_bar:init()
+
+  -- Show the dialog
+  UIManager:show(self.input_dialog)
+end
+
+-- Process main select popup buttons
+-- ( prompts from configuration )
+function AssistantDialog:runPrompt(highlightedText, prompt_id, user_input)
+
+  local user_prompts = self.assistant.config:getFeature("prompts")
+  local prompt_config = Prompts.getMergedPrompts(user_prompts)[prompt_id]
+
+  local raw_title = koutil.tableGetValue(prompt_config, "text") or prompt_id
+  local title = Prompts.getDisplayText(raw_title,
+    koutil.tableGetValue(prompt_config, "use_websearch") or false,
+    Prompts.isWebSearchEnabled(self.assistant.settings))
+
+  highlightedText = highlightedText:gsub("\n", "\n\n") -- ensure newlines are doubled (LLM presumes markdown input)
+
+  local user_content = self:_formatUserPrompt(koutil.tableGetValue(prompt_config, "user_prompt"), highlightedText, user_input or "")
+  local language = self.assistant.settings:readSetting("response_language") or self.assistant.ui_language
+  local system_prompt = koutil.tableGetValue(prompt_config, "system_prompt") or koutil.tableGetValue(Prompts, "assistant_prompts", "default", "system_prompt")
+
+  if Prompts.isSuggestionsEnabled(self.assistant.settings, prompt_config) then
+    system_prompt = system_prompt .. Prompts.assistant_prompts.suggestions_prompt
+  end
+  system_prompt = Prompts.withResponseLanguage(system_prompt, language)
+
+  local message_history = {{
+    role = "system",
+    content = system_prompt,
+  }}
+
+  if prompt_config.use_book_context == true
+      and self.assistant.settings:readSetting("prepend_book_metadata", true) then
+    table.insert(message_history, self:_buildBookContextMessage(highlightedText))
+  end
+
+  local _user = {
+    role = "user",
+    content = user_content,
+  }
+  -- set attributes in metatable (won't be encoded to API calls)
+  ASUtils.set_attr(_user, "user_input", user_input)
+  ASUtils.set_attr(_user, "prompt_title", title)
+  -- The bubble caption names what this turn was pointed at.
+  ASUtils.set_attr(_user, "highlight_text", highlightedText)
+  ASUtils.set_attr(_user, "use_websearch", koutil.tableGetValue(prompt_config, "use_websearch") or false)
+  ASUtils.set_attr(_user, "show_suggestions", Prompts.isSuggestionsEnabled(self.assistant.settings, prompt_config))
+  table.insert(message_history, _user)
+  
+  local answer, err = self.querier:query(message_history, title or prompt_id, {
+    use_websearch = koutil.tableGetValue(prompt_config, "use_websearch") and self.assistant.settings:readSetting("use_websearch", "none") or "none",
+  })
+  if err then
+    self.querier:showError(err, message_history)
+    return
+  end
+  if answer then
+    local assistant_msg = {
+      role = "assistant",
+      content = answer
+    }
+    ASUtils.set_attr(assistant_msg, "show_suggestions", Prompts.isSuggestionsEnabled(self.assistant.settings, prompt_config))
+    table.insert(message_history, assistant_msg)
+  end
+
+  if not message_history or #message_history < 1 then
+    UIManager:show(InfoMessage:new{
+        text = TextUtils.bold_format(_("<b>Error:</b> No response received")),
+        icon = "notice-warning"
+    })
+    return
+  end
+
+  -- Built-in prompts already carry their book context; do not repeat it on follow-up.
+  self:_showResultViewer(highlightedText, message_history, title, false)
+end
+
+return AssistantDialog

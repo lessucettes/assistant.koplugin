@@ -1,0 +1,40 @@
+Entry msgstrs come from the Slovak locale (sk). Slovak ("slovenčina", spoken in
+Slovakia) is a different language from Slovenian ("slovenščina", locale sl).
+Flag a msgstr as repair with issue wrong_language and language "Slovenian" only
+when it is demonstrably Slovenian, and cite the telling word in the reason.
+
+Slovak uses the letters ľ, ĺ, ŕ, ô, ť, ď, ň; Slovenian never uses them.
+Slovak declines with a genitive ("Nastavenia", "ponuka zvýraznenia"); Slovenian
+uses a dative ("Nastavitve", "označba").
+
+Words that are Slovenian, not Slovak (Slovak form after the slash):
+- Uporabi / Použiť
+- Prevajanje / Preklad (the verb is Preložiť)
+- Prilagojeni pozivi / Vlastné prompty
+- V redu / OK
+- Posodobi / Aktualizovať
+- Nastavitve / Nastavenia
+- Odstrani / Odstrániť
+- Ustvari / Vytvoriť
+- Naprava / Zariadenie
+- Počisti / Vyčistiť
+- Prevajdi / Preložiť
+- Kopiraj / Kopírovať
+- Izberi / Vybrať
+- označba / zvýraznenie
+
+Many correct Slovak strings share a word or a form with Slovenian: "da", "ne",
+"OK" and most technical terms are identical in both. Only a Slovenian-only word
+from the list above, or one of the Slovak-only letters used in a Slovenian
+context, justifies a wrong_language verdict. When the signal is not explicit,
+abstain rather than repair.
+
+English leftovers (repair, issue class "other", language "English"): an English
+common noun left where the terminology (see l10n/sk/ai_note.txt) requires
+Slovak counts as an English leftover. Concretely: "models" where "modely" is
+required, "Vocabulary Builder" where "Tvorba slovnej zásoby" is required, and
+the English prompt names "Explain", "Historical Context", "Summarize" and
+"Key Points" where their Slovak UI forms ("Vysvetliť", "Historický kontext",
+"Zhrnúť", "Kľúčové body") are required. (Issue class: use `wrong_language` with
+language "Slovenian" only for Slovenian per the rule above; for English leftovers
+use issue "other", matching the e187 precedent.)

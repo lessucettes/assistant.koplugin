@@ -7,9 +7,9 @@ Two registries own everything configured from the UI. Both store JSON in `LuaSet
 - Do all UI provider/search CRUD through `Registry`/`SearchRegistry`. **Never** call `settings:saveSetting("ui_providers"/"ui_search_tools", ...)` directly.
 - Read/write `CONFIGURATION` only via `assistant.config` (`getFeature`/`getProvider`/`getProviderSettings`/`getFeatures`/`isProviderEnabled`/`getActiveProviderId`/`setProvider`/`deleteProvider`/`setSearchTool`/`deleteSearchTool`/`buildEffectiveConfig`). Never read `CONFIGURATION.features`/`provider_settings` directly, and never write `CONFIGURATION.provider_settings[key]` by hand.
 - File providers/tools live in `configuration.lua` (gitignored, holds secrets) — never read/modify it; update `configuration.sample.lua` only.
-- Normalize credentials here: `Registry.validate` / `SearchRegistry.validate` trim `display_name`/`model`/`base_url`/`api_key` and reject **internal** whitespace. Shared normalization lives in `assistant_doc_utils.validate_credential_field` (trim + required/scheme/whitespace checks) and `assistant_doc_utils.trimDialogFields`; both registries route their credential checks through it. Do not scatter trims through handlers or header construction.
+- Normalize credentials here: `Registry.validate` / `SearchRegistry.validate` trim `display_name`/`model`/`base_url`/`api_key` and reject **internal** whitespace. Shared normalization lives in `utils/doc.validate_credential_field` (trim + required/scheme/whitespace checks) and `utils/doc.trimDialogFields`; both registries route their credential checks through it. Do not scatter trims through handlers or header construction.
 
-## Provider Registry (`assistant_provider_registry.lua`, `Registry`)
+## Provider Registry (`core/provider_registry.lua`, `Registry`)
 
 - Storage: `ui_providers` JSON. `Registry.load` reads it; `Registry.merge(file_config, ui_data)` combines file + UI providers into `CONFIGURATION.provider_settings`. File providers get `source="file"`, `immutable=true`; UI providers get `source="ui"`, `custom:N` (auto-incrementing). `main.lua` init builds the effective config.
 - Config keys: file `{handler}_{description}`; UI `custom:N`. `display_name` drives the Settings radio and main-menu label (not the config key).
@@ -19,12 +19,12 @@ Two registries own everything configured from the UI. Both store JSON in `LuaSet
 - Gemini `base_url` must keep the `/models` segment (`FetchModels` GETs base_url; `query` POSTs `{base_url}/{model}:generateContent`). OpenAI-compatible Gemini endpoints use the `openai` handler.
 - `Registry.showParametersDialog` is the reference hand-built dialog (no input field) — see `docs/UI_DIALOGS.md`.
 
-## Search Registry (`assistant_search_registry.lua`, `SearchRegistry`)
+## Search Registry (`core/search_registry.lua`, `SearchRegistry`)
 
-- Storage: `ui_search_tools` JSON. Uses **fixed tool keys** (`serpapi`, `tavilyapi`, `exaapi`, `searxngapi`, `parallelapi`) rather than `custom:N`; `SEARCH_TOOLS` defines each key and its required credential. Engines: SerpAPI, Tavily, SearXNG, Exa, Parallel Search. UI tools are added via Settings → WebSearch API.
+- Storage: `ui_search_tools` JSON. Uses **fixed tool keys** (`serpapi`, `tavilyapi`, `exaapi`, `searxngapi`, `parallelapi`) rather than `custom:N`; `core/search_tools.lua` owns the catalog, required credentials, display names, and menu order. Engines: SerpAPI, Tavily, SearXNG, Exa, Parallel Search. UI tools are added via Settings → WebSearch API.
 - `load`/`save`/`merge`/`validate`/`upsert`/`installSearchTool`/`delete`/`is_deletable` mirror the provider registry's `source`/`immutable` pattern (file tools `source="file"`, immutable; only UI tools are deletable). `merge` keys by tool key.
-- `upsert` validates and then stores from the normalized record; `installSearchTool` reuses that record.
-- `SearchRegistry.is_configured(record, key)` is the shared availability predicate for menu checkboxes, Web Search selection, and request snapshots. It checks the required field from `SEARCH_TOOLS`: API-key backends need a nonblank key, while SearXNG needs a nonblank base URL.
+- `upsert` validates and then stores only the tool's catalog-required credential; `installSearchTool` reuses that record. A UI record replaces the whole file record, not individual fields.
+- `SearchTools.isConfigured(record, key)` is the shared availability predicate for menu checkboxes, Web Search selection, execution preflight, and request snapshots. It checks the catalog-required field: API-key backends need a nonblank key, while SearXNG needs a nonblank base URL.
 - `ToolExecutor.getSearchConfig` copies configured credentials, an optional trimmed base URL, and an optional mode once per query. Every tool round uses the same snapshot; external execution rejects a missing or invalid snapshot without re-reading mutable assistant config.
 - Parallel Search uses `/v1/search`, sends `objective` separately from its keyword query, defaults to `fast`, and preserves ranked URLs and excerpts. A file-config `mode` and optional `base_url` are copied into the snapshot; a UI record replaces the whole file record and inherits neither field because the current dialog edits only the API key.
 

@@ -1,12 +1,12 @@
 local BaseHandler = require("api_handlers.base")
-local NetUtils = require("assistant_net_utils")
-local TextUtils = require("assistant_text_utils")
+local NetUtils = require("utils/net")
+local TextUtils = require("utils/text")
 local json = require("rapidjson")
 local koutil = require("util")
 local logger = require("logger")
-local ToolExecutor = require("assistant_tool_executor")
+local ToolExecutor = require("core/tool_executor")
 local UIManager = require("ui/uimanager")
-local _ = require("assistant_gettext")
+local _ = require("core/gettext")
 local InfoMessage = require("ui/widget/infomessage")
 
 local OpenAIHandler = BaseHandler:new({
@@ -49,8 +49,8 @@ OpenAIHandler.SupportedOptions = {
     -- DeepSeek:   https://api-docs.deepseek.com/guides/thinking_mode
 }
 
-function OpenAIHandler:SyncOptions(querier)
-    BaseHandler.SyncOptions(self, querier)
+function OpenAIHandler:SyncOptions(querier, overlay)
+    BaseHandler.SyncOptions(self, querier, overlay)
     self.reasoning_key = nil
 end
 
@@ -119,15 +119,20 @@ end
 
 --- Connection test: minimal non-stream chat request with the static echo
 --- instruction. Inherited by the OpenAI-compatible aliases (deepseek,
---- ollama, openrouter, mistral, groq, gigachat).
+--- ollama, openrouter, mistral, groq, gigachat). Whitelisted
+--- additional_parameters ride along, so the request carries the same
+--- reasoning options a real query would send.
 function OpenAIHandler:Test()
     local body = {
         model    = self.model,
         messages = { { role = "user", content = self.TEST_PROMPT } },
     }
+    self:mergeSupportedOptions(body)
     local headers = self:requestHeaders()
     return self:testRequest(self:getApiUrl(), headers, body, function(data)
-        return koutil.tableGetValue(data, "choices", 1, "message", "content")
+        local parsed = ToolExecutor.parseToolCallsResponse(data, "openai")
+        if type(parsed) == "table" then return parsed.content, parsed.reasoning end
+        return nil
     end)
 end
 
@@ -140,11 +145,7 @@ function OpenAIHandler:buildRequestBody(messages, query_option, tools)
         model      = self.model,
         messages   = messages,
     }
-    if type(self.additional_parameters) == "table" and next(self.additional_parameters) then
-        for o, v in pairs(self.additional_parameters) do
-            if self.SupportedOptions[o] then body[o] = v end
-        end
-    end
+    self:mergeSupportedOptions(body)
     if tools then
         body.tools       = tools
         body.tool_choice = "auto"
@@ -157,7 +158,7 @@ end
 
 function OpenAIHandler:query(message_history, query_option)
 
-    local headers = self:requestHeaders(message_history)
+    local headers = self:requestHeaders(query_option.conversation_history or message_history)
 
     local ws_mode = query_option.use_websearch or "none"
     local tools

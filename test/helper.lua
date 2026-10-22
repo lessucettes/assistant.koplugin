@@ -38,19 +38,20 @@ local stubs = {
     ["ui/size"]                 = {},
     ["ui/widget/trapwidget"]    = {},
     ["ui/widget/notification"]  = { notify = function() end, SOURCE_ALWAYS_SHOW = 1 },
-    -- Real widget modules pulled in by assistant_utils -> assistant_notebook
-    -- and assistant_search_registry. They require the real "device" module,
+    -- Real widget modules pulled in by utils/base -> feature/notebook
+    -- and core/search_registry. They require the real "device" module,
     -- whose android probe (pcall(require, "android")) is satisfied by the
     -- empty android stub above, making device.lua load the Android
     -- implementation and crash. Stub them so the real device module is
     -- never required by the test chain.
-    ["ui/widget/inputdialog"]   = {},
+    ["ui/widget/inputdialog"]   = { extend = function(self, sub) return setmetatable(sub or {}, {__index=self}) end, new = function(_, o) return o or {} end },
     ["ui/widget/checkbutton"]   = {},
     ["ui/widget/container/framecontainer"] = {},
     ["ui/widget/container/centercontainer"] = {},
     ["ui/widget/container/movablecontainer"] = {},
-    ["ui/widget/container/inputcontainer"] = {},
     ["ui/widget/verticalgroup"] = {},
+    ["ui/widget/horizontalgroup"] = {},
+    ["ui/widget/horizontalspan"]  = {},
     ["ui/widget/titlebar"]      = {},
     ["ffi/blitbuffer"]          = { COLOR_WHITE = {}, COLOR_BLACK = {} },
     -- headless screen metrics for hand-built dialogs
@@ -58,13 +59,20 @@ local stubs = {
         screen = {
             getWidth = function() return 600 end,
             getHeight = function() return 800 end,
+            scaleBySize = function(x) return x end,
         },
     },
     ["ui/widget/buttontable"]   = { new = function(_, o) return o end, getButtonById = function() end },
     ["ui/widget/buttondialog"]  = { new = function(_, o) return o end },
     ["ui/widget/menu"]          = {},
     ["ui/widget/confirmbox"]    = {},
-    ["ui/widget/buttontable"]   = {},
+    ["ui/event"]               = { new = function(_, o) return o or {} end },
+    ["apps/filemanager/filemanagerbookinfo"] = { new = function(_, o) return o or {} end, extendProps = function(props, file) return props or {} end },
+    ["ui/widget/focusmanager"]    = { extend = function(self, sub) return setmetatable(sub or {}, {__index=self}) end },
+    ["dbg"]                     = { levels = {}, guard = function() end },
+    ["ui/widget/verticalscrollbar"] = { extend = function(self, sub) return setmetatable(sub or {}, {__index=self}) end, padding = function() return 0 end },
+    ["ui/widget/container/inputcontainer"] = { extend = function(self, sub) return setmetatable(sub or {}, {__index=self}) end },
+    ["ui/widget/inputtext"]      = { extend = function(self, sub) return setmetatable(sub or {}, {__index=self}) end, padding = function() return 0 end },
     ["ui"]                      = {},
     ["android"]                 = {},
     -- for assistant_gettext: datastorage mock
@@ -72,6 +80,9 @@ local stubs = {
         getDataDir = function() return "/tmp" end,
         getFullDataDir = function() return "/tmp" end,
         getSettingsDir = function() return "/tmp" end,
+        getHistoryDir = function() return "/tmp" end,
+        getDocSettingsDir = function() return "/tmp" end,
+        getDocSettingsHashDir = function() return "/tmp" end,
     },
     -- for assistant_gettext: gettext mock (language)
     -- Callable + pgettext so frontend/datetime.lua loads headless.
@@ -108,11 +119,11 @@ for modname, stub in pairs(stubs) do
 end
 
 -- 4. Import the real modules we need
-local ASUtils = require("assistant_utils")
-local NetUtils = require("assistant_net_utils")
-local TextUtils = require("assistant_text_utils")
-local DocUtils = require("assistant_doc_utils")
-local extools = require("assistant_exttools")
+local ASUtils = require("utils/base")
+local NetUtils = require("utils/net")
+local TextUtils = require("utils/text")
+local DocUtils = require("utils/doc")
+local extools = require("core/exttools")
 
 -- 5. Assertion helpers
 local M = {}
@@ -188,11 +199,13 @@ M.TextUtils = TextUtils
 M.DocUtils = DocUtils
 
 -- 7. Test runner
+--- Results of every runTests() call, drained by the runner per test file.
+M.results = {}
+
 function M.runTests(name, tests)
     local passed = 0
     local failed = 0
     local errors = {}
-
     print("\n== " .. name .. " ==")
 
     for _, test in ipairs(tests) do
@@ -215,7 +228,19 @@ function M.runTests(name, tests)
     print(string.format("\n%s: %d passed, %d failed", name, passed, failed))
     -- Return a single result table: Lua 5.1's require() only propagates the
     -- first return value, so multiple returns would drop the failure counts.
-    return { passed = passed, failed = failed, errors = errors }
+    local result = { passed = passed, failed = failed, errors = errors }
+    table.insert(M.results, result)
+    return result
+end
+
+--- Collect and clear the results of every runTests() executed since the last
+--- drain. A file may run several suites; require() propagates only one return
+--- value, so the runner counts through this registry instead.
+--- @return table[] list of result tables
+M.drainResults = function()
+    local collected = M.results
+    M.results = {}
+    return collected
 end
 
 return M

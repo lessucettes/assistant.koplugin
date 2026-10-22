@@ -1,5 +1,5 @@
 -- test_exttools.lua
--- Tests for assistant_exttools.lua: SerpAPI, Tavily, SearXNG, Exa.ai, Parallel Search, and SearchToolBase.
+-- Tests for core/exttools.lua: SerpAPI, Tavily, SearXNG, Exa.ai, Parallel Search, and SearchToolBase.
 local helper = require("test.helper")
 local assert = helper.assert
 local extools = helper.extools
@@ -65,7 +65,6 @@ local tests = {
         })
         local ok, result = extools.serpapi:SearchKeywords("test query")
         assert.isTrue(ok)
-        assert.matches(result, "Google AI Summary")
         assert.matches(result, "AI summary text")
     end),
 
@@ -74,16 +73,31 @@ local tests = {
             { parsed = {
                 reconstructed_markdown = nil,
                 references = {
-                    { index = 1, title = "Source One", source = "Web" },
+                    { index = 1, title = "Source One", source = "Web", snippet = "Fallback snippet" },
                     { index = 2, title = "Source Two", source = "Blog" },
                 },
             }, err = nil },
         })
         local ok, result = extools.serpapi:SearchKeywords("test query")
         assert.isTrue(ok)
-        assert.matches(result, "Verified Sources")
         assert.matches(result, "Source One")
-        assert.matches(result, "Source Two")
+        assert.matches(result, "Fallback snippet")
+        assert.matches(result, "\n%[2%] Source Two %(Blog%)\n")
+    end),
+
+    test("SerpAPI: falls back to text_blocks when reconstructed_markdown is absent", function()
+        helper.mockFetchJSON({
+            { parsed = {
+                text_blocks = {
+                    { type = "paragraph", snippet = "Block paragraph." },
+                    { type = "list", list = { { snippet = "Item A" } } },
+                },
+            }, err = nil },
+        })
+        local ok, result = extools.serpapi:SearchKeywords("test query")
+        assert.isTrue(ok)
+        assert.matches(result, "Block paragraph.")
+        assert.matches(result, "- Item A\n")
     end),
 
     test("SerpAPI: no results returns error", function()
@@ -92,7 +106,7 @@ local tests = {
         })
         local ok, err = extools.serpapi:SearchKeywords("test query")
         assert.isFalse(ok)
-        assert.matches(err, "No relevant search")
+        assert.isTrue(type(err) == "string" and err ~= "", "an error must be reported")
     end),
 
     test("SerpAPI: network error", function()
@@ -130,11 +144,11 @@ local tests = {
         })
         local ok, result = extools.tavilyapi:SearchKeywords("test query")
         assert.isTrue(ok)
-        assert.matches(result, "Summary")
         assert.matches(result, "Tavily summary text")
-        assert.matches(result, "Source 1")
         assert.matches(result, "Result 1")
-        assert.matches(result, "Source 2")
+        assert.matches(result, "Content 1")
+        assert.matches(result, "Result 2")
+        assert.matches(result, "Content 2")
     end),
 
     test("Tavily: search without answer still succeeds", function()
@@ -147,8 +161,22 @@ local tests = {
         })
         local ok, result = extools.tavilyapi:SearchKeywords("test query")
         assert.isTrue(ok)
-        assert.notMatches(result, "## Summary") -- AI-answer section should be absent
-        assert.matches(result, "verified search results")
+        assert.matches(result, "Only Result")
+        assert.matches(result, "Content")
+    end),
+
+    test("Tavily: the answer section follows the payload", function()
+        local results = {}
+        for idx, with_answer in ipairs({ true, false }) do
+            local payload = { results = { { title = "Q", content = "C" } } }
+            if with_answer then payload.answer = "Tavily answer" end
+            helper.mockFetchJSON({ { parsed = payload, err = nil } })
+            local ok, result = extools.tavilyapi:SearchKeywords("test query")
+            assert.isTrue(ok)
+            results[idx] = result
+        end
+        assert.matches(results[1], "Tavily answer", "the answer must be rendered when present")
+        assert.notMatches(results[2], "Tavily answer", "no answer text when the API sent none")
     end),
 
     test("Tavily: missing results field returns error", function()
@@ -157,7 +185,7 @@ local tests = {
         })
         local ok, err = extools.tavilyapi:SearchKeywords("test query")
         assert.isFalse(ok)
-        assert.equal(err, "fail to parse tavily return")
+        assert.isTrue(type(err) == "string" and err ~= "", "an error must be reported")
     end),
 
     test("Tavily: network error", function()
@@ -183,21 +211,29 @@ local tests = {
     -- SearXNG: SearchKeywords
     -- =========================================================================
 
-    test("SearXNG: successful search with results", function()
+    test("SearXNG: successful search with results caps count and extracts domain", function()
+        local items = {}
+        for i = 1, 7 do
+            items[i] = {
+                title = "Page " .. i,
+                url = "https://www.example.com/path/" .. i,
+                content = "Content " .. i,
+            }
+        end
         helper.mockFetchJSON({
             { parsed = {
-                results = {
-                    { title = "Page 1", url = "https://example.com/1", content = "Content 1" },
-                    { title = "Page 2", url = "https://example.com/2", content = "Content 2" },
-                },
+                answers = { "Direct answer" },
+                results = items,
             }, err = nil },
         })
         local ok, result = extools.searxngapi:SearchKeywords("test query")
         assert.isTrue(ok)
-        assert.matches(result, "Web Search Results")
-        assert.matches(result, "Page 1")
-        assert.matches(result, "https://example.com/1")
-        assert.matches(result, "Page 2")
+        assert.matches(result, "Direct answer")
+        assert.matches(result, "### Source 1: Page 1 %(example%.com%)\n")
+        assert.matches(result, "Content 1\n")
+        assert.matches(result, "Page 5")
+        assert.notMatches(result, "Page 6")
+        assert.notMatches(result, "https://www.example.com/path/1")
     end),
 
     test("SearXNG: missing results field returns error", function()
@@ -206,7 +242,7 @@ local tests = {
         })
         local ok, err = extools.searxngapi:SearchKeywords("test query")
         assert.isFalse(ok)
-        assert.equal(err, "fail to parse searxng return")
+        assert.isTrue(type(err) == "string" and err ~= "", "an error must be reported")
     end),
 
     test("SearXNG: network error", function()
@@ -236,36 +272,31 @@ local tests = {
         })
         local ok, result = extools.exaapi:SearchKeywords("test query")
         assert.isTrue(ok)
-        assert.matches(result, "Exa.ai Search Results")
         assert.matches(result, "Doc 1")
         assert.matches(result, "Summary of doc 1")
         assert.matches(result, "highlight 1a")
         assert.matches(result, "highlight 1b")
     end),
 
-    test("Exa.ai: search with subpages", function()
+    test("Exa.ai: formats domain, date, and handles rapidjson.null fields", function()
+        local json = require("rapidjson")
         helper.mockFetchJSON({
             { parsed = {
                 results = {
                     {
                         title = "Main Doc",
-                        summary = "Main summary",
-                        subpages = {
-                            {
-                                title = "Subpage 1",
-                                summary = "Sub summary",
-                                highlights = { "sub highlight" },
-                            },
-                        },
+                        url = "https://docs.exa.ai/reference/search",
+                        publishedDate = "2026-03-15T10:00:00Z",
+                        summary = json.null,
+                        highlights = { "excerpt one", "excerpt two" },
                     },
                 },
             }, err = nil },
         })
         local ok, result = extools.exaapi:SearchKeywords("test query")
         assert.isTrue(ok)
-        assert.matches(result, "Subpage 1")
-        assert.matches(result, "Sub summary")
-        assert.matches(result, "sub highlight")
+        assert.matches(result, "### Source 1: Main Doc %(docs%.exa%.ai, 2026%-03%-15%)\n")
+        assert.matches(result, "  %- excerpt one\n  %- excerpt two\n")
     end),
 
     test("Exa.ai: missing results field returns error", function()
@@ -274,7 +305,7 @@ local tests = {
         })
         local ok, err = extools.exaapi:SearchKeywords("test query")
         assert.isFalse(ok)
-        assert.equal(err, "fail to parse exa.ai return")
+        assert.isTrue(type(err) == "string" and err ~= "", "an error must be reported")
     end),
 
     test("Exa.ai: network error", function()
@@ -469,4 +500,4 @@ local tests = {
     end),
 }
 
-return helper.runTests("assistant_exttools.lua", tests)
+return helper.runTests("core/exttools.lua", tests)

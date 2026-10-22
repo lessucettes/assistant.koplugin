@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 03:15+0000\n"
 "Last-Translator: AI (auto)\n"
 "Language-Team: Euskara (AI translation)\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Izenburua: %1\n"
-" - Egilea: %2\n"
-" - Irakurketa-progresua: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - or. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Erantzunik ez)"
 
 msgid "(empty response body)"
 msgstr "(erantzun-gorputz hutsa)"
+
+msgid "(none)"
+msgstr "(bat ere ez)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>APIak errore bat itzuli du</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Gehituta</b> [%1 (AI)] azpimarra-menuan."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>APIak ez du erantzun erabilgarririk itzuli</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Liburuaren testuingurua aztertzen Term X-Ray-rako...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>Galdetu liburu honi buruz:</b>\n"
-"%1, %2-k idatzita"
+"<b>Egin galdera bat liburu honi buruz:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>Instalatzen %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Modeloaren erantzuna:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Parametroak</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Kenduta</b> [%1 (AI)] azpimarra-menutik."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Arrazoiketa (azken erantzunik gabe)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Arrazoibidea:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>Eskaera</b> - POST %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "AI Laburpena aspalditik irakurri gabeko liburu bat hurrengoan irekitzean gaituko da."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AI Laburpenak"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Gehitu hornitzaileak menu nagusitik:\n"
 "%1 -> AI Laguntzailea -> Ezarpenak -> Hornitzailearen APIa"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Gehitua <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Hiztegi-eraikitzailean gehituta"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Hiztegian kontsultatzen duzun hitz bakoitza Hiztegi Eraikitzailean gehitzen du emaitza agertzen den bezain laster."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Liburuko zure nabarmendutakoen, oharren eta AI oharren edukiaren analisia."
@@ -369,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Ziur zaude laguntzaile pluginaren ezarpenak garbitu nahi dituzula?\n"
-"Honek laguntzaile plugina lehen aldiz instalatu zenuen egoerara berrezartzen du.\n"
+"Ziur zaude laguntzaile-pluginaren ezarpenak garbitu nahi dituzula?\n"
+"Horrek laguntzaile-plugina lehen aldiz instalatu zenueneko egoerara berrezartzen du.\n"
 "\n"
-"configuration.lua seguru dago, ezarpenak soilik garbitzen dira."
+"configuration.lua seguru dago, ezarpenak bakarrik garbituko dira."
 
 msgid "Ask"
 msgstr "Galdetu"
@@ -404,6 +403,9 @@ msgstr "Galdetu edozer..."
 msgid "Ask the AI a question"
 msgstr "Galdetu AIari"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "Eskatu AIari irekitako liburuaren izenburua eta egilea hasierako testutik identifikatzeko."
+
 msgid "Assistant settings are not available."
 msgstr "Laguntzailearen ezarpenak ez daude eskuragarri."
 
@@ -412,6 +414,16 @@ msgstr "Erantsi aurreko testua"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Erantzuna liburu-ohar gisa eransten dio uneko nabarmenduari"
+
+msgid "Author"
+msgstr "Egilea"
+
+msgid "Auto"
+msgstr "Automatikoa"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Gehitu hitza automatikoki Hiztegi Eraikitzailean"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "Liburuaren ikuspegiak"
 
 msgid "Book Summary & Recs"
 msgstr "Liburuaren laburpena eta gomendioak"
+
+msgid "Book metadata updated."
+msgstr "Liburuaren metadatuak eguneratu dira."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "Ez da \"%1\" adarra/etiketa aurkitu."
@@ -530,11 +545,17 @@ msgstr "Testuinguru-oharrak"
 msgid "Contextual Notes / Reflections"
 msgstr "Testuinguru-oharrak / Gogoetak"
 
+msgid "Continue"
+msgstr "Jarraitu"
+
 msgid "Contradictions / Open Questions"
 msgstr "Kontraesanak / Erantzun gabeko galderak"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "Elkarrizketa AI oharretan gorde da"
+
+msgid "Copied to clipboard."
+msgstr "Arbelera kopiatuta."
 
 msgid "Copy"
 msgstr "Kopiatu"
@@ -562,11 +583,17 @@ msgstr "Ezin izan da AI oharra sortu."
 msgid "Could not create AI note: %1"
 msgstr "Ezin izan da AI oharra sortu: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Ezin izan da testurik atera liburu honetatik."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "Ezin izan da AI oharren karpeta zerrendatu: %1"
 
 msgid "Could not open AI note file."
 msgstr "Ezin izan da AI ohar fitxategia ireki."
+
+msgid "Could not parse the identification result."
+msgstr "Ezin izan da identifikazioaren emaitza interpretatu."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Prompt pertsonalizatua"
 msgid "Custom Prompts"
 msgstr "Prompt pertsonalizatuak"
 
-msgid "Deeply Thought"
-msgstr "Pentsamendu sakona"
+msgid "Default"
+msgstr "Lehenetsia"
 
 msgid "Delete"
 msgstr "Ezabatu"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "%1 hornitzailea ezabatu?"
 
+msgid "Description: %1"
+msgstr "Deskribapena: %1"
+
 msgid "Device"
 msgstr "Gailua"
 
@@ -630,8 +660,8 @@ msgstr "Hiztegia"
 msgid "Dictionary Language"
 msgstr "Hiztegiaren hizkuntza"
 
-msgid "Dictionary Popup"
-msgstr "Hiztegi-leihoa"
+msgid "Dictionary Popup Buttons"
+msgstr "Hiztegi-popuparen botoiak"
 
 msgid "Dictionary Settings"
 msgstr "Hiztegiaren ezarpenak"
@@ -770,11 +800,11 @@ msgstr "Elkarrizketa orokorra"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Orokorrean <b>EZ</b> hautatu bat baino gehiago - hautatu zure eredu eta plataformarekin bat datorren parametro bat. Parametro oker batek API erroreak eragin ditzake. \n"
+"Oro har, <b>EZ</b> aukeratu bat baino gehiago - zure modelora eta plataformara egokitzen den parametro bat aukeratu. Parametro oker batek API erroreak eragin ditzake. \n"
 "\n"
-"Hautatutako balioak konfigurazioaren additional_parameters gainidazten ditu."
+"Aukeratutako balioak konfigurazioaren additional_parameters gainidazten du. Aukeratutako aukerek gako bera badute, zerrendako azkena baino ez da erabiltzen."
 
 msgid "Genre"
 msgstr "Generoa"
@@ -803,12 +833,22 @@ msgstr "Testuinguru historikoa"
 msgid "Historical and Cultural Context"
 msgstr "Testuinguru historikoa eta kulturala"
 
+msgid "Identify (AI)"
+msgstr "Identifikatu (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Identifikatu liburu hau"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Erantzunen zehaztasuna hobetzen du denbora errealeko web emaitzekin. \n"
 "Oharra: Token erabilera handiagoa eta API karga gehigarriak aplikatzen dira."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Ondorioztatu irekitako liburuaren izenburua eta egilea hasierako testutik, eta gorde metadatu pertsonalizatu gisa."
 
 msgid "Integrated Summary"
 msgstr "Laburpen integratua"
@@ -849,6 +889,9 @@ msgstr "Utzi hutsik hau erabiltzeko: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Utzi eremu hauek hutsik interfazearen hizkuntza erabiltzeko: %1"
 
+msgid "Left to Right"
+msgstr "Ezkerretik eskuinera"
+
 msgid "Locations"
 msgstr "Lekuak"
 
@@ -863,6 +906,12 @@ msgstr "Markdown motorra"
 
 msgid "Meaning & Usage"
 msgstr "Esanahia eta erabilera"
+
+msgid "Metadata could not be saved."
+msgstr "Ezin izan dira metadatuak gorde."
+
+msgid "Minimalist Mode"
+msgstr "Modu minimalista"
 
 msgid "Model"
 msgstr "Eredua"
@@ -912,11 +961,17 @@ msgstr "Ez dago hornitzaile aktiborik konfiguratuta. Mesedez, gehitu bat Ezarpen
 msgid "No base folder is available for AI Notes."
 msgstr "Ez dago oinarrizko karpetarik AI oharretarako."
 
+msgid "No book is open."
+msgstr "Ez dago libururik irekita."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Ez dago libururik irekita. Sakatu luze fitxategi-kudeatzailean liburu batean eta aukeratu Liburuaren informazioa (AI)."
 
 msgid "No common parameters are available for handler %1."
 msgstr "Ez dago parametro komun erabilgarririk %1 kudeatzailearentzat."
+
+msgid "No highlight to annotate"
+msgstr "Ez dago oharpena egiteko nabarmendutako testurik"
 
 msgid "No models available."
 msgstr "Ez dago eredu erabilgarririk."
@@ -932,6 +987,9 @@ msgstr "Ez da erantzunik jaso."
 
 msgid "No text left to annotate"
 msgstr "Ez da anotatzeko testurik geratzen"
+
+msgid "No text selected"
+msgstr "Ez da testurik hautatu"
 
 msgid "No text to annotate"
 msgstr "Ez dago anotatzeko testurik"
@@ -1071,26 +1129,20 @@ msgstr "Garbitu"
 msgid "Purge Settings"
 msgstr "Ezarpenak garbitu"
 
-msgid "Question"
-msgstr "Galdera"
-
 msgid "Quick Note"
 msgstr "Ohar azkarra"
 
 msgid "Quick note saved successfully"
 msgstr "Ohar azkarra behar bezala gorde da"
 
-msgid "RTL Layout"
-msgstr "RTL diseinua"
-
-msgid "RTL written Language"
-msgstr "RTL idatzitako hizkuntza"
-
 msgid "Re-immersion"
 msgstr "Berriro murgiltzea"
 
 msgid "Reader settings are not available."
 msgstr "Irakurlearen ezarpenak ez daude erabilgarri."
+
+msgid "Reading progress"
+msgstr "Irakurketa aurrerapena"
 
 msgid "Reasoning Option"
 msgstr "Arrazoiketa aukera"
@@ -1111,6 +1163,9 @@ msgstr "Kendu"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "Kendu [%s] azpimarra-menutik?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Kendua <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "Erabiltzaileak eskaera ezeztatu du."
@@ -1138,14 +1193,17 @@ msgstr ""
 "\n"
 "Honek plugin-a fabrikako lehenetsietara itzultzen du. Ezarpenen UI bidez gehitutako hornitzaileak, API gakoak eta bilaketa-tresnen kredentzialak kenduko dira. configuration.lua fitxategia gordeko da."
 
-msgid "Response"
-msgstr "Erantzuna"
+msgid "Response Font: %1"
+msgstr "Erantzunaren letra-tipoa: %1"
 
 msgid "Response Settings"
 msgstr "Erantzunaren ezarpenak"
 
 msgid "Response Text Font Size"
 msgstr "Erantzun Testuaren Letra-tamaina"
+
+msgid "Right to Left"
+msgstr "Eskuinetik ezkerrera"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1214,14 +1272,26 @@ msgstr "Hautatu AI oharra"
 msgid "Select a model:"
 msgstr "Hautatu eredu bat:"
 
-msgid "Selection copied to clipboard."
-msgstr "Hautapena arbelean kopiatu da."
+msgid "Set"
+msgstr "Ezarri"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Liburuaren metadatuak ezarri?\n"
+"Izenburua: %1\n"
+"Egilea: %2"
 
 msgid "Settings"
 msgstr "Ezarpenak"
 
 msgid "Show Follow-up Questions"
 msgstr "Erakutsi jarraipen-galderak"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Erakutsi nabarmendutako testua goialdean"
 
 msgid "Show Reasoning"
 msgstr "Erakutsi arrazoiketa"
@@ -1234,6 +1304,12 @@ msgstr "Erakutsi AIaren erantzunaren pentsamendu-prozesu sakona (arrazoiketa), b
 
 msgid "Show follow up questions related to the response content."
 msgstr "Erakutsi erantzunaren edukiarekin lotutako jarraipen-galderak."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Erantzuna bakarrik erakusten du: ez erabiltzaile/laguntzaile izenbururik, ez lehen botoi-ilararik, ez arrazoiketarik eta ez jarraipen-galderarik. Erantzunaren gaineko ekintzak soilik mantentzen ditu (Oharpena, Hiztegi-eraikitzailea) Itxi botoiaren ondoan. Arrazoiketa-testua eta Jarraipen-galderak desaktibatzen ditu aktibo dagoen bitartean."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Prompt bat seinalatu zaion testua bere bloke propio gisa erakusten du txandaren goialdean, galderaren gainean, jatorrizkoa erantzunarekin alderatu ahal izateko. Orduan, galderaren burbuilak ez du testu hori berriz errepikatzen."
 
 msgid "Similar Books Recommendations"
 msgstr "Antzeko liburuen gomendioak"
@@ -1295,7 +1371,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Hartu zure AI oharretan gordeko diren ohar azkarrak."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Term X-Ray"
 
@@ -1305,6 +1380,12 @@ msgstr "Terminoak eta kontzeptuak"
 msgid "Test"
 msgstr "Proba"
 
+msgid "Text Appearance"
+msgstr "Testuaren itxura"
+
+msgid "Text Direction: %1"
+msgstr "Testuaren norabidea: %1"
+
 msgid "Text Size: %1"
 msgstr "Testu-tamaina: %1"
 
@@ -1313,6 +1394,12 @@ msgstr "Testua arbelean kopiatu da"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "%1-rentzako handlerra ez da aurkitu. Ziurtatu handlerra api_handlers direktorioan dagoela."
+
+msgid "The model could not identify this book."
+msgstr "Ereduak ezin izan du liburu hau identifikatu."
+
+msgid "Thinking ..."
+msgstr "Pentsatzen ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Botoi honek ohar azkar bat sortzen du nabarmendutako testuarekin."
@@ -1376,6 +1463,12 @@ msgstr "Prompt honek nabarmendutako testua beste hizkuntza batera itzultzen du."
 msgid "Timeline"
 msgstr "Denbora-lerroa"
 
+msgid "Title"
+msgstr "Izenburua"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Izenburuaren edo egilearen metadatuak falta dira edo osatugabeak daude, eta beraz AIaren emaitza ez da fidagarria izango. Erabili Identifikatu (AI) horiek lehenago ezartzeko."
+
 msgid "To-Do / Action Items"
 msgstr "Egitekoak / Ekintza-zerrenda"
 
@@ -1391,6 +1484,13 @@ msgstr "Tresna-deiak ez du bilaketa-hitzik barne hartzen."
 msgid "Translate"
 msgstr "Itzuli"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Itzuli (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "Liburuaren deskribapena AIaren bidez itzultzen du."
+
 msgid "Translation"
 msgstr "Itzulpena"
 
@@ -1402,6 +1502,12 @@ msgstr "Idatzi zure galdera hemen..."
 
 msgid "URL: %1"
 msgstr "URLa: %1"
+
+msgid "Unknown Author"
+msgstr "Egile ezezaguna"
+
+msgid "Unknown Title"
+msgstr "Izenburu ezezaguna"
 
 msgid "Unknown error"
 msgstr "Errore ezezaguna"
@@ -1471,6 +1577,13 @@ msgstr "Ikusi"
 msgid "Vocabulary"
 msgstr "Hiztegia"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Hiztegi-eraikitzailea"
+
+msgid "Waiting for the model ..."
+msgstr "Modeloaren zain ..."
+
 msgid "Web Search"
 msgstr "Web bilaketa"
 
@@ -1502,9 +1615,6 @@ msgstr "Hitz forma eta lema"
 msgid "Word Origin"
 msgstr "Hitzaren jatorria"
 
-msgid "Word copied to clipboard."
-msgstr "Hitza arbelean kopiatu da."
-
 msgid "Write quick notes here"
 msgstr "Idatzi ohar azkarrak hemen"
 
@@ -1531,6 +1641,3 @@ msgstr "adibidez, google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: ezin izan da itzulitako datua analizatu"
-
-msgid "https://..."
-msgstr "https://..."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 10:35+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Tittel : %1\n"
-" - Forfatter: %2\n"
-" - Leseprogresjon: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - s. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Ingen svar)"
 
 msgid "(empty response body)"
 msgstr "(tom svar-tekst)"
+
+msgid "(none)"
+msgstr "(ingen)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API-et returnerte en feil</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Lagt til</b> [%1 (AI)] i markeringsmenyen."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API-et returnerte ikke noe brukbart svar</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Analyserer bokkontekst for Term X-Ray...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
 "<b>Still et spørsmål om denne boken:</b>\n"
-"%1 av %2"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>Installerer %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Modellsvar:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Parametere</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Fjernet</b> [%1 (AI)] fra markeringsmenyen."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Resonnering (intet endelig svar)</b> – %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Resonnering:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>Forespørsel</b> – POST %1"
@@ -189,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>Svar</b> – HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "Tester tilkobling..."
+msgstr "<b>Tester tilkobling …</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>Ukjent funksjonstype:</b> %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "AI-oppsummering aktiveres neste gang en lenge ulest bok åpnes."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AI-oppsummeringer"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Legg til leverandører fra hovedmenyen:\n"
 "%1 -> AI-assistent -> Innstillinger -> Leverandør-API"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "La til <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Lagt til i ordforrådsbyggeren"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Legger til hvert ord du slår opp i ordboken i Vocabulary Builder så snart resultatet vises."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Analyse av uthevinger, notater og AI-notatinnhold fra boken."
@@ -369,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Er du sikker på at du vil tømme innstillingene til assistent-pluginen? \n"
-"Dette tilbakestiller assistent-pluginen til slik den var første gang du installerte den.\n"
+"Er du sikker på at du vil slette innstillingene for assistentpluginen?\n"
+"Dette tilbakestiller assistentpluginen til slik den var første gang du installerte den.\n"
 "\n"
-"configuration.lua er trygg, bare innstillingene blir tømt."
+"configuration.lua er trygg, det er bare innstillingene som slettes."
 
 msgid "Ask"
 msgstr "Spør"
@@ -404,6 +403,9 @@ msgstr "Spør om hva som helst..."
 msgid "Ask the AI a question"
 msgstr "Still et spørsmål til AI-en"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "Be AI-en identifisere tittelen og forfatteren til den åpne boken ut fra åpningsteksten."
+
 msgid "Assistant settings are not available."
 msgstr "Assistentinnstillingene er ikke tilgjengelige."
 
@@ -412,6 +414,16 @@ msgstr "Legg ved tidligere tekst"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Fester svaret som et boknotat til den gjeldende uthevingen"
+
+msgid "Author"
+msgstr "Forfatter"
+
+msgid "Auto"
+msgstr "Auto"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Legg automatisk til ord i Vocabulary Builder"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "Bokinnsikt"
 
 msgid "Book Summary & Recs"
 msgstr "Bokoppsummering og anbefalinger"
+
+msgid "Book metadata updated."
+msgstr "Bokens metadata er oppdatert."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "Grenen/taggen \"%1\" ble ikke funnet."
@@ -530,11 +545,17 @@ msgstr "Kontekstuelle notater"
 msgid "Contextual Notes / Reflections"
 msgstr "Kontekstuelle notater / refleksjoner"
 
+msgid "Continue"
+msgstr "Fortsett"
+
 msgid "Contradictions / Open Questions"
 msgstr "Selvmotsigelser / åpne spørsmål"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "Samtalen er lagret i AI-notater"
+
+msgid "Copied to clipboard."
+msgstr "Kopiert til utklippstavlen."
 
 msgid "Copy"
 msgstr "Kopier"
@@ -562,11 +583,17 @@ msgstr "Kunne ikke opprette AI-notat."
 msgid "Could not create AI note: %1"
 msgstr "Kunne ikke opprette AI-notat: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Kunne ikke hente ut tekst fra denne boken."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "Kunne ikke liste opp AI-notatmappen: %1"
 
 msgid "Could not open AI note file."
 msgstr "Kunne ikke åpne AI-notatfilen."
+
+msgid "Could not parse the identification result."
+msgstr "Kunne ikke tolke identifiseringsresultatet."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Egendefinert prompt"
 msgid "Custom Prompts"
 msgstr "Egendefinerte prompter"
 
-msgid "Deeply Thought"
-msgstr "Dyp tenkning"
+msgid "Default"
+msgstr "Standard"
 
 msgid "Delete"
 msgstr "Slett"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "Slette leverandør %1?"
 
+msgid "Description: %1"
+msgstr "Beskrivelse: %1"
+
 msgid "Device"
 msgstr "Enhet"
 
@@ -630,8 +660,8 @@ msgstr "Ordbok"
 msgid "Dictionary Language"
 msgstr "Ordbokspråk"
 
-msgid "Dictionary Popup"
-msgstr "Ordbokspopup"
+msgid "Dictionary Popup Buttons"
+msgstr "Knapper i ordbokspopupen"
 
 msgid "Dictionary Settings"
 msgstr "Ordbokinnstillinger"
@@ -770,11 +800,11 @@ msgstr "Generell samtale"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Generelt <b>IKKE</b> velg mer enn én – velg en parameter som passer til modellen og plattformen din. En feil parameter kan gi API-feil. \n"
+"Velg generelt <b>IKKE</b> mer enn én – velg en parameter som passer til modellen og plattformen din. En feil parameter kan føre til API-feil. \n"
 "\n"
-"Valgt verdi overstyrer additional_parameters i konfigurasjonen."
+"Den valgte verdien overstyrer additional_parameters i konfigurasjonen. Hvis valgte alternativer har samme nøkkel, brukes bare det siste i listen."
 
 msgid "Genre"
 msgstr "Sjanger"
@@ -803,12 +833,22 @@ msgstr "Historisk kontekst"
 msgid "Historical and Cultural Context"
 msgstr "Historisk og kulturell kontekst"
 
+msgid "Identify (AI)"
+msgstr "Identifiser (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Identifiser denne boken"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Forbedrer nøyaktigheten på svarene med sanntidsresultater fra nettet. \n"
 "Merk: Høyere token-bruk og ekstra API-kostnader påløper."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Utled tittelen og forfatteren til den åpne boken fra åpningsteksten og lagre dem som egendefinert metadata."
 
 msgid "Integrated Summary"
 msgstr "Integrert sammendrag"
@@ -849,6 +889,9 @@ msgstr "La stå tom for å bruke: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "La disse feltene stå tomme for å bruke grensesnittspråket: %1"
 
+msgid "Left to Right"
+msgstr "Venstre mot høyre"
+
 msgid "Locations"
 msgstr "Steder"
 
@@ -863,6 +906,12 @@ msgstr "Markdown-motor"
 
 msgid "Meaning & Usage"
 msgstr "Betydning og bruk"
+
+msgid "Metadata could not be saved."
+msgstr "Metadata kunne ikke lagres."
+
+msgid "Minimalist Mode"
+msgstr "Minimalistmodus"
 
 msgid "Model"
 msgstr "Modell"
@@ -912,11 +961,17 @@ msgstr "Ingen aktiv leverandør er konfigurert. Legg til en i Innstillinger."
 msgid "No base folder is available for AI Notes."
 msgstr "Ingen basismappe er tilgjengelig for AI-notater."
 
+msgid "No book is open."
+msgstr "Ingen bok er åpen."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Ingen bok er åpen. Langtrykk på en bok i filbehandleren og velg Bokinformasjon (AI)."
 
 msgid "No common parameters are available for handler %1."
 msgstr "Ingen vanlige parametere er tilgjengelige for behandleren %1."
+
+msgid "No highlight to annotate"
+msgstr "Ingen utheving å legge merknad til"
 
 msgid "No models available."
 msgstr "Ingen modeller tilgjengelige."
@@ -932,6 +987,9 @@ msgstr "Ingen respons mottatt."
 
 msgid "No text left to annotate"
 msgstr "Ingen tekst igjen å anmerke"
+
+msgid "No text selected"
+msgstr "Ingen tekst er valgt"
 
 msgid "No text to annotate"
 msgstr "Ingen tekst å anmerke"
@@ -1071,26 +1129,20 @@ msgstr "Tøm"
 msgid "Purge Settings"
 msgstr "Tøm innstillinger"
 
-msgid "Question"
-msgstr "Spørsmål"
-
 msgid "Quick Note"
 msgstr "Hurtignotat"
 
 msgid "Quick note saved successfully"
 msgstr "Raskt notat lagret"
 
-msgid "RTL Layout"
-msgstr "RTL-oppsett"
-
-msgid "RTL written Language"
-msgstr "RTL-skriftspråk"
-
 msgid "Re-immersion"
 msgstr "Gjeninnlevelse"
 
 msgid "Reader settings are not available."
 msgstr "Leserinnstillingene er ikke tilgjengelige."
+
+msgid "Reading progress"
+msgstr "Lesefremgang"
 
 msgid "Reasoning Option"
 msgstr "Resonneringsalternativ"
@@ -1111,6 +1163,9 @@ msgstr "Fjern"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "Fjerne [%s] fra markeringsmenyen?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Fjernet <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "Forespørselen ble avbrutt av brukeren."
@@ -1139,14 +1194,17 @@ msgstr ""
 "Dette gjenoppretter pluginen til standardinnstillingene. Leverandører, API-nøkler og legitimasjon for søkeverktøy som er lagt til via innstillingsgrensesnittet, vil bli fjernet.\n"
 "Filen configuration.lua vil bli bevart."
 
-msgid "Response"
-msgstr "Svar"
+msgid "Response Font: %1"
+msgstr "Skrifttype for svar: %1"
 
 msgid "Response Settings"
 msgstr "Svarinnstillinger"
 
 msgid "Response Text Font Size"
 msgstr "Skriftstørrelse for svartekst"
+
+msgid "Right to Left"
+msgstr "Høyre mot venstre"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1215,14 +1273,26 @@ msgstr "Velg AI-notat"
 msgid "Select a model:"
 msgstr "Velg en modell:"
 
-msgid "Selection copied to clipboard."
-msgstr "Markeringen ble kopiert til utklippstavlen."
+msgid "Set"
+msgstr "Angi"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Angi bokens metadata?\n"
+"Tittel: %1\n"
+"Forfatter: %2"
 
 msgid "Settings"
 msgstr "Innstillinger"
 
 msgid "Show Follow-up Questions"
 msgstr "Vis oppfølgingsspørsmål"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Vis uthevet tekst øverst"
 
 msgid "Show Reasoning"
 msgstr "Vis resonnement"
@@ -1235,6 +1305,12 @@ msgstr "Vis dyp tankeprosess (resonnering) fra AI-svaret hvis den finnes."
 
 msgid "Show follow up questions related to the response content."
 msgstr "Vis oppfølgingsspørsmål knyttet til svarinnholdet."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Viser bare selve svaret: ingen titler for Bruker/Assistent, ingen første knapperad, ingen resonnering og ingen oppfølgingsspørsmål. Beholder bare handlingene på selve svaret (Merknad, Vocabulary Builder) ved siden av Lukk. Slår av Resonneringstekst og Oppfølgingsspørsmål så lenge den er aktiv."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Viser teksten en prompt var rettet mot, som en egen blokk øverst i runden, over spørsmålet, slik at originalen kan sammenlignes med svaret. Spørsmålsboblen slutter da å gjenta den."
 
 msgid "Similar Books Recommendations"
 msgstr "Anbefalinger av lignende bøker"
@@ -1296,7 +1372,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Ta hurtignotater som lagres i AI-notatene dine."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Begreps-X-Ray"
 
@@ -1306,6 +1381,12 @@ msgstr "Begreper og konsepter"
 msgid "Test"
 msgstr "Test"
 
+msgid "Text Appearance"
+msgstr "Tekstutseende"
+
+msgid "Text Direction: %1"
+msgstr "Tekstretning: %1"
+
 msgid "Text Size: %1"
 msgstr "Skriftstørrelse: %1"
 
@@ -1314,6 +1395,12 @@ msgstr "Teksten ble kopiert til utklippstavlen"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "Fant ikke behandleren for %1. Kontroller at behandleren finnes i api_handlers-katalogen."
+
+msgid "The model could not identify this book."
+msgstr "Modellen kunne ikke identifisere denne boken."
+
+msgid "Thinking ..."
+msgstr "Tenker ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Denne knappen oppretter et hurtignotat med markert tekst."
@@ -1377,6 +1464,12 @@ msgstr "Denne prompten oversetter den markerte teksten til et annet språk."
 msgid "Timeline"
 msgstr "Tidslinje"
 
+msgid "Title"
+msgstr "Tittel"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Metadata for tittel eller forfatter mangler eller er ufullstendig, så AI-resultatet kan være upålitelig. Bruk Identifiser (AI) for å angi det først."
+
 msgid "To-Do / Action Items"
 msgstr "Gjøremål / handlingspunkter"
 
@@ -1392,6 +1485,13 @@ msgstr "Verktøykallet inneholdt ikke søkeord."
 msgid "Translate"
 msgstr "Oversett"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Oversett (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "Oversetter bokbeskrivelsen med AI."
+
 msgid "Translation"
 msgstr "Oversettelse"
 
@@ -1403,6 +1503,12 @@ msgstr "Skriv inn spørsmålet ditt her..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Ukjent forfatter"
+
+msgid "Unknown Title"
+msgstr "Ukjent tittel"
 
 msgid "Unknown error"
 msgstr "Ukjent feil"
@@ -1472,6 +1578,13 @@ msgstr "Vis"
 msgid "Vocabulary"
 msgstr "Vokabular"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Vocabulary Builder"
+
+msgid "Waiting for the model ..."
+msgstr "Venter på modellen ..."
+
 msgid "Web Search"
 msgstr "Nettsøk"
 
@@ -1503,9 +1616,6 @@ msgstr "Ordform og lemma"
 msgid "Word Origin"
 msgstr "Ordopprinnelse"
 
-msgid "Word copied to clipboard."
-msgstr "Ordet ble kopiert til utklippstavlen."
-
 msgid "Write quick notes here"
 msgstr "Skriv raske notater her"
 
@@ -1532,6 +1642,3 @@ msgstr "f.eks. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: kunne ikke tolke returnerte data"
-
-msgid "https://..."
-msgstr "https://..."

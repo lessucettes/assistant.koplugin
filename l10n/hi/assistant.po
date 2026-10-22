@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 03:34+0000\n"
 "Last-Translator: AI (auto)\n"
 "Language-Team: हिन्दी (AI translation)\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n > 1;\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - शीर्षक : %1\n"
-" - लेखक: %2\n"
-" - पठन प्रगति: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - पृ. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(कोई प्रतिक्रिया नहीं)"
 
 msgid "(empty response body)"
 msgstr "(खाली प्रतिक्रिया निकाय)"
+
+msgid "(none)"
+msgstr "(कोई नहीं)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API से त्रुटि मिली</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>जोड़ा गया</b> [%1 (AI)] हाइलाइट मेनू में।"
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API से कोई उपयोगी उत्तर नहीं मिला</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>टर्म एक्स-रे के लिए पुस्तक संदर्भ का विश्लेषण किया जा रहा है...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>इस पुस्तक के बारे में एक प्रश्न पूछें:</b>\n"
-"%1 द्वारा %2"
+"<b>इस किताब के बारे में प्रश्न पूछें:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>%1 इंस्टॉल हो रहा है...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>मॉडल का उत्तर:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>पैरामीटर</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>हटाया गया</b> [%1 (AI)] हाइलाइट मेनू से।"
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>तर्क (कोई अंतिम उत्तर नहीं)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>तर्क:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>अनुरोध</b> - POST %1"
@@ -189,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>प्रतिक्रिया</b> - HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "आधार URL"
+msgstr "<b>कनेक्शन का परीक्षण किया जा रहा है...</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>अज्ञात फीचर प्रकार:</b> %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "AI Recap अगली बार कोई लंबे समय से अनपढ़ी पुस्तक खोले जाने पर सक्षम हो जाएगा।"
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AI Recap"
 
@@ -353,8 +346,14 @@ msgstr ""
 "मुख्य मेनू से प्रदाता जोड़ें:\n"
 "%1 -> AI Assistant -> Settings -> Provider API"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "जोड़ा गया <b>[%1 (AI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "शब्दावली बिल्डर में जोड़ा गया"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "परिणाम आते ही शब्दकोश में देखा गया हर शब्द स्वतः शब्दावली संग्रह में जोड़ दिया जाता है।"
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "पुस्तक से आपके हाइलाइट्स, नोट्स और AI Notes सामग्री का विश्लेषण।"
@@ -369,13 +368,13 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"क्या आप सहायक प्लगइन सेटिंग्स को मिटाना चाहते हैं? \n"
-"यह सहायक प्लगइन को पहली बार इंस्टॉल करने की स्थिति में रीसेट कर देता है।\n"
+"क्या आप सहायक प्लगइन की सेटिंग्स मिटाना चाहते हैं?\n"
+"यह सहायक प्लगइन को उस स्थिति में लौटा देगा जब आपने इसे पहली बार इंस्टॉल किया था।\n"
 "\n"
 "configuration.lua सुरक्षित है, केवल सेटिंग्स मिटाई जाती हैं।"
 
@@ -404,6 +403,9 @@ msgstr "कुछ भी पूछें..."
 msgid "Ask the AI a question"
 msgstr "AI से प्रश्न पूछें"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "खुली किताब के शुरुआती पाठ से उसका शीर्षक और लेखक पहचानने के लिए AI से कहें।"
+
 msgid "Assistant settings are not available."
 msgstr "सहायक सेटिंग्स उपलब्ध नहीं हैं।"
 
@@ -412,6 +414,16 @@ msgstr "पिछला पाठ संलग्न करें"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "उत्तर को वर्तमान हाइलाइट पर पुस्तक नोट के रूप में जोड़ता है"
+
+msgid "Author"
+msgstr "लेखक"
+
+msgid "Auto"
+msgstr "स्वतः"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "शब्द को शब्दावली संग्रह में स्वतः जोड़ें"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -436,7 +448,7 @@ msgid "Base URL must start with http:// or https://"
 msgstr "बेस URL http:// या https:// से शुरू होना चाहिए।"
 
 msgid "Base URL, e.g. https://example.com/v1"
-msgstr "आधार URL: %1"
+msgstr "बेस URL, जैसे https://example.com/v1"
 
 msgid "Book Analysis"
 msgstr "पुस्तक विश्लेषण"
@@ -453,6 +465,9 @@ msgstr "पुस्तक अंतर्दृष्टि"
 
 msgid "Book Summary & Recs"
 msgstr "पुस्तक सारांश और अनुशंसाएँ"
+
+msgid "Book metadata updated."
+msgstr "किताब का मेटाडेटा अपडेट हो गया।"
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "ब्रांच/टैग \"%1\" नहीं मिला।"
@@ -530,11 +545,17 @@ msgstr "प्रासंगिक टिप्पणियाँ"
 msgid "Contextual Notes / Reflections"
 msgstr "प्रासंगिक टिप्पणियाँ / चिंतन"
 
+msgid "Continue"
+msgstr "जारी रखें"
+
 msgid "Contradictions / Open Questions"
 msgstr "विरोधाभास / अनुत्तरित प्रश्न"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "बातचीत AI Notes में सहेजी गई"
+
+msgid "Copied to clipboard."
+msgstr "क्लिपबोर्ड पर कॉपी किया गया।"
 
 msgid "Copy"
 msgstr "कॉपी करें"
@@ -562,11 +583,17 @@ msgstr "AI नोट नहीं बनाया जा सका।"
 msgid "Could not create AI note: %1"
 msgstr "AI नोट नहीं बनाया जा सका: %1"
 
+msgid "Could not extract text from this book."
+msgstr "इस किताब से पाठ निकाला नहीं जा सका।"
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "AI Notes फ़ोल्डर की सूची नहीं बनाई जा सकी: %1"
 
 msgid "Could not open AI note file."
 msgstr "AI नोट फ़ाइल खोली नहीं जा सकी।"
+
+msgid "Could not parse the identification result."
+msgstr "पहचान का परिणाम पढ़ा नहीं जा सका।"
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "कस्टम प्रॉम्प्ट"
 msgid "Custom Prompts"
 msgstr "कस्टम प्रॉम्प्ट"
 
-msgid "Deeply Thought"
-msgstr "गहन विचार"
+msgid "Default"
+msgstr "डिफ़ॉल्ट"
 
 msgid "Delete"
 msgstr "हटाएँ"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "प्रदाता %1 हटाएँ?"
 
+msgid "Description: %1"
+msgstr "विवरण: %1"
+
 msgid "Device"
 msgstr "डिवाइस"
 
@@ -630,8 +660,8 @@ msgstr "शब्दकोश"
 msgid "Dictionary Language"
 msgstr "शब्दकोश भाषा"
 
-msgid "Dictionary Popup"
-msgstr "शब्दकोश पॉपअप"
+msgid "Dictionary Popup Buttons"
+msgstr "शब्दकोश पॉपअप बटन"
 
 msgid "Dictionary Settings"
 msgstr "शब्दकोश सेटिंग्स"
@@ -770,11 +800,11 @@ msgstr "सामान्य बातचीत"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"सामान्यतः एक से अधिक का चयन <b>नहीं</b> करें - अपने मॉडल और प्लेटफ़ॉर्म से मेल खाने वाला पैरामीटर चुनें। गलत पैरामीटर API त्रुटियों का कारण बन सकता है। \n"
+"सामान्यतः एक से अधिक का चयन <b>न</b> करें - ऐसा पैरामीटर चुनें जो आपके मॉडल और प्लेटफ़ॉर्म से मेल खाता हो। गलत पैरामीटर से API त्रुटियाँ हो सकती हैं। \n"
 "\n"
-"चयनित मान कॉन्फ़िगरेशन के additional_parameters को ओवरराइड कर देता है।"
+"चयनित मान कॉन्फ़िगरेशन के additional_parameters को ओवरराइड करता है। यदि चयनित विकल्पों की कुंजी समान हो, तो सूची में केवल अंतिम विकल्प का उपयोग किया जाता है।"
 
 msgid "Genre"
 msgstr "विधा"
@@ -803,12 +833,22 @@ msgstr "ऐतिहासिक संदर्भ"
 msgid "Historical and Cultural Context"
 msgstr "ऐतिहासिक और सांस्कृतिक संदर्भ"
 
+msgid "Identify (AI)"
+msgstr "पहचानें (AI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "इस किताब को पहचानें"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "वास्तविक समय के वेब परिणामों से उत्तर की सटीकता बेहतर होती है। \n"
 "नोट: अधिक टोकन उपयोग और अतिरिक्त API शुल्क लागू होते हैं।"
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "खुली किताब के शुरुआती पाठ से उसका शीर्षक और लेखक का अनुमान लगाएँ और उन्हें कस्टम मेटाडेटा के रूप में सहेजें।"
 
 msgid "Integrated Summary"
 msgstr "एकीकृत सारांश"
@@ -849,6 +889,9 @@ msgstr "उपयोग करने के लिए खाली छोड़�
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "UI भाषा उपयोग करने के लिए इन फ़ील्ड्स को खाली छोड़ें: %1"
 
+msgid "Left to Right"
+msgstr "बाएँ से दाएँ"
+
 msgid "Locations"
 msgstr "स्थान"
 
@@ -863,6 +906,12 @@ msgstr "मार्कडाउन इंजन"
 
 msgid "Meaning & Usage"
 msgstr "अर्थ और प्रयोग"
+
+msgid "Metadata could not be saved."
+msgstr "मेटाडेटा सहेजा नहीं जा सका।"
+
+msgid "Minimalist Mode"
+msgstr "मिनिमलिस्ट मोड"
 
 msgid "Model"
 msgstr "मॉडल"
@@ -912,11 +961,17 @@ msgstr "कोई सक्रिय प्रदाता कॉन्फ़ि
 msgid "No base folder is available for AI Notes."
 msgstr "AI नोट्स के लिए कोई आधार फ़ोल्डर उपलब्ध नहीं है।"
 
+msgid "No book is open."
+msgstr "कोई किताब खुली नहीं है।"
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "कोई पुस्तक खुली नहीं है। फ़ाइल मैनेजर में किसी पुस्तक को देर तक दबाएँ और पुस्तक जानकारी (AI) चुनें।"
 
 msgid "No common parameters are available for handler %1."
 msgstr "हैंडलर %1 के लिए कोई सामान्य पैरामीटर उपलब्ध नहीं हैं।"
+
+msgid "No highlight to annotate"
+msgstr "टिप्पणी के लिए कोई हाइलाइट नहीं"
 
 msgid "No models available."
 msgstr "कोई मॉडल उपलब्ध नहीं है।"
@@ -932,6 +987,9 @@ msgstr "कोई प्रतिक्रिया प्राप्त नह
 
 msgid "No text left to annotate"
 msgstr "एनोटेट करने के लिए कोई टेक्स्ट नहीं बचा"
+
+msgid "No text selected"
+msgstr "कोई टेक्स्ट चयनित नहीं"
 
 msgid "No text to annotate"
 msgstr "एनोटेट करने के लिए कोई टेक्स्ट नहीं"
@@ -1071,26 +1129,20 @@ msgstr "हटाएँ"
 msgid "Purge Settings"
 msgstr "सेटिंग्स मिटाएँ"
 
-msgid "Question"
-msgstr "प्रश्न"
-
 msgid "Quick Note"
 msgstr "त्वरित नोट"
 
 msgid "Quick note saved successfully"
 msgstr "त्वरित नोट सफलतापूर्वक सहेजा गया"
 
-msgid "RTL Layout"
-msgstr "RTL लेआउट"
-
-msgid "RTL written Language"
-msgstr "RTL लिखित भाषा"
-
 msgid "Re-immersion"
 msgstr "पुनः तल्लीनता"
 
 msgid "Reader settings are not available."
 msgstr "रीडर सेटिंग्स उपलब्ध नहीं हैं।"
+
+msgid "Reading progress"
+msgstr "पठन प्रगति"
 
 msgid "Reasoning Option"
 msgstr "तर्क विकल्प"
@@ -1111,6 +1163,9 @@ msgstr "हटाएँ"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "हाइलाइट मेनू से [%s] हटाएँ?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "हटाया गया <b>[%1 (AI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "अनुरोध उपयोगकर्ता द्वारा रद्द किया गया।"
@@ -1140,14 +1195,17 @@ msgstr ""
 "खोज टूल क्रेडेंशियल हटा दिए जाएंगे।\n"
 "फ़ाइल configuration.lua सहेजी जाएगी।"
 
-msgid "Response"
-msgstr "प्रतिक्रिया"
+msgid "Response Font: %1"
+msgstr "उत्तर का फ़ॉन्ट: %1"
 
 msgid "Response Settings"
 msgstr "प्रतिक्रिया सेटिंग्स"
 
 msgid "Response Text Font Size"
 msgstr "उत्तर पाठ फ़ॉन्ट आकार"
+
+msgid "Right to Left"
+msgstr "दाएँ से बाएँ"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1216,14 +1274,26 @@ msgstr "AI नोट चुनें"
 msgid "Select a model:"
 msgstr "मॉडल चुनें:"
 
-msgid "Selection copied to clipboard."
-msgstr "चयन क्लिपबोर्ड पर कॉपी किया गया।"
+msgid "Set"
+msgstr "सेट करें"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"किताब का मेटाडेटा सेट करें?\n"
+"शीर्षक: %1\n"
+"लेखक: %2"
 
 msgid "Settings"
 msgstr "सेटिंग्स"
 
 msgid "Show Follow-up Questions"
 msgstr "फ़ॉलो-अप प्रश्न दिखाएँ"
+
+msgid "Show Highlighted Text at Top"
+msgstr "हाइलाइट किया गया टेक्स्ट शीर्ष पर दिखाएँ"
 
 msgid "Show Reasoning"
 msgstr "तर्क दिखाएँ"
@@ -1236,6 +1306,12 @@ msgstr "यदि मौजूद हो, तो AI प्रतिक्रि�
 
 msgid "Show follow up questions related to the response content."
 msgstr "प्रतिक्रिया सामग्री से संबंधित फ़ॉलो-अप प्रश्न दिखाएँ।"
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "केवल उत्तर दिखाता है: कोई उपयोगकर्ता/सहायक शीर्षक नहीं, बटनों की पहली पंक्ति नहीं, कोई तर्क नहीं और कोई अनुवर्ती प्रश्न नहीं। बंद करें के बगल में केवल उत्तर पर मौजूद क्रियाएँ (टिप्पणी करें, शब्दावली निर्माता) रखता है। सक्रिय रहने पर तर्क पाठ और अनुवर्ती प्रश्न बंद कर देता है।"
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "जिस टेक्स्ट पर प्रॉम्प्ट लक्षित था, उसे टर्न के शीर्ष पर, प्रश्न के ऊपर, अपने अलग ब्लॉक के रूप में दिखाता है, ताकि मूल की उत्तर से तुलना की जा सके। फिर प्रश्न बबल इसे दोहराना बंद कर देता है।"
 
 msgid "Similar Books Recommendations"
 msgstr "समान पुस्तकों की अनुशंसाएँ"
@@ -1297,7 +1373,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "त्वरित नोट्स लें जो आपके AI नोट्स में सहेजे जाएँगे।"
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Term X-Ray"
 
@@ -1307,6 +1382,12 @@ msgstr "शब्द और अवधारणाएँ"
 msgid "Test"
 msgstr "परीक्षण"
 
+msgid "Text Appearance"
+msgstr "टेक्स्ट का स्वरूप"
+
+msgid "Text Direction: %1"
+msgstr "टेक्स्ट की दिशा: %1"
+
 msgid "Text Size: %1"
 msgstr "पाठ आकार: %1"
 
@@ -1315,6 +1396,12 @@ msgstr "टेक्स्ट क्लिपबोर्ड पर कॉपी
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "%1 के लिए हैंडलर नहीं मिला। कृपया सुनिश्चित करें कि हैंडलर api_handlers निर्देशिका में मौजूद है।"
+
+msgid "The model could not identify this book."
+msgstr "मॉडल इस किताब को पहचान नहीं सका।"
+
+msgid "Thinking ..."
+msgstr "सोच रहा है ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "यह बटन हाइलाइट किए गए पाठ के साथ एक त्वरित नोट बनाता है।"
@@ -1378,6 +1465,12 @@ msgstr "यह प्रॉम्प्ट हाइलाइट किए ग�
 msgid "Timeline"
 msgstr "समयरेखा"
 
+msgid "Title"
+msgstr "शीर्षक"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "शीर्षक या लेखक का मेटाडेटा अनुपलब्ध या अपूर्ण है, इसलिए AI का परिणाम अविश्वसनीय हो सकता है। पहले इसे सेट करने के लिए पहचानें (AI) का उपयोग करें।"
+
 msgid "To-Do / Action Items"
 msgstr "कार्य सूची / कार्य आइटम"
 
@@ -1393,6 +1486,13 @@ msgstr "टूल कॉल में खोज कीवर्ड शामि�
 msgid "Translate"
 msgstr "अनुवाद करें"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "अनुवाद करें (AI)"
+
+msgid "Translates the book description with AI."
+msgstr "AI की सहायता से पुस्तक विवरण का अनुवाद करता है।"
+
 msgid "Translation"
 msgstr "अनुवाद"
 
@@ -1404,6 +1504,12 @@ msgstr "अपना प्रश्न यहाँ टाइप करें..
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "अज्ञात लेखक"
+
+msgid "Unknown Title"
+msgstr "अज्ञात शीर्षक"
 
 msgid "Unknown error"
 msgstr "अज्ञात त्रुटि"
@@ -1473,6 +1579,13 @@ msgstr "देखें"
 msgid "Vocabulary"
 msgstr "शब्दावली"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "शब्दावली निर्माता"
+
+msgid "Waiting for the model ..."
+msgstr "मॉडल की प्रतीक्षा की जा रही है ..."
+
 msgid "Web Search"
 msgstr "वेब खोज"
 
@@ -1504,9 +1617,6 @@ msgstr "शब्द रूप और मूल रूप"
 msgid "Word Origin"
 msgstr "शब्द की उत्पत्ति"
 
-msgid "Word copied to clipboard."
-msgstr "शब्द क्लिपबोर्ड पर कॉपी किया गया।"
-
 msgid "Write quick notes here"
 msgstr "यहाँ त्वरित नोट्स लिखें"
 
@@ -1533,6 +1643,3 @@ msgstr "उदा. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: लौटाए गए डेटा को पार्स करने में विफल"
-
-msgid "https://..."
-msgstr "https://..."

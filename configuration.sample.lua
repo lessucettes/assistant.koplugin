@@ -171,9 +171,6 @@ local CONFIGURATION = {
 
     -- Optional features
     features = {
-        hide_highlighted_text = false,         -- Set to true to hide the highlighted text at the top
-        hide_long_highlights = true,           -- Hide highlighted text if longer than threshold
-        long_highlight_threshold = 500,        -- Number of characters considered "long"
         -- system_prompt = "You are a helpful AI assistant. Always respond in Markdown format.", -- Custom system prompt for the AI ("Ask" button) to override the default, to disable set to nil
         updater_disabled = false,              -- Set to true to disable update check.
         update_check_url = "https://api.github.com/repos/omer-faruq/assistant.koplugin/releases/latest", -- URL for checking latest release
@@ -206,7 +203,7 @@ local CONFIGURATION = {
         -- 120000 chars: Comprehensive context, uses more of the context window
         term_xray_max_characters = 60000,
 
-        -- These are prompts defined in `assistant_prompts.lua`, can be overriden here.
+        -- These are prompts defined in `core/prompts.lua`, can be overriden here.
         -- each prompt shown as a button in the main dialog.
         -- The `order` determines the position in the main popup.
         -- The `show_on_main_popup` determines if the prompt is shown in the main popup

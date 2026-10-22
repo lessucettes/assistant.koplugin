@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 10:35+0800\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Títol : %1\n"
-" - Autor: %2\n"
-" - Progrés de lectura: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - p. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Sense resposta)"
 
 msgid "(empty response body)"
 msgstr "(cos de resposta buit)"
+
+msgid "(none)"
+msgstr "(cap)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>L'API ha retornat un error</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Afegit</b> [%1 (AI)] al menú de subratllats."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>L'API no ha retornat cap resposta utilitzable</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>S'està analitzant el context del llibre per al Term X-Ray...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
-"<b>Fes una pregunta sobre aquest llibre:</b>\n"
-"%1 de %2"
+"<b>Feu una pregunta sobre aquest llibre:</b>\n"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -169,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>S'està instal·lant %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Resposta del model:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -179,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Paràmetres</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Eliminat</b> [%1 (AI)] del menú de subratllats."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Raonament (sense resposta final)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Raonament:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>Sol·licitud</b> - POST %1"
@@ -254,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "La recapitulació amb IA s'activarà la propera vegada que s'obri un llibre que fa temps que no es llegeix."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "Recapitulacions amb IA"
 
@@ -353,8 +346,14 @@ msgstr ""
 "Afegeix proveïdors des del menú principal:\n"
 "%1 -> Assistent d'IA -> Configuració -> API de proveïdor"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Afegit <b>[%1 (IA)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Afegit al constructor de vocabulari"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Afegeix cada paraula que consultes al diccionari al Constructor de vocabulari tan bon punt apareix el resultat."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Anàlisi dels vostres ressaltats, notes i contingut de les Notes de la IA del llibre."
@@ -369,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "API de missatges d'Anthropic"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Segur que voleu purgar la configuració del complement d'assistent? \n"
-"Això restableix el complement d'assistent a l'estat de la primera vegada que el vau instal·lar.\n"
+"Segur que voleu purgar la configuració del connector de l'assistent?\n"
+"Això restableix el connector de l'assistent a l'estat que tenia la primera vegada que el vau instal·lar.\n"
 "\n"
-"configuration.lua és segur, només es purga la configuració."
+"configuration.lua està segur, només es purga la configuració."
 
 msgid "Ask"
 msgstr "Pregunta"
@@ -404,6 +403,9 @@ msgstr "Pregunta qualsevol cosa..."
 msgid "Ask the AI a question"
 msgstr "Fes una pregunta a la IA"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "Demana a la IA que identifiqui el títol i l'autor del llibre obert a partir del seu text inicial."
+
 msgid "Assistant settings are not available."
 msgstr "La configuració de l'assistent no està disponible."
 
@@ -412,6 +414,16 @@ msgstr "Adjunta text anterior"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Adjunta la resposta com a nota del llibre al subratllat actual"
+
+msgid "Author"
+msgstr "Autor"
+
+msgid "Auto"
+msgstr "Automàtic"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Afegeix automàticament la paraula al Constructor de vocabulari"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -453,6 +465,9 @@ msgstr "Informació del llibre"
 
 msgid "Book Summary & Recs"
 msgstr "Resum del llibre i recomanacions"
+
+msgid "Book metadata updated."
+msgstr "Metadades del llibre actualitzades."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "No s'ha trobat la branca/etiqueta «%1»."
@@ -530,11 +545,17 @@ msgstr "Notes contextuals"
 msgid "Contextual Notes / Reflections"
 msgstr "Notes contextuals / Reflexions"
 
+msgid "Continue"
+msgstr "Continua"
+
 msgid "Contradictions / Open Questions"
 msgstr "Contradiccions / Preguntes obertes"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "La conversa es desa a les Notes de la IA"
+
+msgid "Copied to clipboard."
+msgstr "Copiat al porta-retalls."
 
 msgid "Copy"
 msgstr "Copia"
@@ -562,11 +583,17 @@ msgstr "No s'ha pogut crear la nota de la IA."
 msgid "Could not create AI note: %1"
 msgstr "No s'ha pogut crear la nota de la IA: %1"
 
+msgid "Could not extract text from this book."
+msgstr "No s'ha pogut extreure text d'aquest llibre."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "No s'ha pogut llistar la carpeta de Notes de la IA: %1"
 
 msgid "Could not open AI note file."
 msgstr "No s'ha pogut obrir el fitxer de la nota de la IA."
+
+msgid "Could not parse the identification result."
+msgstr "No s'ha pogut analitzar el resultat de la identificació."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -603,8 +630,8 @@ msgstr "Prompt personalitzat"
 msgid "Custom Prompts"
 msgstr "Indicacions personalitzades"
 
-msgid "Deeply Thought"
-msgstr "Pensament profund"
+msgid "Default"
+msgstr "Predeterminat"
 
 msgid "Delete"
 msgstr "Elimina"
@@ -621,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "Eliminar el proveïdor %1?"
 
+msgid "Description: %1"
+msgstr "Descripció: %1"
+
 msgid "Device"
 msgstr "Dispositiu"
 
@@ -630,8 +660,8 @@ msgstr "Diccionari"
 msgid "Dictionary Language"
 msgstr "Idioma del diccionari"
 
-msgid "Dictionary Popup"
-msgstr "Finestra emergent del diccionari"
+msgid "Dictionary Popup Buttons"
+msgstr "Botons de la finestra del diccionari"
 
 msgid "Dictionary Settings"
 msgstr "Configuració del diccionari"
@@ -770,11 +800,11 @@ msgstr "Conversa general"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"En general, <b>NO</b> seleccionis més d'un paràmetre: tria un paràmetre que coincideixi amb el teu model i la teva plataforma. Un paràmetre incorrecte pot provocar errors de l'API. \n"
+"En general, <b>NO</b> seleccioneu més d'un: trieu un paràmetre que coincideixi amb el vostre model i la vostra plataforma. Un paràmetre incorrecte pot provocar errors de l'API. \n"
 "\n"
-"El valor seleccionat substitueix els additional_parameters de la configuració."
+"El valor seleccionat substitueix additional_parameters de la configuració. Si les opcions seleccionades comparteixen la mateixa clau, només s'utilitza l'última de la llista."
 
 msgid "Genre"
 msgstr "Gènere"
@@ -803,12 +833,22 @@ msgstr "Context històric"
 msgid "Historical and Cultural Context"
 msgstr "Context històric i cultural"
 
+msgid "Identify (AI)"
+msgstr "Identifica (IA)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Identifica aquest llibre"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Millora la precisió de les respostes amb resultats web en temps real. \n"
 "Nota: s'aplica un ús més elevat de tokens i càrrecs addicionals de l'API."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Infereix el títol i l'autor del llibre obert a partir del seu text inicial i desa'ls com a metadades personalitzades."
 
 msgid "Integrated Summary"
 msgstr "Resum integrat"
@@ -849,6 +889,9 @@ msgstr "Deixa en blanc per utilitzar: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Deixa aquests camps en blanc per utilitzar l'idioma de la interfície: %1"
 
+msgid "Left to Right"
+msgstr "D'esquerra a dreta"
+
 msgid "Locations"
 msgstr "Llocs"
 
@@ -863,6 +906,12 @@ msgstr "Motor de Markdown"
 
 msgid "Meaning & Usage"
 msgstr "Significat i ús"
+
+msgid "Metadata could not be saved."
+msgstr "No s'han pogut desar les metadades."
+
+msgid "Minimalist Mode"
+msgstr "Mode minimalista"
 
 msgid "Model"
 msgstr "Model"
@@ -912,11 +961,17 @@ msgstr "No hi ha cap proveïdor actiu configurat. Afegeix-ne un a Configuració.
 msgid "No base folder is available for AI Notes."
 msgstr "No hi ha cap carpeta base disponible per a les Notes de la IA."
 
+msgid "No book is open."
+msgstr "No hi ha cap llibre obert."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "No hi ha cap llibre obert. Mantén premut un llibre al gestor de fitxers i tria Informació del llibre (IA)."
 
 msgid "No common parameters are available for handler %1."
 msgstr "No hi ha paràmetres comuns disponibles per al gestor %1."
+
+msgid "No highlight to annotate"
+msgstr "No hi ha cap ressaltat per anotar"
 
 msgid "No models available."
 msgstr "No hi ha models disponibles."
@@ -932,6 +987,9 @@ msgstr "No s'ha rebut cap resposta."
 
 msgid "No text left to annotate"
 msgstr "No queda text per anotar"
+
+msgid "No text selected"
+msgstr "No hi ha cap text seleccionat"
 
 msgid "No text to annotate"
 msgstr "No hi ha text per anotar"
@@ -1071,26 +1129,20 @@ msgstr "Purga"
 msgid "Purge Settings"
 msgstr "Purgar configuració"
 
-msgid "Question"
-msgstr "Pregunta"
-
 msgid "Quick Note"
 msgstr "Nota ràpida"
 
 msgid "Quick note saved successfully"
 msgstr "Nota ràpida desada correctament"
 
-msgid "RTL Layout"
-msgstr "Disposició RTL"
-
-msgid "RTL written Language"
-msgstr "Idioma d'escriptura RTL"
-
 msgid "Re-immersion"
 msgstr "Reimmersió"
 
 msgid "Reader settings are not available."
 msgstr "La configuració del lector no està disponible."
+
+msgid "Reading progress"
+msgstr "Progrés de lectura"
 
 msgid "Reasoning Option"
 msgstr "Opció de raonament"
@@ -1111,6 +1163,9 @@ msgstr "Elimina"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "Voleu eliminar [%s] del menú de subratllats?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Eliminat <b>[%1 (IA)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "Sol·licitud cancel·lada per l'usuari."
@@ -1138,14 +1193,17 @@ msgstr ""
 "\n"
 "Això restaura el complement als seus valors predeterminats de fàbrica. Els proveïdors, les claus API i les credencials de l'eina de cerca afegits mitjançant la interfície de configuració s'eliminaran. El fitxer configuration.lua es conservarà."
 
-msgid "Response"
-msgstr "Resposta"
+msgid "Response Font: %1"
+msgstr "Tipus de lletra de la resposta: %1"
 
 msgid "Response Settings"
 msgstr "Configuració de la resposta"
 
 msgid "Response Text Font Size"
 msgstr "Mida de lletra del text de resposta"
+
+msgid "Right to Left"
+msgstr "De dreta a esquerra"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1214,14 +1272,26 @@ msgstr "Selecciona una nota de la IA"
 msgid "Select a model:"
 msgstr "Selecciona un model:"
 
-msgid "Selection copied to clipboard."
-msgstr "Selecció copiada al porta-retalls."
+msgid "Set"
+msgstr "Estableix"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Voleu establir les metadades del llibre?\n"
+"Títol: %1\n"
+"Autor: %2"
 
 msgid "Settings"
 msgstr "Configuració"
 
 msgid "Show Follow-up Questions"
 msgstr "Mostra les preguntes de seguiment"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Mostra el text ressaltat a la part superior"
 
 msgid "Show Reasoning"
 msgstr "Mostra el raonament"
@@ -1234,6 +1304,12 @@ msgstr "Mostra el procés de pensament profund (raonament) de la resposta de la 
 
 msgid "Show follow up questions related to the response content."
 msgstr "Mostra les preguntes de seguiment relacionades amb el contingut de la resposta."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Mostra només la resposta: sense títols d'Usuari/Assistent, sense la primera fila de botons, sense raonament ni preguntes de seguiment. Conserva només les accions de la mateixa resposta (Anota, Vocabulari) al costat de Tanca. Desactiva el text de raonament i les preguntes de seguiment mentre està actiu."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Mostra el text al qual s'ha adreçat una indicació com a bloc propi a la part superior del torn, per sobre de la pregunta, de manera que l'original es pugui comparar amb la resposta. Aleshores la bombolla de la pregunta deixa de repetir-lo."
 
 msgid "Similar Books Recommendations"
 msgstr "Recomanacions de llibres similars"
@@ -1295,7 +1371,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Fes notes ràpides que es desaran a les teves Notes de la IA."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Radiografia de termes"
 
@@ -1305,6 +1380,12 @@ msgstr "Termes i conceptes"
 msgid "Test"
 msgstr "Prova"
 
+msgid "Text Appearance"
+msgstr "Aparença del text"
+
+msgid "Text Direction: %1"
+msgstr "Direcció del text: %1"
+
 msgid "Text Size: %1"
 msgstr "Mida del text: %1"
 
@@ -1313,6 +1394,12 @@ msgstr "S'ha copiat el text al porta-retalls."
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "No s'ha trobat el gestor per a %1. Assegureu-vos que el gestor existeix al directori api_handlers."
+
+msgid "The model could not identify this book."
+msgstr "El model no ha pogut identificar aquest llibre."
+
+msgid "Thinking ..."
+msgstr "Pensant ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Aquest botó crea una nota ràpida amb el text ressaltat."
@@ -1376,6 +1463,12 @@ msgstr "Aquesta indicació tradueix el text ressaltat a una altra llengua."
 msgid "Timeline"
 msgstr "Cronologia"
 
+msgid "Title"
+msgstr "Títol"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Les metadades del títol o de l'autor falten o estan incompletes, de manera que el resultat de la IA pot no ser fiable. Utilitzeu «Identifica (IA)» per establir-les primer."
+
 msgid "To-Do / Action Items"
 msgstr "Tasques / Accions"
 
@@ -1391,6 +1484,13 @@ msgstr "La crida a l'eina no incloïa paraules clau de cerca."
 msgid "Translate"
 msgstr "Tradueix"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Tradueix (IA)"
+
+msgid "Translates the book description with AI."
+msgstr "Tradueix la descripció del llibre amb IA."
+
 msgid "Translation"
 msgstr "Traducció"
 
@@ -1402,6 +1502,12 @@ msgstr "Escriu la teva pregunta aquí..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Autor desconegut"
+
+msgid "Unknown Title"
+msgstr "Títol desconegut"
 
 msgid "Unknown error"
 msgstr "Error desconegut"
@@ -1471,6 +1577,13 @@ msgstr "Veure"
 msgid "Vocabulary"
 msgstr "Vocabulari"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Vocabulari"
+
+msgid "Waiting for the model ..."
+msgstr "S'està esperant el model ..."
+
 msgid "Web Search"
 msgstr "Cerca web"
 
@@ -1502,9 +1615,6 @@ msgstr "Forma de la paraula i lema"
 msgid "Word Origin"
 msgstr "Origen de la paraula"
 
-msgid "Word copied to clipboard."
-msgstr "Paraula copiada al porta-retalls."
-
 msgid "Write quick notes here"
 msgstr "Escriu notes ràpides aquí"
 
@@ -1531,6 +1641,3 @@ msgstr "p. ex. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: no s'ha pogut analitzar les dades retornades"
-
-msgid "https://..."
-msgstr "https://..."

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: assistant.koplugin 1.15\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-20 22:24+0800\n"
+"POT-Creation-Date: 2026-10-15 17:10+0800\n"
 "PO-Revision-Date: 2026-08-13 02:46+0000\n"
 "Last-Translator: AI (auto)\n"
 "Language-Team: Afrikaans (AI translation)\n"
@@ -16,21 +16,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-msgid ""
-" - Title : %1\n"
-" - Author: %2\n"
-" - Reading progress: %3%\n"
-"\n"
-"-----\n"
-"\n"
-msgstr ""
-" - Titel : %1\n"
-" - Skrywer: %2\n"
-" - Leesvordering: %3%\n"
-"\n"
-"-----\n"
-"\n"
 
 msgid " - p. %1/%2"
 msgstr " - bl. %1/%2"
@@ -52,6 +37,9 @@ msgstr "(Geen antwoord)"
 
 msgid "(empty response body)"
 msgstr "(leë reaksieliggaam)"
+
+msgid "(none)"
+msgstr "(geen)"
 
 msgid ""
 "<b>%1:</b> %2\n"
@@ -98,18 +86,18 @@ msgstr ""
 msgid "<b>API returned an error</b>"
 msgstr "<b>API het 'n fout teruggegee</b>"
 
-msgid "<b>Added</b> [%1 (AI)] to Highlight Menu."
-msgstr "<b>Bygevoeg</b> [%1 (AI)] by die beklemtoningskieslys."
+msgid "<b>API returned no usable answer</b>"
+msgstr "<b>API het geen bruikbare antwoord teruggegee nie</b>"
 
 msgid "<b>Analyzing book context for Term X-Ray...</b>"
 msgstr "<b>Ontleed boekkonteks vir Term X-Ray...</b>"
 
 msgid ""
 "<b>Ask a question about this book:</b>\n"
-"%1 by %2"
+"%1"
 msgstr ""
 "<b>Vra 'n vraag oor hierdie boek:</b>\n"
-"%1 deur %2"
+"%1"
 
 msgid ""
 "<b>Cannot access default folder for logs: %1</b>\n"
@@ -144,7 +132,12 @@ msgid ""
 "\n"
 "- Current version: %3\n"
 "- Development branch: main"
-msgstr "KI-assistent: Kon nie die huidige boek laai nie: %1"
+msgstr ""
+"<b>GitHub-URL:</b>  %1\n"
+"<b>Bronbewaarplek:</b>  %2\n"
+"\n"
+"- Huidige weergawe: %3\n"
+"- Ontwikkelingstak: main"
 
 msgid ""
 "<b>Github URL:</b>  %1\n"
@@ -164,6 +157,9 @@ msgstr ""
 msgid "<b>Installing %1...</b>"
 msgstr "<b>Installeer %1...</b>"
 
+msgid "<b>Model reply:</b> %1"
+msgstr "<b>Modelantwoord:</b> %1"
+
 msgid ""
 "<b>No provider set up yet.</b>\n"
 "Please add a provider in Settings or configuration.lua."
@@ -174,8 +170,11 @@ msgstr ""
 msgid "<b>Parameters</b>"
 msgstr "<b>Parameters</b>"
 
-msgid "<b>Removed</b> [%1 (AI)] from Highlight Menu."
-msgstr "<b>Verwyder</b> [%1 (AI)] uit die beklemtoningskieslys."
+msgid "<b>Reasoning (no final answer)</b> - %1"
+msgstr "<b>Redenering (geen finale antwoord)</b> - %1"
+
+msgid "<b>Reasoning:</b> %1"
+msgstr "<b>Redenering:</b> %1"
 
 msgid "<b>Request</b> - POST %1"
 msgstr "<b>Versoek</b> - POST %1"
@@ -184,7 +183,7 @@ msgid "<b>Response</b> - HTTP %1"
 msgstr "<b>Reaksie</b> - HTTP %1"
 
 msgid "<b>Testing connection...</b>"
-msgstr "Toets verbinding"
+msgstr "<b>Besig om verbinding te toets...</b>"
 
 msgid "<b>Unknown feature type:</b> %1"
 msgstr "<b>Onbekende kenmerktipe:</b> %1"
@@ -249,7 +248,6 @@ msgid "AI Recap will be enabled the next time a long-unread book is opened."
 msgstr "AI-opsomming sal die volgende keer wat 'n lang ongeleesde boek oopgemaak word, geaktiveer word."
 
 #. @translators Action title. "Recap" is short for "recapitulation": a brief spoiler-free summary of what the reader has already read, to refresh memory. Keep consistent with "Recap" / "AI Recap" elsewhere.
-#. @translators Menu entry. Same "Recap" feature as elsewhere: a brief spoiler-free summary of what the reader has already read. Keep consistent with "Recap" / "AI Recap".
 msgid "AI Recaps"
 msgstr "AI-opsommings"
 
@@ -348,8 +346,14 @@ msgstr ""
 "Voeg verskaffers by vanaf die hoofkieslys:\n"
 "%1 -> AI Assistant -> Instellings -> Verskaffer-API"
 
+msgid "Added <b>[%1 (AI)]</b>"
+msgstr "Bygevoeg <b>[%1 (KI)]</b>"
+
 msgid "Added to vocabulary builder"
 msgstr "Bygevoeg by woordeskatbouer"
+
+msgid "Adds every word you look up in the dictionary to the Vocabulary Builder as soon as the result appears."
+msgstr "Voeg elke woord wat jy in die woordeboek naslaan by die Vocabulary Builder by sodra die resultaat verskyn."
 
 msgid "Analysis of your highlights, notes, and AI Notes content from the book."
 msgstr "Ontleding van jou hoogtepunte, notas en KI-notas se inhoud uit die boek."
@@ -364,15 +368,15 @@ msgid "Anthropic Messages API"
 msgstr "Anthropic Messages API"
 
 msgid ""
-"Are you sure to purge the assistant plugin settings? \n"
+"Are you sure to purge the assistant plugin settings?\n"
 "This resets the assistant plugin to the status the first time you installed it.\n"
 "\n"
 "configuration.lua is safe, only the settings are purged."
 msgstr ""
-"Is jy seker jy wil die assistent-inpropinstellings uitwis? \n"
-"Dit stel die assistent-inprop terug na die status toe jy dit die eerste keer geïnstalleer het.\n"
+"Is jy seker jy wil die instellings van die assistent-inprop uitvee?\n"
+"Dit herstel die assistent-inprop na die toestand toe jy dit die eerste keer geïnstalleer het.\n"
 "\n"
-"configuration.lua is veilig, slegs die instellings word uitgewis."
+"configuration.lua is veilig; slegs die instellings word uitgevee."
 
 msgid "Ask"
 msgstr "Vra"
@@ -399,6 +403,9 @@ msgstr "Vra enigiets..."
 msgid "Ask the AI a question"
 msgstr "Vra die AI 'n vraag"
 
+msgid "Ask the AI to identify the open book's title and author from its opening text."
+msgstr "Vra die KI om die oop boek se titel en outeur uit sy aanvangsteks te identifiseer."
+
 msgid "Assistant settings are not available."
 msgstr "Assistent-instellings is nie beskikbaar nie."
 
@@ -407,6 +414,16 @@ msgstr "Heg Vorige Teks Aan"
 
 msgid "Attaches the answer as a book note to the current highlight"
 msgstr "Heg die antwoord as 'n boeknota aan die huidige gemerkte teks"
+
+msgid "Author"
+msgstr "Outeur"
+
+msgid "Auto"
+msgstr "Outomaties"
+
+#. @translators Settings switch: sends every looked-up word to the Vocabulary Builder as soon as its result appears. Keep it short.
+msgid "Auto Add Word to Vocabulary Builder"
+msgstr "Voeg woord outomaties by Vocabulary Builder"
 
 #. @translators Settings option. "Recap" is a brief spoiler-free summary offered when reopening a long-unread book. Keep consistent with "Recap" / "AI Recap" elsewhere.
 msgid "Auto-recap on Opening Long-unread Books"
@@ -448,6 +465,9 @@ msgstr "Boek-insigte"
 
 msgid "Book Summary & Recs"
 msgstr "Boekopsomming en aanbevelings"
+
+msgid "Book metadata updated."
+msgstr "Boekmetadata opgedateer."
 
 msgid "Branch/Tag \"%1\" was not found."
 msgstr "Tak/Tag \"%1\" is nie gevind nie."
@@ -525,11 +545,17 @@ msgstr "Kontekstuele notas"
 msgid "Contextual Notes / Reflections"
 msgstr "Kontekstuele notas / Refleksies"
 
+msgid "Continue"
+msgstr "Gaan voort"
+
 msgid "Contradictions / Open Questions"
 msgstr "Teenstrydighede / Oop vrae"
 
 msgid "Conversation is saved to AI Notes"
 msgstr "Gesprek is in KI-notas gestoor"
+
+msgid "Copied to clipboard."
+msgstr "Na knipbord gekopieer."
 
 msgid "Copy"
 msgstr "Kopieer"
@@ -557,11 +583,17 @@ msgstr "Kon nie KI-nota skep nie."
 msgid "Could not create AI note: %1"
 msgstr "Kon nie KI-nota skep nie: %1"
 
+msgid "Could not extract text from this book."
+msgstr "Kon nie teks uit hierdie boek onttrek nie."
+
 msgid "Could not list AI Notes folder: %1"
 msgstr "Kon nie KI-notas-gids lys nie: %1"
 
 msgid "Could not open AI note file."
 msgstr "Kon nie KI-notalêer oopmaak nie."
+
+msgid "Could not parse the identification result."
+msgstr "Kon nie die identifikasieresultaat ontleed nie."
 
 msgid ""
 "Could not save to the selected AI note.\n"
@@ -598,8 +630,8 @@ msgstr "Aangepaste opdrag"
 msgid "Custom Prompts"
 msgstr "Pasgemaakte opdragte"
 
-msgid "Deeply Thought"
-msgstr "Diep gedagte"
+msgid "Default"
+msgstr "Verstek"
 
 msgid "Delete"
 msgstr "Verwyder"
@@ -616,6 +648,9 @@ msgstr ""
 msgid "Delete provider %1?"
 msgstr "Verskaffer %1 verwyder?"
 
+msgid "Description: %1"
+msgstr "Beskrywing: %1"
+
 msgid "Device"
 msgstr "Toestel"
 
@@ -625,8 +660,8 @@ msgstr "Woordeboek"
 msgid "Dictionary Language"
 msgstr "Woordeboektaal"
 
-msgid "Dictionary Popup"
-msgstr "Woordeboek-opspringvenster"
+msgid "Dictionary Popup Buttons"
+msgstr "Woordeboek-opspringknoppies"
 
 msgid "Dictionary Settings"
 msgstr "Woordeboek-instellings"
@@ -765,11 +800,11 @@ msgstr "Algemene gesprek"
 msgid ""
 "Generally do <b>NOT</b> select more than one - pick a parameter that matches your model and platform. A wrong parameter may cause API errors. \n"
 "\n"
-"Selected value overrides additional_parameters of configuration."
+"Selected value overrides additional_parameters of configuration. If selected options share the same key, only the last one in the list is used."
 msgstr ""
-"Oor die algemeen moet jy <b>NIE</b> meer as een kies nie - kies 'n parameter wat by jou model en platform pas. 'n Verkeerde parameter kan API-foute veroorsaak. \n"
+"Kies oor die algemeen <b>NIE</b> meer as een nie - kies 'n parameter wat by jou model en platform pas. 'n Verkeerde parameter kan API-foute veroorsaak. \n"
 "\n"
-"Geselekteerde waarde oorskryf additional_parameters van die konfigurasie."
+"Die gekose waarde oorskryf additional_parameters van die konfigurasie. As gekose opsies dieselfde sleutel deel, word slegs die laaste een in die lys gebruik."
 
 msgid "Genre"
 msgstr "Genre"
@@ -798,12 +833,22 @@ msgstr "Historiese konteks"
 msgid "Historical and Cultural Context"
 msgstr "Historiese en kulturele konteks"
 
+msgid "Identify (AI)"
+msgstr "Identifiseer (KI)"
+
+#. @translators Action title: infer a book's title/author from its opening text.
+msgid "Identify This Book"
+msgstr "Identifiseer hierdie boek"
+
 msgid ""
 "Improves response accuracy with real-time web results. \n"
 "Note: Higher token usage and additional API charges apply."
 msgstr ""
 "Verbeter antwoordakkuraatheid met intydse webresultate. \n"
 "Let wel: Hoër token-gebruik en bykomende API-koste is van toepassing."
+
+msgid "Infer the open book's title and author from its opening text and save them as custom metadata."
+msgstr "Lei die oop boek se titel en outeur uit sy aanvangsteks af en stoor dit as pasgemaakte metadata."
 
 msgid "Integrated Summary"
 msgstr "Geïntegreerde opsomming"
@@ -844,6 +889,9 @@ msgstr "Los leeg om te gebruik: %1"
 msgid "Leave these fields blank to use the UI language: %1"
 msgstr "Los hierdie velde leeg om die UI-taal te gebruik: %1"
 
+msgid "Left to Right"
+msgstr "Links na Regs"
+
 msgid "Locations"
 msgstr "Plekke"
 
@@ -858,6 +906,12 @@ msgstr "Markdown-enjin"
 
 msgid "Meaning & Usage"
 msgstr "Betekenis en gebruik"
+
+msgid "Metadata could not be saved."
+msgstr "Metadata kon nie gestoor word nie."
+
+msgid "Minimalist Mode"
+msgstr "Minimalistiese modus"
 
 msgid "Model"
 msgstr "Model"
@@ -907,11 +961,17 @@ msgstr "Geen aktiewe verskaffer gekonfigureer nie. Voeg asseblief een by in Inst
 msgid "No base folder is available for AI Notes."
 msgstr "Geen basislêergids is vir KI-notas beskikbaar nie."
 
+msgid "No book is open."
+msgstr "Geen boek is oop nie."
+
 msgid "No book is open. Long-press a book in the file manager and choose Book Info (AI)."
 msgstr "Geen boek is oop nie. Druk lank op 'n boek in die lêerbestuurder en kies Boekinligting (AI)."
 
 msgid "No common parameters are available for handler %1."
 msgstr "Geen algemene parameters is beskikbaar vir die hanteerder %1$s nie."
+
+msgid "No highlight to annotate"
+msgstr "Geen merker om te annoteer nie"
 
 msgid "No models available."
 msgstr "Geen modelle beskikbaar nie."
@@ -927,6 +987,9 @@ msgstr "Geen antwoord ontvang nie."
 
 msgid "No text left to annotate"
 msgstr "Geen teks oor om te annoteer nie"
+
+msgid "No text selected"
+msgstr "Geen teks gekies nie"
 
 msgid "No text to annotate"
 msgstr "Geen teks om te annoteer nie"
@@ -1066,26 +1129,20 @@ msgstr "Suiwer"
 msgid "Purge Settings"
 msgstr "Instellings uitwis"
 
-msgid "Question"
-msgstr "Vraag"
-
 msgid "Quick Note"
 msgstr "Vinnige nota"
 
 msgid "Quick note saved successfully"
 msgstr "Vinnige nota suksesvol gestoor"
 
-msgid "RTL Layout"
-msgstr "RTL-uitleg"
-
-msgid "RTL written Language"
-msgstr "RTL-geskrewe taal"
-
 msgid "Re-immersion"
 msgstr "Heronderdompeling"
 
 msgid "Reader settings are not available."
 msgstr "Leserinstellings is nie beskikbaar nie."
+
+msgid "Reading progress"
+msgstr "Leesvordering"
 
 msgid "Reasoning Option"
 msgstr "Redeneringsopsie"
@@ -1106,6 +1163,9 @@ msgstr "Verwyder"
 #, lua-format
 msgid "Remove [%s] from Highlight Menu?"
 msgstr "Verwyder [%s] uit die beklemtoningskieslys?"
+
+msgid "Removed <b>[%1 (AI)]</b>"
+msgstr "Verwyder <b>[%1 (KI)]</b>"
 
 msgid "Request Cancelled by user."
 msgstr "Versoek deur gebruiker gekanselleer."
@@ -1135,14 +1195,17 @@ msgstr ""
 "soekinstrument-bewyse wat via die Instellings-koppelvlak bygevoeg is, sal verwyder word.\n"
 "Die lêer configuration.lua sal behoue bly."
 
-msgid "Response"
-msgstr "Antwoord"
+msgid "Response Font: %1"
+msgstr "Antwoordlettertipe: %1"
 
 msgid "Response Settings"
 msgstr "Antwoordinstellings"
 
 msgid "Response Text Font Size"
 msgstr "Reaksieteks-fontgrootte"
+
+msgid "Right to Left"
+msgstr "Regs na Links"
 
 #. @translators term_xray: "Role & Function" section header
 msgid "Role & Function"
@@ -1211,14 +1274,26 @@ msgstr "Kies KI-nota"
 msgid "Select a model:"
 msgstr "Kies 'n model:"
 
-msgid "Selection copied to clipboard."
-msgstr "Seleksie na knipbord gekopieer."
+msgid "Set"
+msgstr "Stel"
+
+msgid ""
+"Set book metadata?\n"
+"Title: %1\n"
+"Author: %2"
+msgstr ""
+"Stel boekmetadata?\n"
+"Titel: %1\n"
+"Outeur: %2"
 
 msgid "Settings"
 msgstr "Instellings"
 
 msgid "Show Follow-up Questions"
 msgstr "Wys opvolgyrae"
+
+msgid "Show Highlighted Text at Top"
+msgstr "Wys uitgeligte teks bo-aan"
 
 msgid "Show Reasoning"
 msgstr "Wys redenasie"
@@ -1231,6 +1306,12 @@ msgstr "Wys die diep denkproses (redenasie) van die AI-antwoord indien dit besta
 
 msgid "Show follow up questions related to the response content."
 msgstr "Wys opvolgyrae wat met die antwoordinhoud verband hou."
+
+msgid "Shows the answer alone: no User/Assistant titles, no first button row, no reasoning and no follow-up questions. Keeps only the actions on the answer itself (Annotate, Vocabulary Builder) next to Close. Turns Reasoning Text and Follow-up Questions off while active."
+msgstr "Wys net die antwoord: geen Gebruiker/Assistent-titels nie, geen eerste knoppiereeks nie, geen redenasie en geen opvolgvrae nie. Behou slegs die aksies op die antwoord self (Annoteer, Woordeskatbouer) langs Sluit. Skakel Redenasieteks en Opvolgvrae af terwyl dit aktief is."
+
+msgid "Shows the text a prompt was pointed at as its own block at the top of the turn, above the question, so the original can be compared with the answer. The question bubble then stops repeating it."
+msgstr "Toon die teks waarop 'n opdrag gerig is as sy eie blok bo-aan die beurt, bokant die vraag, sodat die oorspronklike met die antwoord vergelyk kan word. Die vraagborrel hou dan op om dit te herhaal."
 
 msgid "Similar Books Recommendations"
 msgstr "Aanbevelings vir soortgelyke boeke"
@@ -1292,7 +1373,6 @@ msgid "Take quick notes that will be saved to your AI Notes."
 msgstr "Maak vinnige notas wat in jou KI-notas gestoor sal word."
 
 #. @translators Button label. "Term X-Ray" explains the selected word by scanning every occurrence across the whole book (like an X-ray revealing hidden details). It is about one term, not the book-level "X-Ray". Translate "Term" and adapt "X-Ray" naturally; transliterate "X-Ray" if there is no natural equivalent. Keep it short.
-#. @translators Button label. Same "Term X-Ray" feature as elsewhere: explains the selected word by scanning every occurrence across the book. Translate consistently with the other "Term X-Ray" button. Keep it short.
 msgid "Term X-Ray"
 msgstr "Term X-Ray"
 
@@ -1302,6 +1382,12 @@ msgstr "Terme en konsepte"
 msgid "Test"
 msgstr "Toets"
 
+msgid "Text Appearance"
+msgstr "Teksvoorkoms"
+
+msgid "Text Direction: %1"
+msgstr "Teksrigting: %1"
+
 msgid "Text Size: %1"
 msgstr "Teksgrootte: %1"
 
@@ -1310,6 +1396,12 @@ msgstr "Teks na die knipbord gekopieer"
 
 msgid "The handler for %1 was not found. Please ensure the handler exists in api_handlers directory."
 msgstr "Die hanteerder vir %1 is nie gevind nie. Maak asseblief seker dat die hanteerder in die api_handlers-gids bestaan."
+
+msgid "The model could not identify this book."
+msgstr "Die model kon nie hierdie boek identifiseer nie."
+
+msgid "Thinking ..."
+msgstr "Dink ..."
 
 msgid "This button creates a quick note with highlighted text."
 msgstr "Hierdie knoppie skep 'n vinnige nota met uitgeligte teks."
@@ -1373,6 +1465,12 @@ msgstr "Hierdie prompt vertaal die uitgeligte teks na 'n ander taal."
 msgid "Timeline"
 msgstr "Tydlyn"
 
+msgid "Title"
+msgstr "Titel"
+
+msgid "Title or author metadata is missing or incomplete, so the AI result may be unreliable. Use Identify (AI) to set it first."
+msgstr "Titel- of outeursmetadata ontbreek of is onvolledig, dus die KI-resultaat kan onbetroubaar wees. Gebruik Identifiseer (KI) om dit eers te stel."
+
 msgid "To-Do / Action Items"
 msgstr "Doenlys / Aksiepunte"
 
@@ -1388,6 +1486,13 @@ msgstr "Gereedskapoproep het nie soektrefwoorde ingesluit nie."
 msgid "Translate"
 msgstr "Vertaal"
 
+#. @translators Button text: translates the book description with AI. Keep it short.
+msgid "Translate (AI)"
+msgstr "Vertaal (KI)"
+
+msgid "Translates the book description with AI."
+msgstr "Vertaal die boekbeskrywing met KI."
+
 msgid "Translation"
 msgstr "Vertaling"
 
@@ -1399,6 +1504,12 @@ msgstr "Tik jou vraag hier..."
 
 msgid "URL: %1"
 msgstr "URL: %1"
+
+msgid "Unknown Author"
+msgstr "Onbekende outeur"
+
+msgid "Unknown Title"
+msgstr "Onbekende titel"
 
 msgid "Unknown error"
 msgstr "Onbekende fout"
@@ -1468,6 +1579,13 @@ msgstr "Bekyk"
 msgid "Vocabulary"
 msgstr "Woordeskat"
 
+#. @translators Button text: adds the word to the Vocabulary Builder. Keep it short.
+msgid "Vocabulary Builder"
+msgstr "Woordeskatbouer"
+
+msgid "Waiting for the model ..."
+msgstr "Wag vir die model ..."
+
 msgid "Web Search"
 msgstr "Websoektog"
 
@@ -1499,9 +1617,6 @@ msgstr "Woordvorm en Lemma"
 msgid "Word Origin"
 msgstr "Woordoorsprong"
 
-msgid "Word copied to clipboard."
-msgstr "Woord na knipbord gekopieer."
-
 msgid "Write quick notes here"
 msgstr "Skryf vinnige notas hier"
 
@@ -1528,6 +1643,3 @@ msgstr "bv. google/gemini-3.0-flash-exp:free"
 
 msgid "fetchJSON: failed to parse returned data"
 msgstr "fetchJSON: kon nie teruggekeerde data ontleed nie"
-
-msgid "https://..."
-msgstr "https://..."

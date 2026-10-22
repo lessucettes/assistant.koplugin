@@ -1,12 +1,12 @@
 local BaseHandler = require("api_handlers.base")
-local NetUtils = require("assistant_net_utils")
-local TextUtils = require("assistant_text_utils")
+local NetUtils = require("utils/net")
+local TextUtils = require("utils/text")
 local json = require("rapidjson")
 local koutil = require("util")
 local logger = require("logger")
-local ToolExecutor = require("assistant_tool_executor")
+local ToolExecutor = require("core/tool_executor")
 local UIManager = require("ui/uimanager")
-local _ = require("assistant_gettext")
+local _ = require("core/gettext")
 local InfoMessage = require("ui/widget/infomessage")
 
 -- Socket/HTTP modules for custom stream transformation
@@ -59,27 +59,33 @@ ResponsesHandler.SupportedOptions = {
     ["store"]                = true,
 }
 
-function ResponsesHandler:SyncOptions(querier)
-    BaseHandler.SyncOptions(self, querier)
+function ResponsesHandler:SyncOptions(querier, overlay)
+    BaseHandler.SyncOptions(self, querier, overlay)
     self.responses_url = self.base_url .. "/responses"
 end
 
---- Connection test: minimal Responses API request with the static echo instruction.
+--- Connection test: minimal Responses API request with the static echo
+--- instruction. Whitelisted additional_parameters ride along, so the request
+--- carries the same reasoning options a real query would send.
 function ResponsesHandler:Test()
     local body = {
         model = self.model,
         input = self.TEST_PROMPT,
-        max_output_tokens = 64,
+        max_output_tokens = self.TEST_MAX_OUTPUT_TOKENS,
     }
+    self:mergeSupportedOptions(body)
     local headers = {
         ["Content-Type"]  = "application/json",
         ["Authorization"] = "Bearer " .. self.api_key,
     }
     return self:testRequest(self.base_url .. "/responses", headers, body, function(data)
-        local top = koutil.tableGetValue(data, "output_text")
-        if type(top) == "string" and top ~= "" then return top end
         local parsed = ToolExecutor.parseToolCallsResponse(data, "responses")
-        if type(parsed) == "table" then return parsed.content end
+        local reasoning = type(parsed) == "table" and parsed.reasoning or nil
+        local top = koutil.tableGetValue(data, "output_text")
+        if type(top) == "string" and top ~= "" then
+            return top, reasoning
+        end
+        if type(parsed) == "table" then return parsed.content, parsed.reasoning end
         return nil
     end)
 end
@@ -125,7 +131,8 @@ end
 ---   assistant (with tool_calls) → { type = "function_call", call_id, name, arguments }
 ---   tool      → { type = "function_call_output", call_id, output }
 --- @param messages table  OpenAI-format message_history
---- @return table input_items, string instructions
+--- @return table input_items
+--- @return string|nil instructions
 local function convertMessagesToInput(messages)
     local input_items = {}
     local instructions_parts = {}
@@ -220,13 +227,7 @@ function ResponsesHandler:buildRequestBody(messages, query_option, tools)
     end
 
     -- Apply additional_parameters (SupportedOptions filter)
-    if type(self.additional_parameters) == "table" and next(self.additional_parameters) then
-        for o, v in pairs(self.additional_parameters) do
-            if self.SupportedOptions[o] then
-                body[o] = v
-            end
-        end
-    end
+    self:mergeSupportedOptions(body)
 
     -- Tools configuration
     if tools then

@@ -1,6 +1,6 @@
 # UI / Dialogs
 
-KOReader UI is niche. **Reuse existing scaffolding** (`ChatGPTViewer`, `assistant_dialog.lua`, `assistant_provider_registry.lua`) rather than building new widget trees. When hand-building, scan `/usr/lib/koreader/frontend/ui/widget/` and `/usr/lib/koreader/plugins/` for reference patterns first.
+KOReader UI is niche. **Reuse existing scaffolding** (`ResultViewer`, `dialogs/dialog.lua`, `core/provider_registry.lua`) rather than building new widget trees. When hand-building, scan `/usr/lib/koreader/frontend/ui/widget/` and `/usr/lib/koreader/plugins/` for reference patterns first.
 
 ## General conventions
 
@@ -8,7 +8,7 @@ KOReader UI is niche. **Reuse existing scaffolding** (`ChatGPTViewer`, `assistan
 - Menu/UI labels: Title Case for titles, settings items, checkboxes, dialog labels; keep short words (`to`, `for`, `as`, `and`, `in`) lowercase.
 - Success/confirmation → `Notification:notify(msg, Notification.SOURCE_ALWAYS_SHOW)` (non-blocking). Errors/failures/ack → `UIManager:show(InfoMessage:new{...})` (blocks).
 
-## Ask dialog checkbox layout (`assistant_dialog.lua`)
+## Ask dialog checkbox layout (`dialogs/dialog.lua`)
 
 Side-by-side rows: `HorizontalGroup{ HorizontalSpan(left_gap) + CheckButton(width=half_w) + HorizontalSpan(gap) + CheckButton(width=half_w) }`.
 
@@ -18,7 +18,7 @@ Side-by-side rows: `HorizontalGroup{ HorizontalSpan(left_gap) + CheckButton(widt
 
 ## Hand-built dialogs (no input field)
 
-`InputDialog` **always** creates and renders an `InputText` — there is no flag to hide it. For checkbox-only / pure-picker forms, build the widget tree by hand. Reference: `Registry.showParametersDialog` in `assistant_provider_registry.lua`.
+`InputDialog` **always** creates and renders an `InputText` — there is no flag to hide it. For checkbox-only / pure-picker forms, build the widget tree by hand. Reference: `Registry.showParametersDialog` in `core/provider_registry.lua`.
 
 Recipe (mirror `ConfirmBox`/`ProviderDialog`):
 
@@ -35,6 +35,73 @@ Pitfalls learned there:
 - **Declare locals before closures that use them**: button callbacks built in a `buttons` table close over dialog locals; a local declared *after* the table silently captures a nil **global** and crashes only when the button is tapped (`attempt to index global 'x' (a nil value)`). Declare shared locals (`dialog`, checkbox tables, …) above any closure that references them, and note why.
 - **Missing children crash at first paint, not construction**: a stale/nil child reference leaves a container without `[1]`; construction succeeds and the crash surfaces only on repaint (`framecontainer.lua:55 self[1]:getSize()`). Reproduce with a runui script: show the dialog, then `UIManager:scheduleIn(2, function() UIManager:forceRePaint(); UIManager:quit() end); UIManager:run()` — and exercise button callbacks programmatically (`button_table:getButtonById("ok").callback()`, or `buttons_layout[row][col]` positionally when the entry has no `id`) to cover tap-time paths headlessly.
 
+## Result viewer shapes (`dialogs/viewer.lua`)
+
+`ResultViewer` has two shapes, selected by the Response Settings `minimalist_mode` switch (default off):
+
+- **Standard** — two button rows (navigation/clipboard, then actions with Close rightmost) plus the page-button scroll feedback; the reply is a chat transcript emitted by `TextUtils.formatSingleMessage`: each user turn is a right-aligned `<div class="user-bubble">` (titled by the preset prompt name when one ran, then the typed text), reasoning is a `<div class="thought-block">`, and the answer is bare, left-aligned body text. There are no per-turn carrier labels.
+- **Minimalist** — no navigation row (no page buttons, Find or Copy), no page-button scroll feedback, and an action row reduced to the actions that act on the answer itself: `Annotate` (when a highlight context exists), caller `extra_buttons` (the dictionary viewer adds `Vocabulary Builder`) and `Close`. `Ask Another Question` and `Save` are the chrome it removes. The reply is assembled by `TextUtils.formatAnswerOnly` (no bubbles, no prompt name, no reasoning block, no follow-up questions).
+
+The dictionary's `Vocabulary Builder` extra button is always offered: the Dictionary Settings switch `Auto Add Word to Vocabulary Builder` only decides whether the word is *also* added on its own as the result window appears. A repeat add is not a no-op — the Vocabulary Builder raises its own dialog for a word it already knows, which is also why the automatic add is not announced and is sent as a manual lookup, so the Vocabulary Builder's own capture-while-reading setting cannot veto it.
+
+The switch is read at two points on purpose: when the result is **assembled** (the dialogs pass `minimal` into the formatter, so the text is built in the shape it is displayed) and when the **viewer** is built (the button rows). Turning it on clears `show_reasoning` / `auto_prompt_suggest` and greys both out in the menu, so the stored text can never disagree with the menu state.
+
+**Produce what you display.** The renderer is left with styling only (`_renderMarkdown` does not filter); every display decision is taken upstream:
+
+- **At answer time** — `Querier` folds reasoning into the answer only while `show_reasoning` is on (`strip_think_tags`), and the follow-up switch keeps `<suggestions>` out of the history.
+- **At assembly time** — a turn answered before a switch was turned off still carries what the switch now hides, so the templates drop it: `TextUtils.splitReasoning` splits off a reasoning fence (`formatSingleMessage` wraps it in a `.thought-block` only while the switch is on, `formatAnswerOnly` never does) and `TextUtils.stripSuggestions` removes a leftover `<suggestions>` block.
+
+Flipping a display switch calls `ResultViewer:_refreshText()`, which re-assembles the reply through the caller's `rebuild_text` and repaints — so the change is immediate instead of waiting for the next answer. The rebuilt widget keeps the current page, clamped by `scrollToPage` when the text shrinks.
+
+## MuPDF CSS support (viewer constraint)
+
+The viewer HTML goes through MuPDF's own engine (`source/html/` in ArtifexSoftware/mupdf), whose entire property table is `css-properties.gperf` — **85 entries, no more**. `ScrollHtmlWidget` embeds our CSS in a `<head><style>`, so anything absent from that table is silently dropped. Design viewer CSS against that list, not against a browser's.
+
+Supported: `background-color`, `border` + `border-{top,right,bottom,left}` + `-color`/`-style`/`-width`, `color`, `display` (block/inline only), `font-*`, `height`, `letter-spacing`, `line-height`, `list-style-*`, `margin` + `margin-*`, `overflow-wrap`, `padding` + `padding-*`, `text-align`, `text-decoration`, `text-indent`, `text-transform`, `vertical-align`, `white-space`, `width`, `word-spacing`, `direction`, `float`, `clear`, `position`/`top`/`right`/`bottom`/`left`.
+
+**Not supported** — do not design around them:
+
+- `border-radius`: absent from the property table entirely. No CSS-level workaround either. Tracked upstream as koreader/koreader#8183 (open since 2021, still unsupported in 2026.3). Only real options are Unicode `╭╮╰╯` glyphs (Noto Sans/Serif do **not** carry them — needs `font-family: 'FreeSans'` or DejaVu) or painting the panel in Lua outside the HTML flow.
+- `background-image`: explicitly unimplemented (`html-imp.h`, `css-apply.c` `add_shorthand_background()`); kills the image-based workaround.
+- `max-width`, `box-shadow`, `opacity`, `flex`, `grid`, `transform`, `border-image`, `outline`, `box-sizing`.
+- Selector: only `:root`, `:empty`, `:first-child`, `:nth-child`, `:link` — no `:hover`.
+
+Consequences for the chat layout: a right-aligned bubble uses a fixed percentage `margin-left` (which MuPDF honors) — not `margin-left: auto`, not `max-width`. The percentage is the width, so the turn length picks the class: `.tiny-text` keeps 70% for an action label alone (a prompt name with the selection in its own band), `.short-text` keeps 38% (a question of a few chat lines stays a chat bubble on the right), `.long-text` drops to 6% so a long turn gets the page instead of a narrow column (`BUBBLE_TINY_MAX` and `BUBBLE_SHORT_MAX` in `utils/text` decide, counted in display units where a CJK glyph costs two). The optional `.source-text` band carries a turn's selection in muted, smaller type above the bubble, when the Response Settings switch asks for it. `text-align: right` right-aligns the *text* but the element's background still spans the full width, so it cannot substitute for the margin trick. `float` and `display: table` both misbehave (float needs a clearing element; display-table backgrounds over-extend). Rectangular backgrounds with a `border-left` accent are the substitute for rounded corners (the `.thought-block` accents on the right instead, so its bar never reads as the user bubble's).
+
+## MuPDF bidi (RTL pipeline)
+
+Three source-level facts (`source/html/` in ArtifexSoftware/mupdf) shape every RTL decision; the rendered result is checked by `SDL_VIDEODRIVER=dummy ./test/runui.sh ui/rtl_render`.
+
+- **`text-align: left/right` are logical while the block's markup direction is RTL** (`html-layout.c`: `markup_dir == FZ_BIDI_RTL` swaps TA_LEFT/TA_RIGHT and puts a justified last line on the right). So an RTL block right-aligns on the *default* `text-align: left`, and never write `text-align: right` for RTL — it lands on the physical left. `text-align-last` is not in the property table at all and MuPDF already places the justified last line correctly, so it is both dropped and redundant.
+- **The CSS `direction` property inherits and suppresses `dir` attributes** (`html-parse.c` only reads `dir` when `style->direction` is UNSET). The stylesheet must therefore carry no `direction`: the per-block `dir="rtl"|"ltr"` written by `utils/text.apply_block_directions` is the only direction input.
+- **`dir="auto"` is not enough**: it maps to `FZ_BIDI_NEUTRAL`, which resolves the block's direction from its text but triggers none of the RTL alignment behavior above (the block stays physically left-aligned). The plugin detects the direction itself (word majority, first strong character as tiebreak) and writes an explicit `dir` per block.
+
+With `dir` set, MuPDF places list markers by the element's own markup direction, and Arabic script needs `line-height: 1.35` (its ascenders/descenders/diacritics clip at the base 1.25) plus the mirrored inset (`padding-left: 0; padding-right: ...`) — MuPDF has no logical properties and no attribute selectors, so those two ride inline on the block's own `style`. Code blocks (`pre`) stay `dir="ltr"` in every mode.
+
+**`margin-left` sets the width and the alignment.** MuPDF fills a block within the width its margin leaves — there is no shrink-to-fit — so `margin-left: 38%` right-aligns the bubble at 62% of the page whatever the text needs. Lowering the margin widens long turns; raising it narrows them. This is the only working equivalent of `max-width` + `margin-left: auto`.
+
+**Do not set `width` on a bubble.** There is no `box-sizing`, so `width` is the content box: padding and border are added on top and overflow it. Measured: `width: 50%` + `margin-left: 50%` renders *narrower* than the margin-only bubble (the text wraps sooner, not later), and `width: 62%` bleeds off the right edge.
+
+**`max-width` and `margin-left: auto` fail silently and together.** A plausible-looking `max-width: 50%; margin-left: auto` rule loses both properties and degrades to a full-width, left-aligned block with no error anywhere. This is why the CSS carries a test asserting neither property ever reappears.
+
+## Screenshotting a UI test (WSL2)
+
+`Screen:shot()` does not exist on the SDL3 backend (`frontend/device/sdl/device.lua` implements only `init/resize/_newBB/_render/refreshFullImp/setWindowTitle/setWindowIcon/close`), so `screenshoter.lua` cannot be reused. Read the framebuffer directly instead:
+
+```lua
+UIManager:scheduleIn(2, function()
+    UIManager:forceRePaint()
+    UIManager:scheduleIn(0.5, function()
+        Screen.bb:writeToFile("/tmp/shot.png", "png")
+        UIManager:quit()
+    end)
+end)
+```
+
+Note the `forceRePaint` + follow-up tick: the blitbuffer only holds painted pixels, so screenshotting on the same tick as `UIManager:show` yields a stale or blank frame.
+
+System-level capture is unavailable under WSL2 — WSLg's weston never paints the X root drawable, so `scrot`, `import -window root`, and `ffmpeg -f x11grab` all return solid black. Per-window X11 capture (`import -window <id>`) or a Windows-side PowerShell capture both work; the framebuffer route above is simpler and is what the runui scripts use.
+
 ## KOReader widget internals (last resort)
 
 Check the public API first, then read the widget source under `/usr/lib/koreader/frontend/ui/widget/` to trace the `widget[1]`/`[2]` tree; swap a sub-widget and nil `_size`/`_offsets`/`dimen` up the tree to re-layout. Always comment the widget-tree path.
@@ -43,7 +110,9 @@ Check the public API first, then read the widget source under `/usr/lib/koreader
 
 Viewer HTML falls back through `Noto Sans CJK TC → … → FreeSans → Noto Sans`. Glyph coverage of the bundled fonts (checked with fontTools cmap over `noto/`, `freefont/`, `droid/`) decides what prompts may emit:
 
-- Safe: `★ ◆ ● ○ ❖ ✓ ▪ ‣ ⚠ → ⇧ ⏎ ✦ ⮞` (all covered by FreeSans and/or Noto CJK).
-- Tofu: color emoji (`U+1F300` and up; only `U+1F4A1` exists in FreeSerif) and anything with `VS16` forcing emoji presentation — use bare `⚠`, never `⚠️`.
+- Safe: `★ ◆ ● ○ ❖ ✓ ▪ ‣ ⚠ → ⇧ ⏎ ✦ ⮞ ‹ ›` (all covered by FreeSans and/or Noto CJK).
+- `🌐` `U+1F310` renders too, and is the plugin's web-search icon (`Prompts.WEBSEARCH_ICON`, and the search-keyword marker in `core/tool_executor.lua`). It comes out monochrome from a text font rather than as color emoji, so it reads as a small text glyph — do not assume other `U+1F300`+ code points behave the same way.
+- Tofu: anything forcing **color emoji** presentation, which the bundled fonts lack. The usual culprit is `VS16` (a variation selector forces the emoji, color form): use bare `⚠`, never `⚠️`.
+- Magnifier glyphs, as measured: `U+1F50D`/`U+1F50E` are tofu, `U+2B58` draws as a bare circle with no handle, `U+26B2` as a gender symbol, and `U+2317` `⌗` renders but as a `#`, so it reads as a hash. `U+2315` `⌕` is the only candidate that draws a real lens and handle. When the meaning is a web search, prefer `🌐` `U+1F310` over any magnifier, since that is the icon the plugin already ships.
 - Noto Sans/Serif base cover almost none of the above; never rely on them alone.
-- Coverage is necessary but not sufficient — visually confirm with `./test/runui.sh unicode_icons`.
+- Coverage is necessary but not sufficient — visually confirm with `./test/runui.sh unicode_icons`. Exploratory one-off probes are not kept: record the measured rule here and delete the probe.

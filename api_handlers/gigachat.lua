@@ -13,8 +13,8 @@ local GigaChatHandler = OpenAIHandler:new({
     can_fetch_models = false,
 })
 
-function GigaChatHandler:SyncOptions(querier)
-    OpenAIHandler.SyncOptions(self, querier)
+function GigaChatHandler:SyncOptions(querier, overlay)
+    OpenAIHandler.SyncOptions(self, querier, overlay)
     self.auth_url = querier.provider_setting.auth_url
 end
 
@@ -86,7 +86,8 @@ function GigaChatHandler:backgroundRequest(url, headers, body)
 end
 
 --- Get access token for GigaChat API
---- @return string? accessToken, string? error
+--- @return string? accessToken
+--- @return string? error
 function GigaChatHandler:getAccessToken()
     -- Return cached token if valid
     if self.tokenInfo and self.tokenInfo.accessToken and self.tokenInfo.expiresAt and self.tokenInfo.expiresAt > os.time() then
@@ -108,7 +109,8 @@ function GigaChatHandler:getAccessToken()
 end
 
 --- Authorize with GigaChat to obtain an access token
---- @return table? response, string? error
+--- @return table? response
+--- @return string? error
 function GigaChatHandler:authorize()
     if not self.api_key then
         return nil, "Missing authorizationKey (or api_key) in gigachat settings"
