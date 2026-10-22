@@ -24,6 +24,7 @@ Guidance for AI agents working in `assistant.koplugin` (KOReader AI assistant pl
 - Syntax: `/usr/lib/koreader/luajit -e "assert(loadfile('main.lua'))"`; `luac -p file.lua` checks standard Lua syntax only. **Never** `luajit -bl` (stripped build lacks `jit.*`).
 - Tests: `./test/run.sh` (all) or `./test/run.sh exttools` (module-name substring filter). UI: `./test/runui.sh model_picker` (options: `-w=1072 -h=1448 -d=300` or `-s=kobo-clara`). Translation: `cd l10n && make check` (only when explicitly requested). Full detail: `docs/TESTING.md`.
 - Before committing: `./test/run.sh`, then `./test/run_diagnose.sh` (lua-language-server scan; skips when absent) — CI ships without running tests.
+- If `/usr/lib/koreader` is absent, use a checksum-verified official runtime matching the supported stable version, unpacked outside the checkout; run the unmodified test entry point as documented in `docs/TESTING.md` ("Using an unpacked KOReader runtime"). Do not substitute an alternative-runtime harness for native tests; report skipped diagnostics explicitly.
 
 ## Architecture (map)
 
@@ -31,7 +32,7 @@ Guidance for AI agents working in `assistant.koplugin` (KOReader AI assistant pl
 - `feature/book_actions.lua` — book features, identification flow, FileManager long-press row.
 - `core/querier.lua` — query engine: handler loading, stream/SSE, web-search tool loop (max 3 rounds).
 - `api_handlers/` — wire-format handlers and provider aliases; `base.lua` = `BaseHandler`; `openai`/`opencode`/`anthropic`/`gemini`/`responses` are UI-selectable, other aliases and deltas are not.
-- `core/tool_executor.lua` — normalizes tool calls across OpenAI-compatible, Anthropic, Gemini, and Responses formats; `core/exttools.lua` — search API clients.
+- `core/tool_executor.lua` — normalizes tool calls across OpenAI-compatible, Anthropic, Gemini, and Responses formats; `core/search_tools.lua` — shared search catalog; `core/exttools.lua` — search API clients, including Parallel Search.
 - `core/provider_registry.lua` (`Registry`) / `core/search_registry.lua` (`SearchRegistry`) — UI provider/search CRUD + JSON settings.
 - `core/config.lua` — owns the effective `CONFIGURATION`.
 - Shared utils: `utils/text.lua` (text/render), `utils/net.lua` (HTTP/fetch), `utils/doc.lua` (book/page extraction, online guard, field trim); `utils/base.lua` is the slim core (`PLUGIN_DIR`, attrs, JSON default).
@@ -42,6 +43,7 @@ Full flow, handlers, config, key files: `docs/ARCHITECTURE.md`.
 ## Core Principles
 
 - **Dependencies first**: lean on what is already in the project or upstream before writing your own implementation or adding packages. Check docs and type definitions first; do not assume a library lacks a capability.
+- **Long-term decisions**: make architectural decisions for the long term. No stopgaps that only work for now and are meant to be replaced later.
 - **Mature patterns first**: before designing a solution, study how mature products solve the same problem - especially KOReader's existing plugins and widgets - and adopt their proven patterns instead of inventing from scratch.
 
 ## Refactoring and Compatibility
